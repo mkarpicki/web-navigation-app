@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .page {
+            //visibility: hidden;
+        }
+
+        .page.ready {
+            //visibility: visible;
+        }
+    </style>
+</head>
+<body data-ng-app="navigationApp" class="page" data-ng-class="ready" data-ng-init="pageReady();">
+    <div data-ng-controller="PageController">
+        <section id="panel">
+            <label for="from">From:</label>
+            <input id="from" data-ng-model="from">
+            <label for="to">To:</label>
+            <input id="to" data-ng-model="to">
+
+            <button data-ng-click="getRoute();">Get route</button>
+
+            <p>from: {{from}}</p>
+            <p>to: {{to}}</p>
+
+        </section>
+        <section id="map"></section>
+    </div>
+
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/navigation-app.js"></script>
+    <script src="scripts/services/routing-service.js"></script>
+    <script src="scripts/controllers/page-controller.js"></script>
+</body>
+</html>
