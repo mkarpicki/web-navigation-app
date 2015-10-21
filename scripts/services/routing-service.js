@@ -14,6 +14,15 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         "&routeattributes=none,sh,wp,sm,bb,lg,no,li,tx" +
         "&transportModeType=car";
 
+    var getCalculatedRoutes = function (httpResponse) {
+
+        if (httpResponse && httpResponse.status === 200 && httpResponse.data && httpResponse.data.response) {
+            return httpResponse.data.response.route;
+        }
+
+        return null;
+    };
+
     var calculate = function (from, to, traffic, waypoints, avoid) {
 
         var deferred = $q.defer(),
@@ -29,10 +38,10 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
         $http.get(url).then(function (httpResponse) {
 
-            if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
+            var routes = getCalculatedRoutes(httpResponse);
 
-                console.log(httpResponse.data);
-
+            if (routes) {
+                deferred.resolve(routes);
             } else {
                 deferred.reject();
             }
