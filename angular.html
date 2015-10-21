@@ -3,6 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" type="text/css"  href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
     <style>
         .page {
             //visibility: hidden;
@@ -21,17 +22,27 @@
             <label for="to">To:</label>
             <input id="to" data-ng-model="to">
 
+            <br/>
+
+            <input id="center" data-ng-model="center">
+
             <button data-ng-click="getRoute();">Get route</button>
 
             <p>routes: {{routes}}</p>
 
         </section>
-        <section id="map"></section>
+        <section id="map" data-map centerPosition="center"></section>
     </div>
+
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
 
     <script src="scripts/angular.min.js"></script>
     <script src="scripts/navigation-app.js"></script>
     <script src="scripts/services/routing-service.js"></script>
     <script src="scripts/controllers/page-controller.js"></script>
+    <script src="scripts/directives/map.js"></script>
 </body>
 </html>
