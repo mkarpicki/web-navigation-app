@@ -24,7 +24,8 @@
 
             <br/>
 
-            <input id="center" data-ng-model="centerPosition">
+            <input id="centerLatitude" data-ng-model="centerPosition.latitude">
+            <input id="centerLongitude" data-ng-model="centerPosition.longitude">
 
             <button data-ng-click="getRoute();">Get route</button>
 
@@ -32,14 +33,17 @@
             <p>routes: {{routes}}</p>
 
         </section>
-        <section id="map" data-map data-center-position="centerPosition"></section>
+        <section id="map" data-map data-center-position="centerPosition" style="width: 100%; height: 600px; background: grey"></section>
     </div>
 
     <!--<script src="scripts/angular.min.js"></script>-->
     <script type="text/javascript" charset="UTF-8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
 
     <script type="text/javascript" charset="UTF-8" src="scripts/navigation-app.js"></script>
+
     <script type="text/javascript" charset="UTF-8" src="scripts/services/routing-service.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/services/map-api-service.js"></script>
+
     <script type="text/javascript" charset="UTF-8" src="scripts/controllers/page-controller.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/directives/map.js"></script>
 
