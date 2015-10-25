@@ -11,7 +11,7 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
     $scope.from = '53.33951,15.03696';
     $scope.to = '52.51083,13.45264';
 
-    $scope.center = '52.51083,13.45264';
+    $scope.centerPosition = '52.51083,13.45264';
 
     $scope.getRoute = function () {
 

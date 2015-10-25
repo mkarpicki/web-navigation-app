@@ -43,7 +43,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
             if (routes) {
                 deferred.resolve(routes);
             } else {
-                deferred.reject();
+                deferred.resolve([]);
             }
 
         }, deferred.reject);
