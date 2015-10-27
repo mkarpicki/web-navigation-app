@@ -3,16 +3,8 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" type="text/css"  href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
-    <style>
-        .page {
-            //visibility: hidden;
-        }
-
-        .page.ready {
-            //visibility: visible;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles/navigation-app.css" />
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
 </head>
 <body data-ng-app="navigationApp" class="page" data-ng-class="ready" data-ng-init="pageReady();">
     <div data-ng-controller="PageController">
@@ -30,10 +22,10 @@
             <button data-ng-click="getRoute();">Get route</button>
 
             <p>center: {{centerPosition}}</p>
-            <p>routes: {{routes}}</p>
+            <p>routes: {{proposedRoutes}}</p>
 
         </section>
-        <section id="map" data-map data-center-position="centerPosition" style="width: 100%; height: 600px; background: grey"></section>
+        <section id="map" data-map data-center-position="centerPosition" data-proposed-routes="proposedRoutes"></section>
     </div>
 
     <!--<script src="scripts/angular.min.js"></script>-->
@@ -41,6 +33,7 @@
 
     <script type="text/javascript" charset="UTF-8" src="scripts/navigation-app.js"></script>
 
+    <script type="text/javascript" charset="UTF-8" src="scripts/services/color-themes-service.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/services/routing-service.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/services/map-api-service.js"></script>
 

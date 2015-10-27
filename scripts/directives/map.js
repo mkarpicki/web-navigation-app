@@ -6,24 +6,34 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', fu
 
         mapApiService.init(element);
 
-        scope.$watch(attrs.centerPosition, function (value) {
-            console.log('m:' + value);
-            mapApiService.center(value);
+        scope.$watch(attrs.centerPosition, function (centerPosition) {
+
+            if (centerPosition) {
+                mapApiService.center(centerPosition);
+            }
+        }, true);
+
+        scope.$watch(attrs.proposedRoutes, function (proposedRoutes) {
+            if (proposedRoutes) {
+                console.log(proposedRoutes);
+                for (var i = 0, l = proposedRoutes.length; i < l; i++) {
+                    mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].color);
+                }
+            }
         }, true);
 
     };
 
     var scope = {
-        centerPosition: '=centerPosition'
+        centerPosition: '=centerPosition',
+        proposedRoutes: '=proposedRoutes'
 
     };
 
-    var mapDirective = {
+    return {
         restrict: 'A',
         scope: scope,
         link: link
     };
-
-    return mapDirective;
 
 }]);

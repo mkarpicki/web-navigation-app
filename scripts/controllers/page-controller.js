@@ -1,12 +1,25 @@
-angular.module('navigationApp.controllers').controller('PageController', ["$scope", "routingService", function($scope, routingService) {
+angular.module('navigationApp.controllers').controller('PageController', ["$scope", "routingService", 'colorThemesService', function($scope, routingService, colorThemesService) {
 
     'use strict';
 
-    var collectRoutes = function (routes) {
-        $scope.routes = $scope.routes.concat(routes);
+    var collectRoutes = function (routes, theme) {
+
+        for (var i = 0, l = routes.length; i < l; i++) {
+            routes[i].color = colorThemesService.getColor(theme);
+        }
+
+        $scope.proposedRoutes = $scope.proposedRoutes.concat(routes);
     };
 
-    $scope.routes = [];
+    var collectRoutesWithTrafficDisabled = function (routes) {
+        collectRoutes(routes, colorThemesService.NEGATIVE_THEME);
+    };
+    var collectRoutesWithTrafficEnabled = function (routes) {
+        collectRoutes(routes, colorThemesService.POSITIVE_THEME);
+    };
+
+
+    $scope.proposedRoutes = [];
 
     $scope.from = '53.33951,15.03696';
     $scope.to = '52.51083,13.45264';
@@ -18,10 +31,10 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
 
     $scope.getRoute = function () {
 
-        $scope.routes = [];
+        $scope.proposedRoutes = [];
 
-        (routingService.calculateWithTrafficDisabled($scope.from, $scope.to)).then(collectRoutes);
-        (routingService.calculateWithTrafficEnabled($scope.from, $scope.to)).then(collectRoutes);
+        (routingService.calculateWithTrafficDisabled($scope.from, $scope.to)).then(collectRoutesWithTrafficDisabled);
+        (routingService.calculateWithTrafficEnabled($scope.from, $scope.to)).then(collectRoutesWithTrafficEnabled);
     };
 
     $scope.pageReady = function () {

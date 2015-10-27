@@ -1,0 +1,11 @@
+#panel {
+    float: left;
+    width: 30%
+}
+
+#map {
+    float: right;
+    width: 70%;
+    height: 600px;
+    background: grey
+}

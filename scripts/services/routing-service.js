@@ -2,6 +2,9 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
     'use strict';
 
+    var appId = '6HRrANORgYjdfDFtrTID',
+        appCode = 'D4Mlaon1qumiQ9goQ4k9lQ';
+
     var URL = "http://route.api.here.com/routing/7.2/calculateroute.json?app_id={{appId}}" +
         "&app_code={{appCode}}" +
         "&waypoint0=geo!{{from}}" +
@@ -29,8 +32,8 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
             exp = $interpolate(URL);
 
         var url = exp({
-            appId: '6HRrANORgYjdfDFtrTID',
-            appCode: 'D4Mlaon1qumiQ9goQ4k9lQ',
+            appId: appId,
+            appCode: appCode,
             from: from,
             to: to,
             traffic: traffic
