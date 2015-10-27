@@ -14,10 +14,10 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
     var collectRoutesWithTrafficDisabled = function (routes) {
         collectRoutes(routes, colorThemesService.NEGATIVE_THEME);
     };
+
     var collectRoutesWithTrafficEnabled = function (routes) {
         collectRoutes(routes, colorThemesService.POSITIVE_THEME);
     };
-
 
     $scope.proposedRoutes = [];
 

@@ -1,181 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-  <link rel="stylesheet" type="text/css"  href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
-  <script type="text/javascript" charset="UTF-8"  src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
-  <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
-  <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
-  <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
-  <!--<script type="text/javascript" charset="UTF-8" src="scripts/init.js"></script>  -->
-
-  <style>
-      .enter-point {
-          display: block;
-          margin: 10px 0 10px 0;
-      }
-  </style>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="styles/navigation-app.css" />
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
 </head>
-<body>
-<table style="width: 100%">
-    <tr>
-        <td style="width: 30%">
-            <form onsubmit="return false;">
-                <input class="enter-point" type="text" id="from" value="53.33951,15.03696" />
-                <input class="enter-point" type="text" id="to" value="52.51083,13.45264" />
-            </form>
-        </td>
-        <td style="width: 70%"> <div id="map" style="width: 100%; height: 600px; background: grey" /></td>
-    </tr>
-</table>
-  <script  type="text/javascript" charset="UTF-8" >
+<body data-ng-app="navigationApp" class="page" data-ng-class="ready" data-ng-init="pageReady();">
+<div data-ng-controller="PageController">
+    <section id="panel">
+        <label for="from">From:</label>
+        <input id="from" data-ng-model="from">
+        <label for="to">To:</label>
+        <input id="to" data-ng-model="to">
 
-var appId = "6HRrANORgYjdfDFtrTID";
-var appCode = "D4Mlaon1qumiQ9goQ4k9lQ";
+        <br/>
 
-var route = {};
+        <input id="centerLatitude" data-ng-model="centerPosition.latitude">
+        <input id="centerLongitude" data-ng-model="centerPosition.longitude">
 
-function moveMapToBerlin(map){
-  map.setCenter({lat:52.5159, lng:13.3777});
-  map.setZoom(14);
-}
+        <button data-ng-click="getRoute();">Get route</button>
 
-var onResult = function(routes, color) {
-    var route,
-        routeShape,
-        startPoint,
-        endPoint,
-        strip;
+        <p>center: {{centerPosition}}</p>
+        <p>routes: {{proposedRoutes}}</p>
 
-    color = color ? color : 'blue';
+    </section>
+    <section id="map" data-map data-center-position="centerPosition" data-proposed-routes="proposedRoutes"></section>
+</div>
 
-    if(routes) {
-        // Pick the first route from the response:
-        route = routes[0];
-        // Pick the route's shape:
-        routeShape = route.shape;
+<!--<script src="scripts/angular.min.js"></script>-->
+<script type="text/javascript" charset="UTF-8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
 
-        // Create a strip to use as a point source for the route line
-        strip = new H.geo.Strip();
+<script type="text/javascript" charset="UTF-8" src="scripts/navigation-app.js"></script>
 
-        // Push all the points in the shape into the strip:
-        routeShape.forEach(function(point) {
-            var parts = point.split(',');
-            strip.pushLatLngAlt(parts[0], parts[1]);
-        });
+<script type="text/javascript" charset="UTF-8" src="scripts/services/color-themes-service.js"></script>
+<script type="text/javascript" charset="UTF-8" src="scripts/services/routing-service.js"></script>
+<script type="text/javascript" charset="UTF-8" src="scripts/services/map-api-service.js"></script>
 
-        // Retrieve the mapped positions of the requested waypoints:
-        startPoint = route.waypoint[0].mappedPosition;
-        endPoint = route.waypoint[1].mappedPosition;
+<script type="text/javascript" charset="UTF-8" src="scripts/controllers/page-controller.js"></script>
+<script type="text/javascript" charset="UTF-8" src="scripts/directives/map.js"></script>
 
-        // Create a polyline to display the route:
-        var routeLine = new H.map.Polyline(strip, {
-            style: { strokeColor: color, lineWidth: 5 }
-        });
+<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
 
-        // Create a marker for the start point:
-        var startMarker = new H.map.Marker({
-            lat: startPoint.latitude,
-            lng: startPoint.longitude
-        });
-
-        // Create a marker for the end point:
-        var endMarker = new H.map.Marker({
-            lat: endPoint.latitude,
-            lng: endPoint.longitude
-        });
-
-        // Add the route polyline and the two markers to the map:
-        map.addObjects([routeLine, startMarker, endMarker]);
-
-        // Set the map's viewport to make the whole route visible:
-        map.setViewBounds(routeLine.getBounds());
-    }
-};
-
-// Get an instance of the routing service:
-//var router = platform.getRoutingService();
-
-// Call calculateRoute() with the routing parameters,
-// the callback and an error callback function (called if a
-// communication error occurs):
-//router.calculateRoute(routingParameters, onResult,
-//        function(error) { alert(error.message); }
-//);
-
-function getRoute(from, to, avoidTraffic, color) {
-
-    var traffic = avoidTraffic ? "enabled" : "disabled";
-
-    var url = "http://route.api.here.com/routing/7.2/calculateroute.json?app_id=" + appId +
-            "&app_code=" + appCode +
-            "&waypoint0=geo!" + from +
-            "&waypoint1=geo!" + to +
-            "&legattributes=sm" +
-            "&linkattributes=" +
-            "&maneuverattributes=all" +
-            "&metricSystem=metric" +
-            "&mode=fastest;car;traffic:" + traffic + ";" +
-            "&routeattributes=none,sh,wp,sm,bb,lg,no,li,tx" +
-            "&transportModeType=car";
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            var res = JSON.parse(xhttp.responseText);
-            console.log(res.response);
-            console.log(color + ": " + res.response.route[0].summary.text);
-            onResult(res.response.route, color);
-        }
-    };
-
-    xhttp.open("GET", url, true);
-    xhttp.send();
-
-}
-
-function calculate () {
-    var from = document.getElementById('from').value,
-        to = document.getElementById('to').value;
-
-    getRoute(from, to, false, 'red');
-    getRoute(from, to, true, 'blue');
-
-    //getRoute(to, from, false, 'blue');
-    //getRoute(to, from, true, 'red');
-
-}
-
-
-
-/**
- * Boilerplate map initialization code starts below:
- */
-
-//Step 1: initialize communication with the platform
-var platform = new H.service.Platform({
-  app_id: appId,
-  app_code: appCode,
-  useHTTPS: true
-});
-var defaultLayers = platform.createDefaultLayers();
-
-//Step 2: initialize a map  - not specificing a location will give a whole world view.
-var map = new H.Map(document.getElementById('map'),
-  defaultLayers.normal.map);
-
-//Step 3: make the map interactive
-// MapEvents enables the event system
-// Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-
-// Create the default UI components
-var ui = H.ui.UI.createDefault(map, defaultLayers);
-
-// Now use the map as required...
-moveMapToBerlin(map);
-calculate();
-
-  </script>
 </body>
 </html>
