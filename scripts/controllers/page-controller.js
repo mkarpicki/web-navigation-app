@@ -25,6 +25,11 @@ angular.module('navigationApp.controllers').controller('PageController',
         return $sce.trustAsHtml(text);
     };
 
+    $scope.selectRoute = function (route) {
+        $scope.proposedRoutes = [];
+        $scope.proposedRoutes[0] = route;
+    };
+
     $scope.proposedRoutes = [];
 
     $scope.from = '53.33951,15.03696';

@@ -21,13 +21,15 @@
 
             <ul>
                 <li data-ng-repeat="route in proposedRoutes">
-                    <p data-ng-bind-html="trustedText(route.summary.text);"></p>
+                    <p data-ng-bind-html="trustedText(route.summary.text);" data-ng-click="selectRoute(route);"></p>
                 </li>
             </ul>
 
             <br/>
 
+            <label for="centerLatitude">latitude:</label>
             <input id="centerLatitude" data-ng-model="centerPosition.latitude">
+            <label for="centerLongitude">longitude:</label>
             <input id="centerLongitude" data-ng-model="centerPosition.longitude">
 
             <p>center: {{centerPosition}}</p>

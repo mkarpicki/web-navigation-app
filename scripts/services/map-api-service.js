@@ -42,6 +42,10 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', fu
         map.setZoom(14);
     };
 
+    var clear = function () {
+        map.removeObjects(map.getObjects());
+    };
+
     var drawRoute = function (route, color) {
 
         var routeShape,
@@ -93,7 +97,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', fu
     return {
         init: init,
         center: center,
-        drawRoute: drawRoute
+        drawRoute: drawRoute,
+        clear: clear
     };
 
 }]);

@@ -15,6 +15,9 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', fu
 
         scope.$watch(attrs.proposedRoutes, function (proposedRoutes) {
             if (proposedRoutes) {
+
+                mapApiService.clear();
+
                 console.log(proposedRoutes);
                 for (var i = 0, l = proposedRoutes.length; i < l; i++) {
                     mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].color);
