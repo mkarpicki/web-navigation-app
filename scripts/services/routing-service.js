@@ -19,11 +19,13 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
     var getCalculatedRoutes = function (httpResponse) {
 
+        var routes;
+
         if (httpResponse && httpResponse.status === 200 && httpResponse.data && httpResponse.data.response) {
-            return httpResponse.data.response.route;
+            routes = httpResponse.data.response.route;
         }
 
-        return null;
+        return routes;
     };
 
     var calculate = function (from, to, traffic, waypoints, avoid) {

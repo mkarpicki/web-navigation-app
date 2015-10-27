@@ -7,43 +7,51 @@
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
 </head>
 <body data-ng-app="navigationApp" class="page" data-ng-class="ready" data-ng-init="pageReady();">
-<div data-ng-controller="PageController">
-    <section id="panel">
-        <label for="from">From:</label>
-        <input id="from" data-ng-model="from">
-        <label for="to">To:</label>
-        <input id="to" data-ng-model="to">
+    <div data-ng-controller="PageController">
+        <section id="panel">
 
-        <br/>
+            <!-- replace with directives for suggestions -->
+            <label for="from">From:</label>
+            <input id="from" data-ng-model="from">
+            <label for="to">To:</label>
+            <input id="to" data-ng-model="to">
 
-        <input id="centerLatitude" data-ng-model="centerPosition.latitude">
-        <input id="centerLongitude" data-ng-model="centerPosition.longitude">
+            <button data-ng-click="getRoute();">Get route</button>
 
-        <button data-ng-click="getRoute();">Get route</button>
+            <ul>
+                <li data-ng-repeat="route in proposedRoutes">
+                    <p data-ng-bind-html="route.summary.trustedText"></p>
+                </li>
+            </ul>
 
-        <p>center: {{centerPosition}}</p>
-        <p>routes: {{proposedRoutes}}</p>
+            <br/>
 
-    </section>
-    <section id="map" data-map data-center-position="centerPosition" data-proposed-routes="proposedRoutes"></section>
-</div>
+            <input id="centerLatitude" data-ng-model="centerPosition.latitude">
+            <input id="centerLongitude" data-ng-model="centerPosition.longitude">
 
-<!--<script src="scripts/angular.min.js"></script>-->
-<script type="text/javascript" charset="UTF-8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+            <p>center: {{centerPosition}}</p>
+            <!--<p>routes: {{proposedRoutes}}</p>-->
 
-<script type="text/javascript" charset="UTF-8" src="scripts/navigation-app.js"></script>
+        </section>
+        <section id="map" data-map data-center-position="centerPosition" data-proposed-routes="proposedRoutes"></section>
+    </div>
 
-<script type="text/javascript" charset="UTF-8" src="scripts/services/color-themes-service.js"></script>
-<script type="text/javascript" charset="UTF-8" src="scripts/services/routing-service.js"></script>
-<script type="text/javascript" charset="UTF-8" src="scripts/services/map-api-service.js"></script>
+    <!--<script src="scripts/angular.min.js"></script>-->
+    <script type="text/javascript" charset="UTF-8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
 
-<script type="text/javascript" charset="UTF-8" src="scripts/controllers/page-controller.js"></script>
-<script type="text/javascript" charset="UTF-8" src="scripts/directives/map.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/navigation-app.js"></script>
 
-<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
-<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
-<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
-<script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/services/color-themes-service.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/services/routing-service.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/services/map-api-service.js"></script>
+
+    <script type="text/javascript" charset="UTF-8" src="scripts/controllers/page-controller.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/directives/map.js"></script>
+
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
 
 </body>
 </html>

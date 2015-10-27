@@ -1,10 +1,12 @@
-angular.module('navigationApp.controllers').controller('PageController', ["$scope", "routingService", 'colorThemesService', function($scope, routingService, colorThemesService) {
+angular.module('navigationApp.controllers').controller('PageController',
+    ["$scope", '$sce', "routingService", 'colorThemesService', function($scope, $sce, routingService, colorThemesService) {
 
     'use strict';
 
     var collectRoutes = function (routes, theme) {
 
         for (var i = 0, l = routes.length; i < l; i++) {
+            routes[i].summary.trustedText = $sce.trustAsHtml(routes[i].summary.text);
             routes[i].color = colorThemesService.getColor(theme);
         }
 
