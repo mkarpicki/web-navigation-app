@@ -13,6 +13,7 @@
             <!-- replace with directives for suggestions -->
             <label for="from">From:</label>
             <input id="from" data-ng-model="from">
+            <br>
             <label for="to">To:</label>
             <input id="to" data-ng-model="to">
 
@@ -20,7 +21,7 @@
 
             <ul>
                 <li data-ng-repeat="route in proposedRoutes">
-                    <p data-ng-bind-html="route.summary.trustedText"></p>
+                    <p data-ng-bind-html="trustedText(route.summary.text);"></p>
                 </li>
             </ul>
 

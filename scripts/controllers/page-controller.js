@@ -6,7 +6,7 @@ angular.module('navigationApp.controllers').controller('PageController',
     var collectRoutes = function (routes, theme) {
 
         for (var i = 0, l = routes.length; i < l; i++) {
-            routes[i].summary.trustedText = $sce.trustAsHtml(routes[i].summary.text);
+            //routes[i].summary.trustedText = $sce.trustAsHtml(routes[i].summary.text);
             routes[i].color = colorThemesService.getColor(theme);
         }
 
@@ -19,6 +19,10 @@ angular.module('navigationApp.controllers').controller('PageController',
 
     var collectRoutesWithTrafficEnabled = function (routes) {
         collectRoutes(routes, colorThemesService.POSITIVE_THEME);
+    };
+
+    $scope.trustedText = function (text) {
+        return $sce.trustAsHtml(text);
     };
 
     $scope.proposedRoutes = [];
