@@ -1,9 +1,9 @@
-angular.module('navigationApp.services').factory('mapApiService', ['$window', function ($window) {
+angular.module('navigationApp.services').factory('mapApiService', ['$window', 'config', function ($window, config) {
 
     'use strict';
 
-    var appId = "6HRrANORgYjdfDFtrTID",
-        appCode = "D4Mlaon1qumiQ9goQ4k9lQ";
+    var appId = config.APP_ID,
+        appCode = config.APP_CODE;
 
     var H = $window.H,
         map;

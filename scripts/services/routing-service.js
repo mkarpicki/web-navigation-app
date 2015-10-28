@@ -1,9 +1,9 @@
-angular.module('navigationApp.services').factory('routingService', ['$http', '$q', '$interpolate', function ($http, $q, $interpolate) {
+angular.module('navigationApp.services').factory('routingService', ['$http', '$q', '$interpolate', 'config', function ($http, $q, $interpolate, config) {
 
     'use strict';
 
-    var appId = '6HRrANORgYjdfDFtrTID',
-        appCode = 'D4Mlaon1qumiQ9goQ4k9lQ';
+    var appId = config.APP_ID,
+        appCode = config.APP_CODE;
 
     var URL = "http://route.api.here.com/routing/7.2/calculateroute.json?app_id={{appId}}" +
         "&app_code={{appCode}}" +
