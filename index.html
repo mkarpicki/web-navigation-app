@@ -14,9 +14,19 @@
             <label for="from">From:</label>
             <input id="from" data-ng-model="from">
             <br>
+
+            <ul>
+                <li data-ng-repeat="wayPoint in wayPoints track by $index">
+                    <input type="text" data-ng-model="wayPoints[$index]">
+                    <button data-ng-click="removeWayPoint($index);" >-</button>
+                </li>
+            </ul>
+            <button data-ng-click="addWayPoint();">+</button>
+            <br>
+
             <label for="to">To:</label>
             <input id="to" data-ng-model="to">
-
+            <br>
             <button data-ng-click="getRoute();">Get route</button>
 
             <ul>
@@ -25,15 +35,12 @@
                 </li>
             </ul>
 
-            <br/>
-
-            <label for="centerLatitude">latitude:</label>
-            <input id="centerLatitude" data-ng-model="centerPosition.latitude">
-            <label for="centerLongitude">longitude:</label>
-            <input id="centerLongitude" data-ng-model="centerPosition.longitude">
-
-            <p>center: {{centerPosition}}</p>
-            <!--<p>routes: {{proposedRoutes}}</p>-->
+            <!--<br/>-->
+            <!--<label for="centerLatitude">latitude:</label>-->
+            <!--<input id="centerLatitude" data-ng-model="centerPosition.latitude">-->
+            <!--<label for="centerLongitude">longitude:</label>-->
+            <!--<input id="centerLongitude" data-ng-model="centerPosition.longitude">-->
+            <!--<p>center: {{centerPosition}}</p>-->
 
         </section>
         <section id="map" data-map data-center-position="centerPosition" data-proposed-routes="proposedRoutes"></section>
