@@ -17,10 +17,12 @@
 
             <ul>
                 <li data-ng-repeat="wayPoint in wayPoints track by $index">
-                    <input type="text" data-ng-model="wayPoints[$index]">
+                    <label for="waypoint-{{$index}}">Thru:</label>
+                    <input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]">
                     <button data-ng-click="removeWayPoint($index);" >-</button>
                 </li>
             </ul>
+
             <button data-ng-click="addWayPoint();">+</button>
             <br>
 
