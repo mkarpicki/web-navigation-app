@@ -18,7 +18,6 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', fu
 
                 mapApiService.clear();
 
-                console.log(proposedRoutes);
                 for (var i = 0, l = proposedRoutes.length; i < l; i++) {
                     mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].color);
                 }
@@ -30,7 +29,6 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', fu
     var scope = {
         centerPosition: '=centerPosition',
         proposedRoutes: '=proposedRoutes'
-
     };
 
     return {

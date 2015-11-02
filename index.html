@@ -37,6 +37,12 @@
                 </li>
             </ul>
 
+            <ul>
+                <li data-ng-repeat="maneuver in activeRoute.leg[0].maneuver">
+                    <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
+                </li>
+            </ul>
+
             <!--<br/>-->
             <!--<label for="centerLatitude">latitude:</label>-->
             <!--<input id="centerLatitude" data-ng-model="centerPosition.latitude">-->

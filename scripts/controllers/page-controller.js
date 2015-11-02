@@ -1,4 +1,5 @@
-angular.module('navigationApp.controllers').controller('PageController', ["$scope", '$sce', "routingService", 'colorThemesService', function($scope, $sce, routingService, colorThemesService) {
+angular.module('navigationApp.controllers').controller('PageController',
+    ["$scope", '$sce', "routingService", 'colorThemesService', function($scope, $sce, routingService, colorThemesService) {
 
     'use strict';
 
@@ -27,6 +28,9 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
     $scope.selectRoute = function (route) {
         $scope.proposedRoutes = [];
         $scope.proposedRoutes[0] = route;
+
+        $scope.activeRoute = route;
+
     };
 
     $scope.proposedRoutes = [];
@@ -36,6 +40,7 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
 
     //$scope.wayPoints = ['52.46325,13.3882'];
     $scope.wayPoints = [];
+    $scope.activeRoute = null;
 
     $scope.centerPosition = {
         latitude: 52.51083,
@@ -49,6 +54,7 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
         }
 
         $scope.proposedRoutes = [];
+        $scope.activeRoute = null;
 
         var waypoints = ([$scope.from].concat($scope.wayPoints)).concat([$scope.to]);
 
