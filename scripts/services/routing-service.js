@@ -7,8 +7,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
     var URL = "http://route.api.here.com/routing/7.2/calculateroute.json?app_id={{appId}}" +
         "&app_code={{appCode}}" +
-        "&waypoint0=geo!{{from}}" +
-        "&waypoint1=geo!{{to}}" +
+        "{{waypoints}}" +
         "&legattributes=sm" +
         "&linkattributes=" +
         "&maneuverattributes=all" +
@@ -16,6 +15,22 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         "&mode=fastest;car;traffic:{{traffic}};" +
         "&routeattributes=none,sh,wp,sm,bb,lg,no,li,tx" +
         "&transportModeType=car";
+
+    var buildWayPointsQuery = function (waypoints) {
+
+        var query = '',
+            waypointQuery = "&waypoint{{i}}=geo!{{waypoint}}",
+            exp = $interpolate(waypointQuery);
+
+        for (var i = 0, l = waypoints.length; i < l; i++) {
+            query += exp({
+                i: i,
+                waypoint: waypoints[i]
+            });
+        }
+
+        return query;
+    };
 
     var getCalculatedRoutes = function (httpResponse) {
 
@@ -28,7 +43,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return routes;
     };
 
-    var calculate = function (from, to, traffic, waypoints, avoid) {
+    var calculate = function (waypoints, traffic, avoid) {
 
         var deferred = $q.defer(),
             exp = $interpolate(URL);
@@ -36,10 +51,11 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         var url = exp({
             appId: appId,
             appCode: appCode,
-            from: from,
-            to: to,
-            traffic: traffic
+            traffic: traffic,
+            waypoints: buildWayPointsQuery(waypoints)
         });
+
+        console.log(url);
 
         $http.get(url).then(function (httpResponse) {
 
@@ -56,12 +72,12 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return deferred.promise;
     };
 
-    var calculateWithTrafficEnabled = function (from, to, waypoints, avoid) {
-        return calculate(from, to, 'enabled', waypoints, avoid);
+    var calculateWithTrafficEnabled = function (waypoints, avoid) {
+        return calculate(waypoints, 'enabled', avoid);
     };
 
-    var calculateWithTrafficDisabled = function (from, to, waypoints, avoid) {
-        return calculate(from, to, 'disabled', waypoints, avoid);
+    var calculateWithTrafficDisabled = function (waypoints, avoid) {
+        return calculate(waypoints, 'disabled', avoid);
     };
 
     return {

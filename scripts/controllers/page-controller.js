@@ -34,6 +34,7 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
     $scope.from = '52.40626,13.49667';
     $scope.to = '52.51083,13.45264';
 
+    //$scope.wayPoints = ['52.46325,13.3882'];
     $scope.wayPoints = [];
 
     $scope.centerPosition = {
@@ -43,10 +44,16 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
 
     $scope.getRoute = function () {
 
+        if (!$scope.from || !$scope.to) {
+            return;
+        }
+
         $scope.proposedRoutes = [];
 
-        (routingService.calculateWithTrafficDisabled($scope.from, $scope.to)).then(collectRoutesWithTrafficDisabled);
-        (routingService.calculateWithTrafficEnabled($scope.from, $scope.to)).then(collectRoutesWithTrafficEnabled);
+        var waypoints = ([$scope.from].concat($scope.wayPoints)).concat([$scope.to]);
+
+        (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesWithTrafficDisabled);
+        (routingService.calculateWithTrafficEnabled(waypoints)).then(collectRoutesWithTrafficEnabled);
     };
 
     $scope.addWayPoint = function () {
@@ -58,6 +65,6 @@ angular.module('navigationApp.controllers').controller('PageController', ["$scop
     };
 
     $scope.pageReady = function () {
-    $scope.ready = true;
+        $scope.ready = true;
     };
 }]);
