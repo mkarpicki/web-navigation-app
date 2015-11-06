@@ -1,4 +1,4 @@
-angular.module('navigationApp.directives').directive('map', ['mapApiService', function(mapApiService) {
+angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', function(mapApiService, routingService) {
 
     'use strict';
 
@@ -13,7 +13,12 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', fu
             }
         }, true);
 
-        scope.$watch(attrs.proposedRoutes, function (proposedRoutes) {
+        /**
+         * @todo - re think this (maybe no good idea to watch something that in theory will not change to often)
+         * @todo - move that to controller of directive
+         */
+        scope.$watch(function () { return routingService.getResults(); }, function (proposedRoutes) {
+
             if (proposedRoutes) {
 
                 mapApiService.clear();
@@ -27,8 +32,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', fu
     };
 
     var scope = {
-        centerPosition: '=centerPosition',
-        proposedRoutes: '=proposedRoutes'
+        centerPosition: '=centerPosition'
     };
 
     return {

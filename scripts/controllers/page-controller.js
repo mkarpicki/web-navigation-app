@@ -6,11 +6,10 @@ angular.module('navigationApp.controllers').controller('PageController',
     var collectRoutes = function (routes, theme) {
 
         for (var i = 0, l = routes.length; i < l; i++) {
-            //routes[i].summary.trustedText = $sce.trustAsHtml(routes[i].summary.text);
             routes[i].color = colorThemesService.getColor(theme);
         }
 
-        $scope.proposedRoutes = $scope.proposedRoutes.concat(routes);
+        $scope.proposedRoutes = routingService.getResults();
     };
 
     var collectRoutesWithTrafficDisabled = function (routes) {
@@ -53,7 +52,7 @@ angular.module('navigationApp.controllers').controller('PageController',
             return;
         }
 
-        $scope.proposedRoutes = [];
+        routingService.clearResults();
         $scope.activeRoute = null;
 
         var waypoints = ([$scope.from].concat($scope.wayPoints)).concat([$scope.to]);

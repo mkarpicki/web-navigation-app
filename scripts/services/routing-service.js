@@ -16,6 +16,8 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         "&routeattributes=none,sh,wp,sm,bb,lg,no,li,tx" +
         "&transportModeType=car";
 
+    var results = [];
+
     var buildWayPointsQuery = function (waypoints) {
 
         var query = '',
@@ -62,6 +64,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
             var routes = getCalculatedRoutes(httpResponse);
 
             if (routes) {
+                results = results.concat(routes);
                 deferred.resolve(routes);
             } else {
                 deferred.resolve([]);
@@ -80,9 +83,19 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return calculate(waypoints, 'disabled', avoid);
     };
 
+    var getResults = function () {
+        return results;
+    };
+
+    var clearResults = function () {
+        results = [];
+    };
+
     return {
         calculateWithTrafficEnabled: calculateWithTrafficEnabled,
-        calculateWithTrafficDisabled: calculateWithTrafficDisabled
+        calculateWithTrafficDisabled: calculateWithTrafficDisabled,
+        clearResults: clearResults,
+        getResults: getResults
     };
 
 }]);

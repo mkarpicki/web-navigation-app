@@ -32,7 +32,7 @@
             <button data-ng-click="getRoute();">Get route</button>
 
             <ul>
-                <li data-ng-repeat="route in proposedRoutes">
+                <li data-ng-repeat="route in proposedRoutes track by $index">
                     <p data-ng-bind-html="trustedText(route.summary.text);" data-ng-click="selectRoute(route);"></p>
                 </li>
             </ul>
@@ -51,7 +51,7 @@
             <!--<p>center: {{centerPosition}}</p>-->
 
         </section>
-        <section id="map" data-map data-center-position="centerPosition" data-proposed-routes="proposedRoutes"></section>
+        <section id="map" data-map data-center-position="centerPosition"></section>
     </div>
 
     <!--<script src="scripts/angular.min.js"></script>-->
