@@ -64,7 +64,6 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
             var routes = getCalculatedRoutes(httpResponse);
 
             if (routes) {
-                results = results.concat(routes);
                 deferred.resolve(routes);
             } else {
                 deferred.resolve([]);
@@ -91,11 +90,16 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         results = [];
     };
 
+    var saveRoute = function (route) {
+        results.push(route);
+    };
+
     return {
         calculateWithTrafficEnabled: calculateWithTrafficEnabled,
         calculateWithTrafficDisabled: calculateWithTrafficDisabled,
         clearResults: clearResults,
-        getResults: getResults
+        getResults: getResults,
+        saveRoute: saveRoute
     };
 
 }]);

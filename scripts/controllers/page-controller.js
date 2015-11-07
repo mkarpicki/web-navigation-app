@@ -7,6 +7,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         for (var i = 0, l = routes.length; i < l; i++) {
             routes[i].color = colorThemesService.getColor(theme);
+            routingService.saveRoute(routes[i]);
         }
 
         $scope.proposedRoutes = routingService.getResults();
