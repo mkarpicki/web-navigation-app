@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+    <base href=http://localhost:63342/routes-example/">
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" type="text/css" href="styles/navigation-app.css" />
@@ -8,40 +9,20 @@
 </head>
 <body data-ng-app="navigationApp" class="page" data-ng-class="ready" data-ng-init="pageReady();">
     <div data-ng-controller="PageController">
-        <section id="panel">
+        <section id="panel" data-ng-view>
 
-            <!-- replace with directives for suggestions -->
-            <label for="from">From:</label>
-            <input id="from" data-ng-model="from">
-            <br>
 
-            <ul>
-                <li data-ng-repeat="wayPoint in wayPoints track by $index">
-                    <label for="waypoint-{{$index}}">Thru:</label>
-                    <input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]">
-                    <button data-ng-click="removeWayPoint($index);" >-</button>
-                </li>
-            </ul>
+            <!--<ul>-->
+                <!--<li data-ng-repeat="route in proposedRoutes track by $index">-->
+                    <!--<p data-ng-bind-html="trustedText(route.summary.text);" data-ng-click="selectRoute(route);"></p>-->
+                <!--</li>-->
+            <!--</ul>-->
 
-            <button data-ng-click="addWayPoint();">+</button>
-            <br>
-
-            <label for="to">To:</label>
-            <input id="to" data-ng-model="to">
-            <br>
-            <button data-ng-click="getRoute();">Get route</button>
-
-            <ul>
-                <li data-ng-repeat="route in proposedRoutes track by $index">
-                    <p data-ng-bind-html="trustedText(route.summary.text);" data-ng-click="selectRoute(route);"></p>
-                </li>
-            </ul>
-
-            <ul>
-                <li data-ng-repeat="maneuver in activeRoute.leg[0].maneuver">
-                    <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
-                </li>
-            </ul>
+            <!--<ul>-->
+                <!--<li data-ng-repeat="maneuver in activeRoute.leg[0].maneuver">-->
+                    <!--<p data-ng-bind-html="trustedText(maneuver.instruction);"></p>-->
+                <!--</li>-->
+            <!--</ul>-->
 
             <!--<br/>-->
             <!--<label for="centerLatitude">latitude:</label>-->
@@ -56,8 +37,10 @@
 
     <!--<script src="scripts/angular.min.js"></script>-->
     <script type="text/javascript" charset="UTF-8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.min.js"></script>
 
     <script type="text/javascript" charset="UTF-8" src="scripts/navigation-app.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/navigation-app-routing.js"></script>
 
     <script type="text/javascript" charset="UTF-8" src="scripts/services/config.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/services/color-themes-service.js"></script>
@@ -65,6 +48,9 @@
     <script type="text/javascript" charset="UTF-8" src="scripts/services/map-api-service.js"></script>
 
     <script type="text/javascript" charset="UTF-8" src="scripts/controllers/page-controller.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/controllers/form-controller.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/controllers/search-controller.js"></script>
+
     <script type="text/javascript" charset="UTF-8" src="scripts/directives/map.js"></script>
 
     <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>

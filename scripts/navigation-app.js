@@ -4,6 +4,7 @@ angular.module('navigationApp.directives', []);
 
 
 angular.module('navigationApp', [
+    'ngRoute',
     'navigationApp.controllers',
     'navigationApp.services',
     'navigationApp.directives'
