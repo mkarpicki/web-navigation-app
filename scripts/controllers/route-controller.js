@@ -10,7 +10,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
             $scope.getManeuver = function () {
                 var maneuver = [];
 
-                if ($scope.route && $scope.route.leg && $scope.route[0]) {
+                if ($scope.route && $scope.route.leg && $scope.route.leg[0]) {
                     maneuver =  $scope.route.leg[0].maneuver;
                 }
 
@@ -18,8 +18,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
             };
 
             var getRoute = function (index) {
-
-                debugger;
 
                 var nIndex = Number(index);
 
@@ -31,7 +29,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
                     route;
 
                 routingService.clearResults();
-                
+
                 for (var i = 0, l = routes.length; i < l; i++) {
 
                     route = routes[i];
@@ -39,8 +37,9 @@ angular.module('navigationApp.controllers').controller('RouteController',
                     if (i === nIndex) {
 
                         $scope.route = route;
-                        routingService.add(route);
+                        routingService.saveRoute(route);
 
+                        console.log('d', route);
                         break;
                     }
                 }

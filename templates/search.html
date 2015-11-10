@@ -1,4 +1,4 @@
-<ul>
+<ul data-ng-hide="noRouteFound || notEnoughInformation">
     <li data-ng-repeat="route in routes track by $index">
         <p data-ng-bind-html="trustedText(route.summary.text);" data-ng-click="selectRoute($index);"></p>
     </li>
