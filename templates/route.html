@@ -1,0 +1,8 @@
+<ul>
+    <li data-ng-repeat="maneuver in getManeuver();">
+        <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
+    </li>
+</ul>
+<p data=-ng-show="undefinedRoute>
+    No route found.
+</p>

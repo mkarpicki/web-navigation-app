@@ -1,5 +1,11 @@
 <ul>
     <li data-ng-repeat="route in routes track by $index">
-        <p data-ng-bind-html="trustedText(route.summary.text);" data-ng-click="selectRoute(route);"></p>
+        <p data-ng-bind-html="trustedText(route.summary.text);" data-ng-click="selectRoute($index);"></p>
     </li>
 </ul>
+<p data-ng-show="noRouteFound">
+    There was no route found for that criteria. <a href="/" data-ng-click="back();">Back</a>
+</p>
+<p data-ng-show="notEnoughInformation">
+    Not enough information to calculate route. <a href="/" data-ng-click="back();">Back</a>
+</p>

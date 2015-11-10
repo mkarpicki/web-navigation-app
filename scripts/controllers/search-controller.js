@@ -1,22 +1,33 @@
 angular.module('navigationApp.controllers').controller('SearchController',
-    ["$scope", '$sce', '$location', "routingService", 'colorThemesService', function($scope, $sce, $location, routingService, colorThemesService) {
+    ["$scope", '$sce', '$location', '$window', "routingService", 'colorThemesService',
+        function($scope, $sce, $location, $window, routingService, colorThemesService) {
 
         'use strict';
 
-        $scope.selectRoute = function (route) {
-            console.log(route);
-            //$scope.routes = [];
-            //$scope.routes[0] = route;
+        $scope.selectRoute = function (index) {
 
+            $location.url('/route/' + index );
         };
 
-        $scope.routes = [];
+        $scope.back = function () {
+            $window.history.back();
+        };
 
         $scope.trustedText = function (text) {
             return $sce.trustAsHtml(text);
         };
 
+        var reset = function () {
+            $scope.routes = [];
+            $scope.noRouteFound = false;
+            $scope.notEnoughInformation = false;
+        };
+
         var collectRoutes = function (routes, theme) {
+
+            if (!routes || routes.length === 0) {
+                $scope.noRouteFound = true;
+            }
 
             for (var i = 0, l = routes.length; i < l; i++) {
                 routes[i].color = colorThemesService.getColor(theme);
@@ -40,6 +51,10 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 waypoint,
                 i = 0;
 
+            reset();
+
+            routingService.clearResults();
+
             while(true) {
                 waypoint = $location.search()['waypoint' + i];
 
@@ -51,11 +66,9 @@ angular.module('navigationApp.controllers').controller('SearchController',
             }
 
             if (waypoints.length < 2) {
-                alert('no waypoints to find');
+                $scope.notEnoughInformation = true;
                 return;
             }
-
-            routingService.clearResults();
 
             (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesWithTrafficDisabled);
             (routingService.calculateWithTrafficEnabled(waypoints)).then(collectRoutesWithTrafficEnabled);

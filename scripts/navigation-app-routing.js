@@ -11,6 +11,10 @@ angular.module('navigationApp').config(['$routeProvider', '$locationProvider', f
             templateUrl: 'templates/search.html',
             controller: 'SearchController'
         }).
+        when('/route/:index', {
+            templateUrl: 'templates/route.html',
+            controller: 'RouteController'
+        }).
         otherwise({
             redirectTo: '/'
         });

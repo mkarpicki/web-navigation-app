@@ -50,6 +50,10 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         var deferred = $q.defer(),
             exp = $interpolate(URL);
 
+        var calculateFailure = function () {
+            return deferred.resolve([]);
+        };
+
         var url = exp({
             appId: appId,
             appCode: appCode,
@@ -69,7 +73,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
                 deferred.resolve([]);
             }
 
-        }, deferred.reject);
+        }, calculateFailure);
 
         return deferred.promise;
     };
