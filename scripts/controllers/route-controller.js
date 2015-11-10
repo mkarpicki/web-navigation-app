@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('RouteController',
-    ["$scope", '$routeParams', "routingService",
-        function($scope, $routeParams, routingService) {
+    ["$scope", '$sce', '$routeParams', "routingService",
+        function($scope, $sce, $routeParams, routingService) {
 
             'use strict';
 
@@ -15,6 +15,10 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 }
 
                 return maneuver;
+            };
+
+            $scope.trustedText = function (text) {
+                return $sce.trustAsHtml(text);
             };
 
             var getRoute = function (index) {
@@ -38,8 +42,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                         $scope.route = route;
                         routingService.saveRoute(route);
-
-                        console.log('d', route);
                         break;
                     }
                 }

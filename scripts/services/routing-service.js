@@ -61,8 +61,6 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
             waypoints: buildWayPointsQuery(waypoints)
         });
 
-        console.log(url);
-
         $http.get(url).then(function (httpResponse) {
 
             var routes = getCalculatedRoutes(httpResponse);
