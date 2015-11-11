@@ -5,7 +5,6 @@ angular.module('navigationApp.controllers').controller('SearchController',
         'use strict';
 
         $scope.selectRoute = function (index) {
-
             $location.url('/route/' + index );
         };
 
@@ -23,26 +22,64 @@ angular.module('navigationApp.controllers').controller('SearchController',
             $scope.notEnoughInformation = false;
         };
 
-        var collectRoutes = function (routes, theme) {
+        var prepareWaypoints = function (waypoints) {
+
+            var points = [],
+                p;
+
+            for (var i = 0, l = waypoints.length; i < l; i++) {
+
+                p = waypoints[i].split(',');
+
+                points.push({
+                    latitude : p[0],
+                    longitude : p[1]
+                });
+            }
+
+            return points;
+        };
+
+        var collectRoutes = function (routes, theme, waypointsUsedForSearch) {
+
+            var route;
 
             if (!routes || routes.length === 0) {
                 $scope.noRouteFound = true;
             }
 
+            waypointsUsedForSearch = prepareWaypoints(waypointsUsedForSearch);
+
             for (var i = 0, l = routes.length; i < l; i++) {
-                routes[i].color = colorThemesService.getColor(theme);
-                routingService.saveRoute(routes[i]);
+
+                route = routes[i];
+
+                route.color = colorThemesService.getColor(theme);
+                route.waypointsUsedForSearch = waypointsUsedForSearch;
+
+                routingService.saveRoute(route);
             }
 
             $scope.routes = routingService.getResults();
         };
 
-        var collectRoutesWithTrafficDisabled = function (routes) {
-            collectRoutes(routes, colorThemesService.NEGATIVE_THEME);
+        var collectRoutesWithTrafficDisabled = function (routes, waypointsUsedForSearch) {
+            collectRoutes(routes, colorThemesService.NEGATIVE_THEME, waypointsUsedForSearch);
         };
 
-        var collectRoutesWithTrafficEnabled = function (routes) {
-            collectRoutes(routes, colorThemesService.POSITIVE_THEME);
+        var collectRoutesWithTrafficEnabled = function (routes, waypointsUsedForSearch) {
+            collectRoutes(routes, colorThemesService.POSITIVE_THEME, waypointsUsedForSearch);
+        };
+
+        var collectRoutesBasedOnTraffic = function (ignoreTraffic, waypointsUsedForSearch) {
+            return function (routes) {
+
+                if (ignoreTraffic === true) {
+                    return collectRoutesWithTrafficDisabled(routes,waypointsUsedForSearch);
+                } else {
+                    return collectRoutesWithTrafficEnabled(routes, waypointsUsedForSearch);
+                }
+            };
         };
 
         var getRoute = function () {
@@ -70,8 +107,8 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 return;
             }
 
-            (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesWithTrafficDisabled);
-            (routingService.calculateWithTrafficEnabled(waypoints)).then(collectRoutesWithTrafficEnabled);
+            (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesBasedOnTraffic(true, waypoints));
+            (routingService.calculateWithTrafficEnabled(waypoints)).then(collectRoutesBasedOnTraffic(false, waypoints));
         };
 
         getRoute();
