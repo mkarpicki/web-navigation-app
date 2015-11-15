@@ -5,9 +5,11 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
     var appId = config.APP_ID,
         appCode = config.APP_CODE;
 
-    var URL = "http://route.api.here.com/routing/7.2/calculateroute.json?app_id={{appId}}" +
+    var URL = "http://route.api.here.com/routing/7.2/calculateroute.json?" +
+        "app_id={{appId}}" +
         "&app_code={{appCode}}" +
         "{{waypoints}}" +
+        "&alternatives=1" +
         "&legattributes=sm" +
         "&linkattributes=" +
         "&maneuverattributes=all" +
