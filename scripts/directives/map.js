@@ -2,9 +2,11 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
     'use strict';
 
-    var link = function (scope, element, attrs) {
+    var link = function (scope, element, attrs, controller, transclude) {
 
-        mapApiService.init(element);
+        transclude(scope, function(nodes) {
+            mapApiService.init(element, nodes[1]);
+        });
 
         scope.$watch(attrs.centerPosition, function (centerPosition) {
 
@@ -38,6 +40,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
     return {
         restrict: 'A',
         scope: scope,
+        transclude: true,
         link: link
     };
 

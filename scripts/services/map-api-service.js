@@ -20,7 +20,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var defaultLayers = platform.createDefaultLayers();
 
-    var init = function (element) {
+    var init = function (element, bubbleElement) {
 
         //Step 2: initialize a map  - not specificing a location will give a whole world view.
         map = new H.Map(element[0], defaultLayers.normal.map);
@@ -40,7 +40,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             var coord = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
 
             bubble =  new H.ui.InfoBubble(coord, {
-                content: '<p>hello</p>'
+                content: bubbleElement
             });
 
             // show info bubble
