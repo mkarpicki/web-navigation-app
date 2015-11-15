@@ -6,7 +6,9 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         appCode = config.APP_CODE;
 
     var H = $window.H,
-        map;
+        map,
+        ui,
+        bubble;
 
 
     //Step 1: initialize communication with the platform
@@ -26,10 +28,24 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         //Step 3: make the map interactive
         // MapEvents enables the event system
         // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-        var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+        new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
         // Create the default UI components
-        var ui = H.ui.UI.createDefault(map, defaultLayers);
+        ui = H.ui.UI.createDefault(map, defaultLayers);
+
+        map.addEventListener('tap', function (evt) {
+
+            removeBubble();
+
+            var coord = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
+
+            bubble =  new H.ui.InfoBubble(coord, {
+                content: '<p>hello</p>'
+            });
+
+            // show info bubble
+            ui.addBubble(bubble);
+        });
 
     };
 
@@ -42,8 +58,15 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         map.setZoom(14);
     };
 
+    var removeBubble = function () {
+        if (bubble) {
+            ui.removeBubble(bubble);
+        }
+    };
+
     var clear = function () {
         map.removeObjects(map.getObjects());
+        removeBubble();
     };
 
     var drawRoute = function (route, waypoints, color) {
