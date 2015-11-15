@@ -2,10 +2,43 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
     'use strict';
 
+    var initMenuBubble = function(node) {
+
+        if (!mapApiService) {
+            return;
+        }
+
+        if (!node || node.getElementsByClassName('menu').length < 1) {
+            return;
+        }
+
+        var fromItem = node.getElementsByClassName('from'),
+            waypointItem = node.getElementsByClassName('waypoint'),
+            toItem = node.getElementsByClassName('to'),
+            avoidItem =node.getElementsByClassName('avoid');
+
+        attachMenuAction(fromItem[0], function () { alert('fromItem ' + mapApiService.getTapPosition() ); });
+        attachMenuAction(waypointItem[0], function () { alert('waypointItem ' + mapApiService.getTapPosition() ); });
+        attachMenuAction(toItem[0], function () { alert('toItem ' + mapApiService.getTapPosition() ); });
+        attachMenuAction(avoidItem[0], function () { alert('avoidItem ' + mapApiService.getTapPosition() ); });
+
+
+    };
+
+    var attachMenuAction = function (item, callback) {
+        if (item) {
+            item.onclick = callback;
+        }
+    };
+
     var link = function (scope, element, attrs, controller, transclude) {
 
         transclude(scope, function(nodes) {
+
             mapApiService.init(element, nodes[1]);
+
+            initMenuBubble(nodes[1]);
+
         });
 
         scope.$watch(attrs.centerPosition, function (centerPosition) {

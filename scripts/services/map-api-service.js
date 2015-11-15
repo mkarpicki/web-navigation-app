@@ -8,7 +8,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
     var H = $window.H,
         map,
         ui,
-        bubble;
+        bubble,
+        tappedCoordinates;
 
 
     //Step 1: initialize communication with the platform
@@ -19,6 +20,10 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
     });
 
     var defaultLayers = platform.createDefaultLayers();
+
+    var getTapPosition = function () {
+        return tappedCoordinates;
+    };
 
     var init = function (element, bubbleElement) {
 
@@ -37,9 +42,9 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
             removeBubble();
 
-            var coord = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
+            tappedCoordinates = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
 
-            bubble =  new H.ui.InfoBubble(coord, {
+            bubble =  new H.ui.InfoBubble(tappedCoordinates, {
                 content: bubbleElement
             });
 
@@ -118,7 +123,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         init: init,
         center: center,
         drawRoute: drawRoute,
-        clear: clear
+        clear: clear,
+        getTapPosition: getTapPosition
     };
 
 }]);
