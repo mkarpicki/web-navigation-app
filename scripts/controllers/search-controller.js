@@ -102,13 +102,12 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 waypoints.push(waypoint);
             }
 
-            if (waypoints.length < 2) {
+            if (waypoints.length > 1) {
+                (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesBasedOnTraffic(true, waypoints));
+                (routingService.calculateWithTrafficEnabled(waypoints)).then(collectRoutesBasedOnTraffic(false, waypoints));
+            } else {
                 $scope.notEnoughInformation = true;
-                return;
             }
-
-            (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesBasedOnTraffic(true, waypoints));
-            (routingService.calculateWithTrafficEnabled(waypoints)).then(collectRoutesBasedOnTraffic(false, waypoints));
         };
 
         getRoute();
