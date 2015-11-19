@@ -8,6 +8,8 @@ angular.module('navigationApp.controllers').controller('PageController',
         longitude: 13.45264
     };
 
+    $scope.$on('')
+
     $scope.pageReady = function () {
         $scope.ready = true;
     };
