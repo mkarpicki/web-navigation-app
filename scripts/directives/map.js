@@ -1,8 +1,8 @@
-angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', function(mapApiService, routingService) {
+angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', 'events', function(mapApiService, routingService, events) {
 
     'use strict';
 
-    var initMenuBubble = function(node) {
+    var initMenuBubble = function(scope, node) {
 
         if (!mapApiService) {
             return;
@@ -17,7 +17,12 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             toItem = node.getElementsByClassName('to'),
             avoidItem =node.getElementsByClassName('avoid');
 
-        attachMenuAction(fromItem[0], function () { alert('fromItem ' + mapApiService.getTapPosition() ); });
+        attachMenuAction(fromItem[0], function () {
+            scope.$emit(events.ADD_START_POINT, mapApiService.getTapPosition());
+        });
+
+
+
         attachMenuAction(waypointItem[0], function () { alert('waypointItem ' + mapApiService.getTapPosition() ); });
         attachMenuAction(toItem[0], function () { alert('toItem ' + mapApiService.getTapPosition() ); });
         attachMenuAction(avoidItem[0], function () { alert('avoidItem ' + mapApiService.getTapPosition() ); });
@@ -37,7 +42,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
             mapApiService.init(element, nodes[1]);
 
-            initMenuBubble(nodes[1]);
+            initMenuBubble(scope,nodes[1]);
 
         });
 

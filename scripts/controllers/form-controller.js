@@ -1,5 +1,6 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$scope", '$interpolate', '$location', '$timeout', function($scope, $interpolate, $location, $timeout) {
+    ["$scope", '$location', '$timeout', 'queryParserService',
+        function($scope, $location, $timeout, queryParserService) {
 
         'use strict';
 
@@ -42,43 +43,15 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         var buildSearchQuery = function () {
 
-            var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to),
-                waypointQuery = "{{separator}}waypoint{{i}}={{waypoint}}",
-                exp = $interpolate(waypointQuery),
-                separator = '',
-                query = '';
+            var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
 
+            return queryParserService.serializeWayPoints(allPoints);
 
-            for (var i = 0, l = allPoints.length; i < l; i++) {
-
-                query += exp({
-                    separator: separator,
-                    i: i,
-                    waypoint: allPoints[i]
-                });
-
-                separator = '&';
-            }
-
-            return query;
         };
 
         var getReady = function(){
 
-            var waypoints = [],
-                waypoint,
-                i = 0;
-
-            while(true) {
-                waypoint = $location.search()['waypoint' + i];
-
-                if (!waypoint) {
-                    break;
-                }
-
-                waypoints.push(waypoint);
-                i++;
-            }
+            var waypoints = queryParserService.deserializeWayPoints($location.search());
 
             if (waypoints.length > 1) {
 

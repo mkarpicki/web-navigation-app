@@ -22,7 +22,11 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
     var defaultLayers = platform.createDefaultLayers();
 
     var getTapPosition = function () {
-        return tappedCoordinates;
+
+        return {
+            latitude: tappedCoordinates.lat,
+            longitude: tappedCoordinates.lng
+        };
     };
 
     var init = function (element, bubbleElement) {

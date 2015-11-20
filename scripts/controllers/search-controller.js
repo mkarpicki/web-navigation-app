@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('SearchController',
-    ["$scope", '$sce', '$location', '$window', "routingService", 'colorThemesService',
-        function($scope, $sce, $location, $window, routingService, colorThemesService) {
+    ["$scope", '$sce', '$location', '$window', 'routingService', 'colorThemesService', 'queryParserService',
+        function($scope, $sce, $location, $window, routingService, colorThemesService, queryParserService) {
 
         'use strict';
 
@@ -84,23 +84,11 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
         var getRoute = function () {
 
-            var waypoints = [],
-                waypoint,
-                i = 0;
-
             reset();
 
             routingService.clearResults();
 
-            while(true) {
-                waypoint = $location.search()['waypoint' + i];
-
-                if (!waypoint) {
-                    break;
-                }
-                i++;
-                waypoints.push(waypoint);
-            }
+            var waypoints = queryParserService.deserializeWayPoints($location.search());
 
             if (waypoints.length > 1) {
                 (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesBasedOnTraffic(true, waypoints));
