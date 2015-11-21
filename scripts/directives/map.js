@@ -2,6 +2,22 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
     'use strict';
 
+    /**
+     * fire event with specific type.
+     * position is optional - in case not delivered - taken current tapped position from mapService
+     * @param type
+     * @param position
+     */
+    var emitEvent = function (scope, type) {
+
+        var position = mapApiService.getTapPosition();
+
+        scope.$emit(events.MAP_EVENT, {
+            eventType: type,
+            position: position
+        });
+    };
+
     var initMenuBubble = function(scope, node) {
 
         if (!mapApiService) {
@@ -12,24 +28,33 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             return;
         }
 
-        var fromItem = node.getElementsByClassName('from'),
-            waypointItem = node.getElementsByClassName('waypoint'),
-            toItem = node.getElementsByClassName('to'),
-            avoidItem =node.getElementsByClassName('avoid');
+        /**
+         * @todo
+         * when adding new functionality (add new start point / end point) on top of current overwrite
+         * then make classes more specific
+         * and introduce new items (both: here and on template)
+         */
+        var overwrittenStartItem = node.getElementsByClassName('from')[0],
+            newWayPointItem = node.getElementsByClassName('waypoint')[0],
+            overwrittenDestinationItem = node.getElementsByClassName('to')[0],
+            avoidItem =node.getElementsByClassName('avoid')[0];
 
-        attachMenuAction(fromItem[0], function () {
-            scope.$emit(events.MAP_EVENT, {
-                eventType: events.MAP_EVENT_TYPES.ADD_START_POINT,
-                position: mapApiService.getTapPosition()
-            });
+
+        attachMenuAction(overwrittenStartItem, function () {
+            emitEvent(scope, events.MAP_EVENT_TYPES.OVERWRITE_START_POINT);
+        });
+
+        attachMenuAction(newWayPointItem, function () {
+            emitEvent(scope, events.MAP_EVENT_TYPES.ADD_WAY_POINT);
+        });
+
+        attachMenuAction(overwrittenDestinationItem, function () {
+            emitEvent(scope, events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT);
         });
 
 
 
-        attachMenuAction(waypointItem[0], function () { alert('waypointItem ' + mapApiService.getTapPosition() ); });
-        attachMenuAction(toItem[0], function () { alert('toItem ' + mapApiService.getTapPosition() ); });
         attachMenuAction(avoidItem[0], function () { alert('avoidItem ' + mapApiService.getTapPosition() ); });
-
 
     };
 

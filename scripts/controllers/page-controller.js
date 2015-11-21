@@ -1,50 +1,80 @@
 angular.module('navigationApp.controllers').controller('PageController',
     ["$scope", '$location', 'events', 'routingService', 'queryParserService', function($scope, $location, events, routingService, queryParserService) {
 
-    'use strict';
+        'use strict';
 
-    var apply = function () {
-        routingService.clearResults();
-        $scope.$apply();
-    };
+        var apply = function () {
+            routingService.clearResults();
+            $scope.$apply();
+        };
 
-    var setStartPoint = function (wayPoints, position) {
+        var overwriteStartPoint = function (wayPoints, position) {
 
-        wayPoints[0] = position.latitude + ',' + position.longitude;
+            wayPoints[0] = position.latitude + ',' + position.longitude;
 
-        return queryParserService.serializeWayPoints(wayPoints);
+            return queryParserService.serializeWayPoints(wayPoints);
 
-    };
+        };
 
-    $scope.centerPosition = {
-        latitude: 52.51083,
-        longitude: 13.45264
-    };
+        var overwriteDestinationPoint = function (wayPoints, position) {
+
+            wayPoints[wayPoints.length - 1] = position.latitude + ',' + position.longitude;
+
+            return queryParserService.serializeWayPoints(wayPoints);
+
+        };
+
+        /**
+         * @fixme (I do not work) :]
+         * @param wayPoints
+         * @param position
+         * @returns {*}
+         */
+        var addWayPoint = function (wayPoints, position) {
+
+            wayPoints.splice(wayPoints.length - 1, 0, (position.latitude + ',' + position.longitude));
+
+            return queryParserService.serializeWayPoints(wayPoints);
+        };
+
+        $scope.centerPosition = {
+            latitude: 52.51083,
+            longitude: 13.45264
+        };
 
 
-    $scope.$on(events.MAP_EVENT, function (event, params) {
+        $scope.$on(events.MAP_EVENT, function (event, params) {
 
-        var position = params.position,
-            query = '',
-            wayPoints = queryParserService.deserializeWayPoints($location.search());
+            var position = params.position,
+                query = '',
+                wayPoints = queryParserService.deserializeWayPoints($location.search());
 
-        switch (params.eventType) {
+            switch (params.eventType) {
 
-            case events.MAP_EVENT_TYPES.ADD_START_POINT:
+                case events.MAP_EVENT_TYPES.OVERWRITE_START_POINT:
 
-                query = setStartPoint(wayPoints, position);
-                break;
+                    query = overwriteStartPoint(wayPoints, position);
+                    break;
 
-            default:
-                break;
-        }
+                case events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT:
 
-        $location.url('/?' + query);
-        apply();
-    });
+                    query = overwriteDestinationPoint(wayPoints, position);
+                    break;
 
-    $scope.pageReady = function () {
-        $scope.ready = true;
-    };
+                case events.MAP_EVENT_TYPES.ADD_WAY_POINT:
+                    query = addWayPoint(wayPoints, position);
+                    break;
+
+                default:
+                    break;
+            }
+
+            $location.url('/?' + query);
+            apply();
+        });
+
+        $scope.pageReady = function () {
+            $scope.ready = true;
+        };
 
 }]);
