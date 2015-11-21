@@ -6,8 +6,8 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.from = '52.40626,13.49667';
         $scope.to = '52.51083,13.45264';
-
         //$scope.wayPoints = ['52.46325,13.3882'];
+
         $scope.wayPoints = [];
 
         $scope.getRoute = function () {
@@ -53,7 +53,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             var waypoints = queryParserService.deserializeWayPoints($location.search());
 
-            if (waypoints.length > 1) {
+            if (waypoints.length > 0) {
 
                 $scope.from = waypoints.shift();
                 $scope.to = waypoints.pop();

@@ -18,7 +18,10 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             avoidItem =node.getElementsByClassName('avoid');
 
         attachMenuAction(fromItem[0], function () {
-            scope.$emit(events.ADD_START_POINT, mapApiService.getTapPosition());
+            scope.$emit(events.MAP_EVENT, {
+                eventType: events.MAP_EVENT_TYPES.ADD_START_POINT,
+                position: mapApiService.getTapPosition()
+            });
         });
 
 
