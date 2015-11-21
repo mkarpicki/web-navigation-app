@@ -32,7 +32,15 @@ angular.module('navigationApp.controllers').controller('PageController',
          */
         var addWayPoint = function (wayPoints, position) {
 
-            wayPoints.splice(wayPoints.length - 1, 0, (position.latitude + ',' + position.longitude));
+            var wayPoint = position.latitude + ',' + position.longitude;
+
+            if (wayPoints.length === 1) {
+
+                wayPoints[0] = wayPoint;
+
+            } else {
+                wayPoints.splice(wayPoints.length - 1, 0, wayPoint);
+            }
 
             return queryParserService.serializeWayPoints(wayPoints);
         };
