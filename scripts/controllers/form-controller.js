@@ -41,6 +41,11 @@ angular.module('navigationApp.controllers').controller('FormController',
             $scope.wayPoints.splice(index, 1);
         };
 
+        $scope.clear = function () {
+
+            $location.url('/').replace();
+        };
+
         var buildSearchQuery = function () {
 
             var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
