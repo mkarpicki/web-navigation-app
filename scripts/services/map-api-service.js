@@ -128,7 +128,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         center: center,
         drawRoute: drawRoute,
         clear: clear,
-        getTapPosition: getTapPosition
+        getTapPosition: getTapPosition,
+        removeBubble: removeBubble
     };
 
 }]);

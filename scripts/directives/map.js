@@ -16,6 +16,8 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             eventType: type,
             position: position
         });
+
+        mapApiService.removeBubble();
     };
 
     var initMenuBubble = function(scope, node) {
