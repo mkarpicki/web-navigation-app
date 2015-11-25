@@ -39,6 +39,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.removeWayPoint = function (index) {
             $scope.wayPoints.splice(index, 1);
+            $location.url('/?' + buildSearchQuery());
         };
 
         $scope.clear = function () {
