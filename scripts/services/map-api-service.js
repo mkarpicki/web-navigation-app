@@ -41,7 +41,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
         // Create the default UI components
         ui = H.ui.UI.createDefault(map, defaultLayers);
-
+        
         map.addEventListener('tap', function (evt) {
 
             removeBubble();

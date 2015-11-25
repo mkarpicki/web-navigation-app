@@ -20,7 +20,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         mapApiService.removeBubble();
     };
 
-    var initMenuBubble = function(scope, node) {
+    var initMenuBubbleEvent = function(scope, node) {
 
         if (!mapApiService) {
             return;
@@ -72,7 +72,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
             mapApiService.init(element, nodes[1]);
 
-            initMenuBubble(scope,nodes[1]);
+            initMenuBubbleEvent(scope,nodes[1]);
 
         });
 
