@@ -4,8 +4,8 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         'use strict';
 
-        $scope.from = '52.40626,13.49667';
-        $scope.to = '52.51083,13.45264';
+        //$scope.from = '52.40626,13.49667';
+        //$scope.to = '52.51083,13.45264';
         //$scope.wayPoints = ['52.46325,13.3882'];
 
         $scope.wayPoints = [];
@@ -18,6 +18,10 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             var query = buildSearchQuery();
 
+            /**
+             * @todo
+             * remove me if url will be updated by changing of inputs
+             */
             $location.url('/?' + query).replace();
 
             /**
@@ -45,6 +49,12 @@ angular.module('navigationApp.controllers').controller('FormController',
         $scope.clear = function () {
 
             $location.url('/').replace();
+        };
+
+        $scope.onInputDefined = function () {
+
+            //buildSearchQuery();
+            $location.url('/?' + buildSearchQuery());
         };
 
         var buildSearchQuery = function () {
