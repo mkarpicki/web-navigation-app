@@ -18,7 +18,17 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var overwriteDestinationPoint = function (wayPoints, position) {
 
-            wayPoints[wayPoints.length - 1] = position.latitude + ',' + position.longitude;
+            var point = position.latitude + ',' + position.longitude;
+
+            if (wayPoints.length < 2) {
+
+                wayPoints.push(point);
+
+            } else {
+
+                wayPoints[wayPoints.length - 1] = point;
+
+            }
 
             return queryParserService.serializeWayPoints(wayPoints);
 
@@ -34,13 +44,20 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             var wayPoint = position.latitude + ',' + position.longitude;
 
-            if (wayPoints.length === 1) {
 
-                wayPoints[0] = wayPoint;
+            if (wayPoints.length < 2) {
+
+                wayPoints[wayPoints.length] =wayPoint;
 
             } else {
-                wayPoints.splice(wayPoints.length - 1, 0, wayPoint);
+
+                var endPoint = wayPoints[wayPoints.length - 1];
+
+                wayPoints[wayPoints.length - 1] = wayPoint;
+
+                wayPoints.push(endPoint);
             }
+
 
             return queryParserService.serializeWayPoints(wayPoints);
         };

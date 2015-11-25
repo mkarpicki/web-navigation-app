@@ -5,11 +5,11 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
     var appId = config.APP_ID,
         appCode = config.APP_CODE;
 
-    var URL = "http://route.api.here.com/routing/7.2/calculateroute.json?" +
+    var URL = "https://route.api.here.com/routing/7.2/calculateroute.json?" +
         "app_id={{appId}}" +
         "&app_code={{appCode}}" +
         "{{waypoints}}" +
-        "&alternatives=1" +
+        "&alternatives={{alternatives}}" +
         "&legattributes=sm" +
         "&linkattributes=" +
         "&maneuverattributes=all" +
@@ -60,7 +60,8 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
             appId: appId,
             appCode: appCode,
             traffic: traffic,
-            waypoints: buildWayPointsQuery(waypoints)
+            waypoints: buildWayPointsQuery(waypoints),
+            alternatives: (waypoints.length > 2) ? 0 : 1
         });
 
         $http.get(url).then(function (httpResponse) {

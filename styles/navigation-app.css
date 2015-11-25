@@ -9,3 +9,7 @@
     height: 600px;
     background: grey
 }
+
+input {
+    width: 250px;
+}
