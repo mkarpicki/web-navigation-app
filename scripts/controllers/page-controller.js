@@ -8,7 +8,7 @@ angular.module('navigationApp.controllers').controller('PageController',
             $scope.$apply();
         };
 
-        var overwriteStartPoint = function (wayPoints, position) {
+        var overwriteStartPoint = function (wayPoints, areasToAvoid, position) {
 
             wayPoints[0] = position.latitude + ',' + position.longitude;
 
@@ -16,7 +16,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
-        var overwriteDestinationPoint = function (wayPoints, position) {
+        var overwriteDestinationPoint = function (wayPoints, areasToAvoid, position) {
 
             var point = position.latitude + ',' + position.longitude;
 
@@ -40,7 +40,7 @@ angular.module('navigationApp.controllers').controller('PageController',
          * @param position
          * @returns {*}
          */
-        var addWayPoint = function (wayPoints, position) {
+        var addWayPoint = function (wayPoints, areasToAvoid, position) {
 
             var wayPoint = position.latitude + ',' + position.longitude;
 
@@ -62,6 +62,10 @@ angular.module('navigationApp.controllers').controller('PageController',
             return queryParserService.serializeWayPoints(wayPoints);
         };
 
+        var addAreaToAvoid = function (wayPoints, areasToAvoid, geoParam) {
+
+        };
+
         $scope.centerPosition = {
             latitude: 52.51083,
             longitude: 13.45264
@@ -70,24 +74,29 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         $scope.$on(events.MAP_EVENT, function (event, params) {
 
-            var position = params.position,
+            var geoParam = params.geoParam,
                 query = '',
-                wayPoints = queryParserService.deserializeWayPoints($location.search());
+                wayPoints = queryParserService.deserializeWayPoints($location.search()),
+                areasToAvoid = {};
 
             switch (params.eventType) {
 
                 case events.MAP_EVENT_TYPES.OVERWRITE_START_POINT:
 
-                    query = overwriteStartPoint(wayPoints, position);
+                    query = overwriteStartPoint(wayPoints, areasToAvoid, geoParam);
                     break;
 
                 case events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT:
 
-                    query = overwriteDestinationPoint(wayPoints, position);
+                    query = overwriteDestinationPoint(wayPoints, areasToAvoid, geoParam);
                     break;
 
                 case events.MAP_EVENT_TYPES.ADD_WAY_POINT:
-                    query = addWayPoint(wayPoints, position);
+                    query = addWayPoint(wayPoints, areasToAvoid, geoParam);
+                    break;
+
+                case events.MAP_EVENT_TYPES.AVOID_AREA:
+                    query = addAreaToAvoid(wayPoints, areasToAvoid, geoParam);
                     break;
 
                 default:

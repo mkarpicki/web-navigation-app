@@ -7,7 +7,7 @@ angular.module('navigationApp').value('events', {
         OVERWRITE_START_POINT: 0,
         ADD_WAY_POINT: 1,
         OVERWRITE_DESTINATION_POINT: 2,
-        AVOID: 3
+        AVOID_AREA: 3
     }
 
 });

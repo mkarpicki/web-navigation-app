@@ -8,13 +8,11 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
      * @param type
      * @param position
      */
-    var emitEvent = function (scope, type) {
-
-        var position = mapApiService.getTapPosition();
+    var emitEvent = function (scope, type, geoParam) {
 
         scope.$emit(events.MAP_EVENT, {
             eventType: type,
-            position: position
+            geoParam: geoParam
         });
 
         mapApiService.removeBubble();
@@ -45,21 +43,19 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
 
         attachMenuAction(overwrittenStartItem, function () {
-            emitEvent(scope, events.MAP_EVENT_TYPES.OVERWRITE_START_POINT);
+            emitEvent(scope, events.MAP_EVENT_TYPES.OVERWRITE_START_POINT, mapApiService.getTapPosition());
         });
 
         attachMenuAction(newWayPointItem, function () {
-            emitEvent(scope, events.MAP_EVENT_TYPES.ADD_WAY_POINT);
+            emitEvent(scope, events.MAP_EVENT_TYPES.ADD_WAY_POINT, mapApiService.getTapPosition());
         });
 
         attachMenuAction(overwrittenDestinationItem, function () {
-            emitEvent(scope, events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT);
+            emitEvent(scope, events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT, mapApiService.getTapPosition());
         });
 
-
-
         attachMenuAction(avoidItem, function () {
-            console.log(mapApiService.calculateRecangle(mapApiService.getTapPosition()));
+            emitEvent(scope, events.MAP_EVENT_TYPES.AVOID_AREA, mapApiService.calculateRecangle(mapApiService.getTapPosition()));
         });
 
     };
