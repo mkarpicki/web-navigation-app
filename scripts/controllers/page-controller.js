@@ -20,7 +20,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             var point = position.latitude + ',' + position.longitude;
 
-            if (wayPoints.length < 2) {
+            if (wayPoints.length < 3) {
 
                 wayPoints.push(point);
 
