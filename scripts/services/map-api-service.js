@@ -3,7 +3,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
     'use strict';
 
     var appId = config.APP_ID,
-        appCode = config.APP_CODE;
+        appCode = config.APP_CODE,
+        avoidDistance = 10;
 
     var H = $window.H,
         map,
@@ -29,7 +30,31 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         };
     };
 
-    var init = function (element, bubbleElement) {
+    var calculateRecangle = function (position, distance) {
+
+        var point = new H.geo.Point(position.latitude, position.longitude);
+
+        distance = distance || avoidDistance;
+
+        var rect = H.geo.Rect.fromPoints(
+            point.walk(315, distance),
+            point.walk(135, distance)
+        );
+
+        map.addObject(
+            new H.map.Rect(rect, {
+                style: {
+                    fillColor: '#FFFFCC',
+                    strokeColor: '#e2e2e2',
+                    lineWidth: 8
+                }
+            })
+        );
+
+        return rect;
+    }
+
+    var init = function (element) {
 
         //Step 2: initialize a map  - not specificing a location will give a whole world view.
         map = new H.Map(element[0], defaultLayers.normal.map);
@@ -41,7 +66,11 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
         // Create the default UI components
         ui = H.ui.UI.createDefault(map, defaultLayers);
-        
+
+    };
+
+    var initBubble = function (bubbleElement) {
+
         map.addEventListener('tap', function (evt) {
 
             removeBubble();
@@ -55,7 +84,6 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             // show info bubble
             ui.addBubble(bubble);
         });
-
     };
 
     var center = function (position) {
@@ -125,7 +153,9 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     return {
         init: init,
+        initBubble: initBubble,
         center: center,
+        calculateRecangle: calculateRecangle,
         drawRoute: drawRoute,
         clear: clear,
         getTapPosition: getTapPosition,

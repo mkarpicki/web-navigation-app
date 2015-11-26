@@ -30,6 +30,8 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             return;
         }
 
+        mapApiService.initBubble(node);
+
         /**
          * @todo
          * when adding new functionality (add new start point / end point) on top of current overwrite
@@ -56,7 +58,9 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
 
 
-        attachMenuAction(avoidItem[0], function () { alert('avoidItem ' + mapApiService.getTapPosition() ); });
+        attachMenuAction(avoidItem, function () {
+            console.log(mapApiService.calculateRecangle(mapApiService.getTapPosition(), 120));
+        });
 
     };
 
@@ -72,7 +76,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
             mapApiService.init(element, nodes[1]);
 
-            initMenuBubbleEvent(scope,nodes[1]);
+            initMenuBubbleEvent(scope, nodes[1]);
 
         });
 
