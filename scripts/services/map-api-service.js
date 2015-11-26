@@ -4,7 +4,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var appId = config.APP_ID,
         appCode = config.APP_CODE,
-        avoidDistance = 10;
+        avoidAreaInMeters = config.AVOID_AREA_IN_METERS;
 
     var H = $window.H,
         map,
@@ -30,26 +30,26 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         };
     };
 
-    var calculateRecangle = function (position, distance) {
+    var calculateRectangle = function (position, distance) {
 
         var point = new H.geo.Point(position.latitude, position.longitude);
 
-        distance = distance || avoidDistance;
+        distance = distance || avoidAreaInMeters;
 
         var rect = H.geo.Rect.fromPoints(
             point.walk(315, distance),
             point.walk(135, distance)
         );
 
-        map.addObject(
-            new H.map.Rect(rect, {
-                style: {
-                    fillColor: '#FFFFCC',
-                    strokeColor: '#e2e2e2',
-                    lineWidth: 8
-                }
-            })
-        );
+        //map.addObject(
+        //    new H.map.Rect(rect, {
+        //        style: {
+        //            fillColor: '#FFFFCC',
+        //            strokeColor: '#e2e2e2',
+        //            lineWidth: 8
+        //        }
+        //    })
+        //);
 
         return rect;
     }
@@ -155,7 +155,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         init: init,
         initBubble: initBubble,
         center: center,
-        calculateRecangle: calculateRecangle,
+        calculateRecangle: calculateRectangle,
         drawRoute: drawRoute,
         clear: clear,
         getTapPosition: getTapPosition,

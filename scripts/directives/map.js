@@ -59,7 +59,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
 
         attachMenuAction(avoidItem, function () {
-            console.log(mapApiService.calculateRecangle(mapApiService.getTapPosition(), 120));
+            console.log(mapApiService.calculateRecangle(mapApiService.getTapPosition()));
         });
 
     };

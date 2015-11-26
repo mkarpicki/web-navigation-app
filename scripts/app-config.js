@@ -4,6 +4,7 @@
 angular.module('navigationApp').value('config', {
 
     APP_ID : '6HRrANORgYjdfDFtrTID',
-    APP_CODE : 'D4Mlaon1qumiQ9goQ4k9lQ'
+    APP_CODE : 'D4Mlaon1qumiQ9goQ4k9lQ',
 
+    AVOID_AREA_IN_METERS: 120
 });
