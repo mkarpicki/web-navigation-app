@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$scope", '$location', '$timeout', 'queryParserService',
-        function($scope, $location, $timeout, queryParserService) {
+    ["$scope", '$location', '$timeout', 'routingService', 'queryParserService',
+        function($scope, $location, $timeout, routingService, queryParserService) {
 
         'use strict';
 
@@ -9,6 +9,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         //$scope.wayPoints = ['52.46325,13.3882'];
 
         $scope.wayPoints = [];
+        $scope.areasToAvoid = [];
 
         $scope.getRoute = function () {
 
@@ -53,29 +54,36 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.onInputDefined = function () {
 
-            //buildSearchQuery();
             $location.url('/?' + buildSearchQuery());
         };
 
         var buildSearchQuery = function () {
 
             var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
+            var areasToAvoid = [];
 
-            return queryParserService.serializeWayPoints(allPoints);
+            return queryParserService.serializeQuery(allPoints, areasToAvoid);
 
         };
 
         var getReady = function(){
 
-            var waypoints = queryParserService.deserializeWayPoints($location.search());
+            var wayPoints = queryParserService.deserializeQuery().wayPoints;
+            var areasToAvoid = queryParserService.deserializeQuery().areasToAvoid;
 
-            if (waypoints.length > 0) {
+            if (wayPoints.length > 0) {
 
-                $scope.from = waypoints.shift();
-                $scope.to = waypoints.pop();
-                $scope.wayPoints = waypoints;
+                $scope.from = wayPoints.shift();
+                $scope.to = wayPoints.pop();
+                $scope.wayPoints = wayPoints;
 
             }
+
+            if (areasToAvoid.length > 0) {
+
+            }
+
+            routingService.clearResults();
 
         };
 

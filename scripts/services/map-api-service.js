@@ -41,18 +41,18 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             point.walk(135, distance)
         );
 
-        //map.addObject(
-        //    new H.map.Rect(rect, {
-        //        style: {
-        //            fillColor: '#FFFFCC',
-        //            strokeColor: '#e2e2e2',
-        //            lineWidth: 8
-        //        }
-        //    })
-        //);
+        map.addObject(
+            new H.map.Rect(rect, {
+                style: {
+                    fillColor: '#FFFFCC',
+                    strokeColor: '#e2e2e2',
+                    lineWidth: 8
+                }
+            })
+        );
 
         return rect;
-    }
+    };
 
     var init = function (element) {
 

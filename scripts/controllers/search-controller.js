@@ -22,14 +22,14 @@ angular.module('navigationApp.controllers').controller('SearchController',
             $scope.notEnoughInformation = false;
         };
 
-        var prepareWaypoints = function (waypoints) {
+        var prepareWayPoints = function (wayPoints) {
 
             var points = [],
                 p;
 
-            for (var i = 0, l = waypoints.length; i < l; i++) {
+            for (var i = 0, l = wayPoints.length; i < l; i++) {
 
-                p = waypoints[i].split(',');
+                p = wayPoints[i].split(',');
 
                 points.push({
                     latitude : p[0],
@@ -40,7 +40,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
             return points;
         };
 
-        var collectRoutes = function (routes, theme, waypointsUsedForSearch) {
+        var collectRoutes = function (routes, theme, wayPointsUsedForSearch) {
 
             var route;
 
@@ -48,14 +48,14 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 $scope.noRouteFound = true;
             }
 
-            waypointsUsedForSearch = prepareWaypoints(waypointsUsedForSearch);
+            wayPointsUsedForSearch = prepareWayPoints(wayPointsUsedForSearch);
 
             for (var i = 0, l = routes.length; i < l; i++) {
 
                 route = routes[i];
 
                 route.color = colorThemesService.getColor(theme);
-                route.waypointsUsedForSearch = waypointsUsedForSearch;
+                route.waypointsUsedForSearch = wayPointsUsedForSearch;
 
                 routingService.saveRoute(route);
             }
@@ -63,21 +63,21 @@ angular.module('navigationApp.controllers').controller('SearchController',
             $scope.routes = routingService.getResults();
         };
 
-        var collectRoutesWithTrafficDisabled = function (routes, waypointsUsedForSearch) {
-            collectRoutes(routes, colorThemesService.NEGATIVE_THEME, waypointsUsedForSearch);
+        var collectRoutesWithTrafficDisabled = function (routes, wayPointsUsedForSearch) {
+            collectRoutes(routes, colorThemesService.NEGATIVE_THEME, wayPointsUsedForSearch);
         };
 
-        var collectRoutesWithTrafficEnabled = function (routes, waypointsUsedForSearch) {
-            collectRoutes(routes, colorThemesService.POSITIVE_THEME, waypointsUsedForSearch);
+        var collectRoutesWithTrafficEnabled = function (routes, wayPointsUsedForSearch) {
+            collectRoutes(routes, colorThemesService.POSITIVE_THEME, wayPointsUsedForSearch);
         };
 
-        var collectRoutesBasedOnTraffic = function (ignoreTraffic, waypointsUsedForSearch) {
+        var collectRoutesBasedOnTraffic = function (ignoreTraffic, wayPointsUsedForSearch) {
             return function (routes) {
 
                 if (ignoreTraffic === true) {
-                    return collectRoutesWithTrafficDisabled(routes,waypointsUsedForSearch);
+                    return collectRoutesWithTrafficDisabled(routes, wayPointsUsedForSearch);
                 } else {
-                    return collectRoutesWithTrafficEnabled(routes, waypointsUsedForSearch);
+                    return collectRoutesWithTrafficEnabled(routes, wayPointsUsedForSearch);
                 }
             };
         };
@@ -88,11 +88,11 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             routingService.clearResults();
 
-            var waypoints = queryParserService.deserializeWayPoints($location.search());
+            var wayPoints = queryParserService.deserializeQuery().wayPoints;
 
-            if (waypoints.length > 1) {
-                (routingService.calculateWithTrafficDisabled(waypoints)).then(collectRoutesBasedOnTraffic(true, waypoints));
-                (routingService.calculateWithTrafficEnabled(waypoints)).then(collectRoutesBasedOnTraffic(false, waypoints));
+            if (wayPoints.length > 1) {
+                (routingService.calculateWithTrafficDisabled(wayPoints)).then(collectRoutesBasedOnTraffic(true, wayPoints));
+                (routingService.calculateWithTrafficEnabled(wayPoints)).then(collectRoutesBasedOnTraffic(false, wayPoints));
             } else {
                 $scope.notEnoughInformation = true;
             }

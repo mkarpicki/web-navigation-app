@@ -12,7 +12,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             wayPoints[0] = position.latitude + ',' + position.longitude;
 
-            return queryParserService.serializeWayPoints(wayPoints);
+            return queryParserService.serializeQuery(wayPoints, areasToAvoid);
 
         };
 
@@ -30,7 +30,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             }
 
-            return queryParserService.serializeWayPoints(wayPoints);
+            return queryParserService.serializeQuery(wayPoints, areasToAvoid);
 
         };
 
@@ -59,7 +59,7 @@ angular.module('navigationApp.controllers').controller('PageController',
             }
 
 
-            return queryParserService.serializeWayPoints(wayPoints);
+            return queryParserService.serializeQuery(wayPoints, areasToAvoid);
         };
 
         var addAreaToAvoid = function (wayPoints, areasToAvoid, geoParam) {
@@ -76,8 +76,8 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             var geoParam = params.geoParam,
                 query = '',
-                wayPoints = queryParserService.deserializeWayPoints($location.search()),
-                areasToAvoid = {};
+                wayPoints = queryParserService.deserializeQuery().wayPoints,
+                areasToAvoid = queryParserService.deserializeQuery().areasToAvoid;
 
             switch (params.eventType) {
 
