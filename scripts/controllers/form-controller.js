@@ -60,7 +60,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         var buildSearchQuery = function () {
 
             var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
-            var areasToAvoid = [];
+            var areasToAvoid = $scope.areasToAvoid;
 
             return queryParserService.serializeQuery(allPoints, areasToAvoid);
 
