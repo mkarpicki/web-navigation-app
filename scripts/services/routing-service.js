@@ -67,7 +67,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return routes;
     };
 
-    var calculate = function (waypoints, traffic, areasToAvoid) {
+    var calculate = function (waypoints, areasToAvoid, traffic) {
 
         var deferred = $q.defer(),
             exp = $interpolate(URL);
@@ -102,11 +102,11 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
     };
 
     var calculateWithTrafficEnabled = function (wayPoints, areasToAvoid) {
-        return calculate(wayPoints, 'enabled', areasToAvoid);
+        return calculate(wayPoints, areasToAvoid, 'enabled');
     };
 
     var calculateWithTrafficDisabled = function (wayPoints, areasToAvoid) {
-        return calculate(wayPoints, 'disabled', areasToAvoid);
+        return calculate(wayPoints, areasToAvoid, 'disabled');
     };
 
     var getResults = function () {
