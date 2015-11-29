@@ -88,11 +88,12 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             routingService.clearResults();
 
-            var wayPoints = queryParserService.deserializeQuery().wayPoints;
+            var wayPoints = queryParserService.deserializeQuery().wayPoints,
+                areasToAvoid = queryParserService.deserializeQuery().areasToAvoid;
 
             if (wayPoints.length > 1) {
-                (routingService.calculateWithTrafficDisabled(wayPoints)).then(collectRoutesBasedOnTraffic(true, wayPoints));
-                (routingService.calculateWithTrafficEnabled(wayPoints)).then(collectRoutesBasedOnTraffic(false, wayPoints));
+                (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints));
+                (routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(false, wayPoints));
             } else {
                 $scope.notEnoughInformation = true;
             }

@@ -47,6 +47,11 @@ angular.module('navigationApp.controllers').controller('FormController',
             $location.url('/?' + buildSearchQuery());
         };
 
+        $scope.removeWayAreaToAvoid = function (index) {
+            $scope.areasToAvoid.splice(index, 1);
+            $location.url('/?' + buildSearchQuery());
+        };
+
         $scope.clear = function () {
 
             $location.url('/').replace();
@@ -80,7 +85,7 @@ angular.module('navigationApp.controllers').controller('FormController',
             }
 
             if (areasToAvoid.length > 0) {
-
+                $scope.areasToAvoid = areasToAvoid;
             }
 
             routingService.clearResults();

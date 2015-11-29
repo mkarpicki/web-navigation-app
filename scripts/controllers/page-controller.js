@@ -64,6 +64,11 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var addAreaToAvoid = function (wayPoints, areasToAvoid, geoParam) {
 
+            var item = geoParam.topLeft.latitude + "," + geoParam.topLeft.longitude + ";" + geoParam.bottomRight.latitude + "," + geoParam.bottomRight.longitude;
+
+            areasToAvoid.push(item);
+
+            return queryParserService.serializeQuery(wayPoints, areasToAvoid);
         };
 
         $scope.centerPosition = {
@@ -96,6 +101,7 @@ angular.module('navigationApp.controllers').controller('PageController',
                     break;
 
                 case events.MAP_EVENT_TYPES.AVOID_AREA:
+
                     query = addAreaToAvoid(wayPoints, areasToAvoid, geoParam);
                     break;
 

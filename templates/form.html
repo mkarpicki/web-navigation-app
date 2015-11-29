@@ -1,22 +1,33 @@
 <!-- replace with directives for suggestions -->
-<label for="from">From:</label>
-<input id="from" data-ng-model="from">
-<br>
+<form>
+    <label for="from">From:</label>
+    <input id="from" data-ng-model="from">
+    <br>
 
-<ul>
-    <li data-ng-repeat="wayPoint in wayPoints track by $index">
-        <label for="waypoint-{{$index}}">Thru:</label>
-        <!--<input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]" data-ng-blur="onInputDefined()">-->
-        <input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]">
-        <button data-ng-click="removeWayPoint($index);" >-</button>
-    </li>
-</ul>
+    <ul>
+        <li data-ng-repeat="wayPoint in wayPoints track by $index">
+            <label for="waypoint-{{$index}}">Thru:</label>
+            <!--<input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]" data-ng-blur="onInputDefined()">-->
+            <input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]">
+            <button data-ng-click="removeWayPoint($index);" >-</button>
+        </li>
+    </ul>
 
-<button data-ng-click="addWayPoint();">+</button>
-<br>
+    <button data-ng-click="addWayPoint();">+</button>
+    <br>
 
-<label for="to">To:</label>
-<input id="to" data-ng-model="to">
-<br>
-<button data-ng-click="getRoute();">Get route</button>
-<button data-ng-click="clear();">Clear</button>
+    <label for="to">To:</label>
+    <input id="to" data-ng-model="to">
+
+    <br>
+
+    <ul>
+        <li data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
+            <span>{{$index}}</span>
+            <button data-ng-click="removeWayAreaToAvoid($index);" >-</button>
+        </li>
+    </ul>
+
+    <button data-ng-click="getRoute();">Get route</button>
+    <button data-ng-click="clear();">Clear</button>
+</form>

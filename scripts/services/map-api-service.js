@@ -51,7 +51,24 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             })
         );
 
-        return rect;
+        var topLeft = rect.getTopLeft(),
+            bottomRight = rect.getBottomRight();
+
+
+        topLeft = {
+            latitude: topLeft.lat,
+            longitude: topLeft.lng
+        };
+
+        bottomRight = {
+            latitude: bottomRight.lat,
+            longitude: bottomRight.lng
+        };
+
+        return {
+            topLeft: topLeft,
+            bottomRight: bottomRight
+        };
     };
 
     var init = function (element) {

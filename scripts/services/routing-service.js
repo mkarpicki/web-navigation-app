@@ -8,7 +8,8 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
     var URL = "https://route.api.here.com/routing/7.2/calculateroute.json?" +
         "app_id={{appId}}" +
         "&app_code={{appCode}}" +
-        "{{waypoints}}" +
+        "{{wayPoints}}" +
+        "{{avoidAreas}}" +
         "&alternatives={{alternatives}}" +
         "&legattributes=sm" +
         "&linkattributes=" +
@@ -20,20 +21,39 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
     var results = [];
 
-    var buildWayPointsQuery = function (waypoints) {
+    var buildQuery = function (textQuery, items) {
 
         var query = '',
-            waypointQuery = "&waypoint{{i}}=geo!{{waypoint}}",
-            exp = $interpolate(waypointQuery);
+            exp = $interpolate(textQuery);
 
-        for (var i = 0, l = waypoints.length; i < l; i++) {
+        for (var i = 0, l = items.length; i < l; i++) {
             query += exp({
                 i: i,
-                waypoint: waypoints[i]
+                item: items[i]
             });
         }
 
         return query;
+
+    };
+
+    var buildAvoidAreasQuery = function (areasToAvoid) {
+
+        //areasToAvoid = [areasToAvoid.join(';')];
+
+        /**
+         * @fixme - this format will always take last added are to avoid
+         * I need to check how to pass an array to routing service to take
+         * few areas into account
+         */
+
+        return buildQuery("&avoidareas={{item}}" , areasToAvoid);
+    };
+
+    var buildWayPointsQuery = function (wayPoints) {
+
+        return buildQuery("&waypoint{{i}}=geo!{{item}}", wayPoints);
+
     };
 
     var getCalculatedRoutes = function (httpResponse) {
@@ -47,7 +67,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return routes;
     };
 
-    var calculate = function (waypoints, traffic, avoid) {
+    var calculate = function (waypoints, traffic, areasToAvoid) {
 
         var deferred = $q.defer(),
             exp = $interpolate(URL);
@@ -60,7 +80,9 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
             appId: appId,
             appCode: appCode,
             traffic: traffic,
-            waypoints: buildWayPointsQuery(waypoints),
+            wayPoints: buildWayPointsQuery(waypoints),
+            avoidAreas : buildAvoidAreasQuery(areasToAvoid),
+            areasToAvoid: areasToAvoid,
             alternatives: (waypoints.length > 2) ? 0 : 1
         });
 
@@ -79,12 +101,12 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return deferred.promise;
     };
 
-    var calculateWithTrafficEnabled = function (waypoints, avoid) {
-        return calculate(waypoints, 'enabled', avoid);
+    var calculateWithTrafficEnabled = function (wayPoints, areasToAvoid) {
+        return calculate(wayPoints, 'enabled', areasToAvoid);
     };
 
-    var calculateWithTrafficDisabled = function (waypoints, avoid) {
-        return calculate(waypoints, 'disabled', avoid);
+    var calculateWithTrafficDisabled = function (wayPoints, areasToAvoid) {
+        return calculate(wayPoints, 'disabled', areasToAvoid);
     };
 
     var getResults = function () {

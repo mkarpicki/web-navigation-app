@@ -6,7 +6,11 @@ angular.module('navigationApp.services').factory('queryParserService', ['$interp
         AvoidAreaVariable = 'a';
 
     var serializeQuery = function (wayPoints, areasToAvoid) {
-        return serializeWayPoints(wayPoints) + serializeAreasToAvoid(areasToAvoid);
+
+        var w = serializeWayPoints(wayPoints),
+            a = serializeAreasToAvoid(areasToAvoid);
+
+        return ( w + ((a !== '')? '&' + a : '') );
     };
 
     var deserializeQuery = function () {
