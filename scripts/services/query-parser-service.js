@@ -5,10 +5,13 @@ angular.module('navigationApp.services').factory('queryParserService', ['$interp
     var WayPointVariable = 'w',
         AvoidAreaVariable = 'a';
 
-    var serializeQuery = function (wayPoints, areasToAvoid) {
+    var wayPointsStorage = [],
+        areasToAvoidStorage = [];
 
-        var w = serializeWayPoints(wayPoints),
-            a = serializeAreasToAvoid(areasToAvoid);
+    var serializeQuery = function () {
+
+        var w = serializeWayPoints(wayPointsStorage),
+            a = serializeAreasToAvoid(areasToAvoidStorage);
 
         return ( w + ((a !== '')? '&' + a : '') );
     };
@@ -85,9 +88,71 @@ angular.module('navigationApp.services').factory('queryParserService', ['$interp
         return items;
     };
 
+    var setAreasToAvoid = function (areasToAvoid) {
+        areasToAvoidStorage = areasToAvoid;
+    };
+
+    var setWayPoints = function (wayPoints) {
+        wayPointsStorage = wayPoints;
+    };
+
+    var clear = function () {
+        wayPointsStorage = [];
+        areasToAvoidStorage = [];
+    };
+
+    var overwriteStartPoint = function (point) {
+        wayPointsStorage[0] = point;
+    };
+
+    var overwriteDestinationPoint = function (point) {
+
+        if (wayPointsStorage.length < 3) {
+
+            wayPointsStorage.push(point);
+
+        } else {
+
+            wayPointsStorage[wayPointsStorage.length - 1] = point;
+
+        }
+
+    };
+
+    var addWayPoint = function (point) {
+
+        if (wayPointsStorage.length < 2) {
+
+            wayPointsStorage[wayPointsStorage.length] = point;
+
+        } else {
+
+            var endPoint = wayPointsStorage[wayPointsStorage.length - 1];
+
+            wayPointsStorage[wayPointsStorage.length - 1] = point;
+
+            wayPointsStorage.push(endPoint);
+        }
+
+    };
+
+    var addAreaToAvoid = function (area) {
+
+        areasToAvoidStorage.push(area);
+    };
+
     return {
         serializeQuery: serializeQuery,
-        deserializeQuery: deserializeQuery
+        deserializeQuery: deserializeQuery,
+
+        clear: clear,
+        setWayPoints: setWayPoints,
+        setAreasToAvoid: setAreasToAvoid,
+
+        overwriteStartPoint: overwriteStartPoint,
+        overwriteDestinationPoint: overwriteDestinationPoint,
+        addWayPoint: addWayPoint,
+        addAreaToAvoid: addAreaToAvoid
     };
 
 }]);
