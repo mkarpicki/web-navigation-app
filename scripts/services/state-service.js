@@ -1,4 +1,4 @@
-angular.module('navigationApp.services').factory('queryParserService', ['$interpolate', '$location', function ($interpolate, $location) {
+angular.module('navigationApp.services').factory('stateService', ['$interpolate', '$location', function ($interpolate, $location) {
 
     'use strict';
 

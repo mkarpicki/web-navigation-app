@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$scope", '$location', '$timeout', 'routingService', 'queryParserService',
-        function($scope, $location, $timeout, routingService, queryParserService) {
+    ["$scope", '$location', '$timeout', 'routingService', 'stateService',
+        function($scope, $location, $timeout, routingService, stateService) {
 
         'use strict';
 
@@ -54,6 +54,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.clear = function () {
 
+            stateService.clear();
             $location.url('/').replace();
         };
 
@@ -67,18 +68,18 @@ angular.module('navigationApp.controllers').controller('FormController',
             var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
             var areasToAvoid = $scope.areasToAvoid;
 
-            queryParserService.clear();
-            queryParserService.setWayPoints(allPoints);
-            queryParserService.setAreasToAvoid(areasToAvoid);
+            stateService.clear();
+            stateService.setWayPoints(allPoints);
+            stateService.setAreasToAvoid(areasToAvoid);
 
-            return queryParserService.serializeQuery();
+            return stateService.serializeQuery();
 
         };
 
         var getReady = function(){
 
-            var wayPoints = queryParserService.deserializeQuery().wayPoints;
-            var areasToAvoid = queryParserService.deserializeQuery().areasToAvoid;
+            var wayPoints = stateService.deserializeQuery().wayPoints;
+            var areasToAvoid = stateService.deserializeQuery().areasToAvoid;
 
             if (wayPoints.length > 0) {
 

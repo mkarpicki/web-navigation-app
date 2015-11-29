@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('SearchController',
-    ["$scope", '$sce', '$location', '$window', 'routingService', 'colorThemesService', 'queryParserService',
-        function($scope, $sce, $location, $window, routingService, colorThemesService, queryParserService) {
+    ["$scope", '$sce', '$location', '$window', 'routingService', 'colorThemesService', 'stateService',
+        function($scope, $sce, $location, $window, routingService, colorThemesService, stateService) {
 
         'use strict';
 
@@ -88,8 +88,8 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             routingService.clearResults();
 
-            var wayPoints = queryParserService.deserializeQuery().wayPoints,
-                areasToAvoid = queryParserService.deserializeQuery().areasToAvoid;
+            var wayPoints = stateService.deserializeQuery().wayPoints,
+                areasToAvoid = stateService.deserializeQuery().areasToAvoid;
 
             if (wayPoints.length > 1) {
                 (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints));

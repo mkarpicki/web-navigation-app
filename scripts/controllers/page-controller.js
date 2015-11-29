@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$scope", '$location', 'events', 'routingService', 'queryParserService', function($scope, $location, events, routingService, queryParserService) {
+    ["$scope", '$location', 'events', 'routingService', 'stateService', function($scope, $location, events, routingService, stateService) {
 
         'use strict';
 
@@ -17,7 +17,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             var point = position.latitude + ',' + position.longitude;
 
-            queryParserService.overwriteStartPoint(point);
+            stateService.overwriteStartPoint(point);
 
         };
 
@@ -25,7 +25,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             var point = position.latitude + ',' + position.longitude;
 
-            queryParserService.overwriteDestinationPoint(point);
+            stateService.overwriteDestinationPoint(point);
 
         };
 
@@ -33,7 +33,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             var point = position.latitude + ',' + position.longitude;
 
-            queryParserService.addWayPoint(point);
+            stateService.addWayPoint(point);
 
         };
 
@@ -41,7 +41,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             var item = geoParam.topLeft.latitude + "," + geoParam.topLeft.longitude + ";" + geoParam.bottomRight.latitude + "," + geoParam.bottomRight.longitude;
 
-            queryParserService.addAreaToAvoid(item);
+            stateService.addAreaToAvoid(item);
 
         };
 
@@ -75,7 +75,7 @@ angular.module('navigationApp.controllers').controller('PageController',
                     break;
             }
 
-            var query = queryParserService.serializeQuery();
+            var query = stateService.serializeQuery();
 
             $location.url('/?' + query);
             apply();
