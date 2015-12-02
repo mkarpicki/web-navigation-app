@@ -39,7 +39,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
     var buildAvoidAreasQuery = function (areasToAvoid) {
 
-        //areasToAvoid = [areasToAvoid.join(';')];
+        areasToAvoid = [areasToAvoid.join('!')];
 
         /**
          * @fixme - this format will always take last added are to avoid
