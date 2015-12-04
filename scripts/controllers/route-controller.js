@@ -52,6 +52,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             };
 
-            getRoute($routeParams.index)
+            getRoute($routeParams.index);
 
         }]);
