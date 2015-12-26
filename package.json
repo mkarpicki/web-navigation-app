@@ -16,7 +16,8 @@
       "karma-html-reporter": "^0.2.6",
       "karma-jasmine": "^0.3.0",
       "karma-phantomjs-launcher": "^0.1.4",
-      "karma-script-launcher": "^0.1.0"
+      "karma-script-launcher": "^0.1.0",
+      "grunt-bower": "0.20.0"
   },
   "jshintConfig": {
       "bitwise": false,
