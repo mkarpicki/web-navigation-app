@@ -172,7 +172,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         init: init,
         initBubble: initBubble,
         center: center,
-        calculateRecangle: calculateRectangle,
+        calculateRectangle: calculateRectangle,
         drawRoute: drawRoute,
         clear: clear,
         getTapPosition: getTapPosition,

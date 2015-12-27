@@ -55,7 +55,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         });
 
         attachMenuAction(avoidItem, function () {
-            emitEvent(scope, events.MAP_EVENT_TYPES.AVOID_AREA, mapApiService.calculateRecangle(mapApiService.getTapPosition()));
+            emitEvent(scope, events.MAP_EVENT_TYPES.AVOID_AREA, mapApiService.calculateRectangle(mapApiService.getTapPosition()));
         });
 
     };

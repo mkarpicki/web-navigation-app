@@ -15,6 +15,13 @@ module.exports = function(grunt) {
             }
         },
         karma: {
+
+            //karma: {
+            //    unit: {
+            //        configFile: 'karma.conf.js'
+            //    }
+            //}
+
             unit: {
                 options: {
                     files: [
@@ -25,10 +32,10 @@ module.exports = function(grunt) {
 
                         'scripts/app.js',
                         'scripts/app-config.js',
-                        'scripts/app-events.js',
-                        'scripts/app-routing.js',
-                        'scripts/controllers/**/*.js',
-                        'scripts/directives/**/*.js',
+                        //'scripts/app-events.js',
+                        //'scripts/app-routing.js',
+                        //'scripts/controllers/**/*.js',
+                        //'scripts/directives/**/*.js',
                         'scripts/services/**/*.js'
                     ]
                 },

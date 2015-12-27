@@ -2,33 +2,45 @@ describe('colorThemesService', function () {
 
     'use strict';
 
-    var colorThemesService;
-
     beforeEach(module('navigationApp.services'));
-
-    /*beforeEach(function(){
-
-        inject(function (_colorThemesService_) {
-            colorThemesService = _colorThemesService_;
-        });
-    });*/
 
 
     describe ('getColor', function () {
 
         describe('when not supported theme passed', function () {
 
-            it('should use POSITIVE_THEME as default', function (colorThemesService) {
+            it('should use POSITIVE_THEME as default', inject(function (colorThemesService) {
 
-                expect(true).toBe(true);
+                expect(colorThemesService.getColor(undefined)).toBe('blue');
+                expect(colorThemesService.getColor(undefined)).toBe('green');
+                expect(colorThemesService.getColor(undefined)).toBe('gray');
+                expect(colorThemesService.getColor(undefined)).toBe('navy');
 
-            });
+            }));
+        });
 
-            /*it('should use POSITIVE_THEME as default', inject(function (colorThemesService) {
+        describe('when POSITIVE theme passed', function () {
 
-                expect(true).toBe(true);
+            it('should use POSITIVE_THEME as default', inject(function (colorThemesService) {
 
-            }));*/
+                expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('blue');
+                expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('green');
+                expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('gray');
+                expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('navy');
+
+            }));
+        });
+
+        describe('when NEGAVITE theme passed', function () {
+
+            it('should use POSITIVE_THEME as default', inject(function (colorThemesService) {
+
+                expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('red');
+                expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('yellow');
+                expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('orange');
+                expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('pink');
+
+            }));
         });
 
     });
