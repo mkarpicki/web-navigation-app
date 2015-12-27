@@ -85,7 +85,7 @@ module.exports = function(grunt) {
 
                 coverageReporter: {
                     type: 'html',
-                    dir: 'test/results/coverage/'
+                    dir: 'test-results/coverage/'
                 },
 
                 plugins: [

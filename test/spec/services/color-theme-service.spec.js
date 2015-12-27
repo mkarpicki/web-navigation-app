@@ -27,6 +27,7 @@ describe('colorThemesService', function () {
                 expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('green');
                 expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('gray');
                 expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('navy');
+                expect(colorThemesService.getColor(colorThemesService.POSITIVE_THEME)).toBe('blue');
 
             }));
         });
@@ -39,6 +40,7 @@ describe('colorThemesService', function () {
                 expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('yellow');
                 expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('orange');
                 expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('pink');
+                expect(colorThemesService.getColor(colorThemesService.NEGATIVE_THEME)).toBe('red');
 
             }));
         });
