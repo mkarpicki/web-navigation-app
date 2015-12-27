@@ -57,7 +57,6 @@ describe('map-api-service', function () {
     }));
 
 
-
     describe("init", function () {
 
         it('should initialize a map', inject(function (mapApiService) {
