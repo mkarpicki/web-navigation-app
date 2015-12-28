@@ -97,4 +97,23 @@ describe('map-api-service', function () {
         }));
     });
 
+    describe('initBubble', function () {
+
+        it ('should add events to map', inject(function (mapApiService) {
+
+            var someBubbleElement = {};
+
+            var fakeMap = {};
+            fakeMap.addEventListener = jasmine.createSpy();
+            H.Map = jasmine.createSpy().and.returnValue(fakeMap);
+            
+            mapApiService.init([]);
+            mapApiService.initBubble(someBubbleElement);
+
+            expect(fakeMap.addEventListener).toHaveBeenCalledWith('tap', jasmine.any(Function));
+
+        }));
+
+    });
+
 });
