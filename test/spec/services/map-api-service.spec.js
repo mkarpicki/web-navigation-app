@@ -203,6 +203,32 @@ describe('map-api-service', function () {
 
     });
 
-    
+    describe('center', function () {
+
+        it ('should call map.center', inject(function (mapApiService) {
+
+            var position = { latitude: 'lat', longitude: 'lng'},
+                fakeMap = {
+                setCenter: jasmine.createSpy(),
+                setZoom: jasmine.createSpy()
+            };
+
+            H.Map = function () {
+                return fakeMap;
+            };
+
+            mapApiService.init([]);
+
+            mapApiService.center(position);
+
+            expect(fakeMap.setCenter).toHaveBeenCalledWith({
+                lat: position.latitude,
+                lng: position.longitude
+            });
+            expect(fakeMap.setZoom).toHaveBeenCalledWith(14);
+
+        }));
+
+    });
 
 });
