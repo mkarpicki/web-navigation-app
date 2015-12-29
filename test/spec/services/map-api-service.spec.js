@@ -7,7 +7,9 @@ describe('map-api-service', function () {
         config,
 
         fakeDefaultLayers,
-        fakeUI;
+        fakeUI,
+        fakeDefaultUI,
+        fakeBubble;
 
     beforeEach(module('navigationApp.services'));
 
@@ -27,6 +29,7 @@ describe('map-api-service', function () {
         H.service = {
             Platform: function () { return fakePlatform; }
         };
+
         H.Map = jasmine.createSpy();
 
         H.mapevents = {
@@ -34,12 +37,24 @@ describe('map-api-service', function () {
             Behavior: function () {}
         };
 
-        fakeUI = {
-            createDefault: function () {}
+        fakeDefaultUI = {
+            addBubble: function () {},
+            removeBubble: function () {}
         };
 
+        fakeUI = {
+            createDefault: function () {
+                return fakeDefaultUI;
+            }
+        };
+
+        fakeBubble = {'bubble' : 'yes'};
+
         H.ui = {
-            UI: fakeUI
+            UI: fakeUI,
+            InfoBubble: function () {
+                return fakeBubble;
+            }
         };
 
 
@@ -106,7 +121,7 @@ describe('map-api-service', function () {
             var fakeMap = {};
             fakeMap.addEventListener = jasmine.createSpy();
             H.Map = jasmine.createSpy().and.returnValue(fakeMap);
-            
+
             mapApiService.init([]);
             mapApiService.initBubble(someBubbleElement);
 
@@ -114,6 +129,80 @@ describe('map-api-service', function () {
 
         }));
 
+        describe ('when assigned event called', function () {
+
+            var fakeGeo = 'geo',
+                bubbleElement = 'bubbleElement',
+                fakeMap = {
+                    screenToGeo: jasmine.createSpy().and.returnValue(fakeGeo)
+                },
+                fakeEvent = {
+                    currentPointer: {
+                        viewportX: 'x',
+                        viewportY: 'y'
+                    }
+                };
+
+            beforeEach(function () {
+
+                fakeMap.addEventListener = function (eventName, callback) {
+                    callback(fakeEvent);
+                };
+
+            });
+
+            describe('when bubble added previously', function () {
+
+                it ('should remove previous bubble', inject(function(mapApiService) {
+
+                    fakeDefaultUI.addBubble = jasmine.createSpy();
+                    fakeDefaultUI.removeBubble = jasmine.createSpy();
+
+                    H.Map = function () {
+                        return fakeMap;
+                    };
+
+                    H.ui.InfoBubble = jasmine.createSpy().and.returnValue(fakeBubble);
+
+                    mapApiService.init([]);
+                    mapApiService.initBubble(bubbleElement);
+                    mapApiService.initBubble(bubbleElement);
+
+                    expect(fakeMap.screenToGeo).toHaveBeenCalledWith(fakeEvent.currentPointer.viewportX, fakeEvent.currentPointer.viewportY);
+                    expect(H.ui.InfoBubble).toHaveBeenCalledWith(fakeGeo, { content: bubbleElement });
+                    expect(fakeDefaultUI.removeBubble).toHaveBeenCalledWith(fakeBubble);
+                    expect(fakeDefaultUI.addBubble).toHaveBeenCalledWith(fakeBubble);
+
+                }));
+
+            });
+
+            it ('should add new one to UI', inject(function (mapApiService) {
+
+                fakeDefaultUI.addBubble = jasmine.createSpy();
+                fakeDefaultUI.removeBubble = jasmine.createSpy();
+
+                H.Map = function () {
+                    return fakeMap;
+                };
+
+                H.ui.InfoBubble = jasmine.createSpy().and.returnValue(fakeBubble);
+
+                mapApiService.init([]);
+                mapApiService.initBubble(bubbleElement);
+
+                expect(fakeMap.screenToGeo).toHaveBeenCalledWith(fakeEvent.currentPointer.viewportX, fakeEvent.currentPointer.viewportY);
+                expect(H.ui.InfoBubble).toHaveBeenCalledWith(fakeGeo, { content: bubbleElement });
+                expect(fakeDefaultUI.addBubble).toHaveBeenCalledWith(fakeBubble);
+
+
+            }));
+
+
+        });
+
     });
+
+    
 
 });
