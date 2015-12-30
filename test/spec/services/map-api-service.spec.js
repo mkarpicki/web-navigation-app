@@ -7,13 +7,34 @@ describe('map-api-service', function () {
         config,
 
         fakeDefaultLayers,
+        fakePoint,
+        fakeMap,
         fakeUI,
         fakeDefaultUI,
-        fakeBubble;
+        fakeBubble,
+        fakeRect,
+        fakeGeoRect;
 
     beforeEach(module('navigationApp.services'));
 
     beforeEach(module(function ($provide) {
+
+        //fakeMap = {};
+
+        var topLeft = {
+            lat: 'tlLat',
+            lng: 'tlLng'
+        };
+
+        var bottomRight = {
+            lat: 'brLat',
+            lng: 'brLng'
+        };
+
+        fakeGeoRect = {
+            getTopLeft: function () { return topLeft; },
+            getBottomRight: function () { return bottomRight; }
+        };
 
         fakeDefaultLayers = {
             normal: {
@@ -21,8 +42,24 @@ describe('map-api-service', function () {
             }
         };
 
+        fakeRect = {
+            'rect': true
+        };
+
+        fakeMap = {
+            addObject: function () {},
+            addEventListener: function () {},
+            screenToGeo: function () {},
+            setCenter: function () {},
+            setZoom: function () {}
+        };
+
         var fakePlatform = {
             createDefaultLayers: function () { return fakeDefaultLayers; }
+        };
+
+        fakePoint = {
+            walk: function () {}
         };
 
         H = {};
@@ -30,12 +67,29 @@ describe('map-api-service', function () {
             Platform: function () { return fakePlatform; }
         };
 
-        H.Map = jasmine.createSpy();
+        H.Map = jasmine.createSpy().and.returnValue(fakeMap);
 
         H.mapevents = {
             MapEvents: function () {},
             Behavior: function () {}
         };
+
+        H.geo = {};
+
+        H.geo.Point = function () {
+            return fakePoint;
+        };
+        H.geo.Rect = {
+            fromPoints: function () {
+                return fakeGeoRect;
+            }
+        };
+
+        H.map = {};
+        H.map.Rect =  function () {
+            return fakeRect;
+        };
+
 
         fakeDefaultUI = {
             addBubble: function () {},
@@ -66,6 +120,7 @@ describe('map-api-service', function () {
         config = {};
         config.appId = 'someAppId';
         config.appCode = 'someAppCode';
+        config.AVOID_AREA_IN_METERS ='AVOID_IN_SOME_METERS';
 
         $provide.value('config', config);
 
@@ -118,7 +173,6 @@ describe('map-api-service', function () {
 
             var someBubbleElement = {};
 
-            var fakeMap = {};
             fakeMap.addEventListener = jasmine.createSpy();
             H.Map = jasmine.createSpy().and.returnValue(fakeMap);
 
@@ -207,11 +261,10 @@ describe('map-api-service', function () {
 
         it ('should call map.center', inject(function (mapApiService) {
 
-            var position = { latitude: 'lat', longitude: 'lng'},
-                fakeMap = {
-                setCenter: jasmine.createSpy(),
-                setZoom: jasmine.createSpy()
-            };
+            var position = { latitude: 'lat', longitude: 'lng'};
+
+            fakeMap.setCenter = jasmine.createSpy();
+            fakeMap.setZoom = jasmine.createSpy();
 
             H.Map = function () {
                 return fakeMap;
@@ -226,6 +279,114 @@ describe('map-api-service', function () {
                 lng: position.longitude
             });
             expect(fakeMap.setZoom).toHaveBeenCalledWith(14);
+
+        }));
+
+    });
+
+    describe('calculateRectangle', function () {
+
+        var position = { latitude: 'lat', longitude: 'lng'},
+            distance = 'distance';
+
+        //beforeEach(function () {
+
+        //});
+
+        it ('should create point', inject(function (mapApiService) {
+
+            H.geo.Point = jasmine.createSpy('H.geo.Point').and.returnValue(fakePoint);
+
+            mapApiService.init([]);
+            mapApiService.calculateRectangle(position, distance);
+
+            expect(H.geo.Point).toHaveBeenCalledWith(position.latitude, position.longitude);
+
+        }));
+
+        describe ('and distance not passed', function () {
+
+            it ('should create rectangle around point using default distance', inject(function (mapApiService) {
+
+                H.geo.Point = jasmine.createSpy('H.geo.Point').and.returnValue(fakePoint);
+                H.geo.Rect.fromPoints = jasmine.createSpy().and.returnValue(fakeGeoRect);
+
+                mapApiService.init([]);
+                mapApiService.calculateRectangle(position, null);
+
+                expect(H.geo.Rect.fromPoints).toHaveBeenCalledWith(
+                    fakePoint.walk(315, config.AVOID_AREA_IN_METERS),
+                    fakePoint.walk(135, config.AVOID_AREA_IN_METERS)
+                );
+
+            }));
+
+        });
+
+        describe ('and distance passed', function () {
+
+            it ('should create rectangle around point using passed distance', inject(function (mapApiService) {
+
+                var distance = 666;
+
+                H.geo.Point = jasmine.createSpy('H.geo.Point').and.returnValue(fakePoint);
+                H.geo.Rect.fromPoints = jasmine.createSpy().and.returnValue(fakeGeoRect);
+
+                mapApiService.init([]);
+                mapApiService.calculateRectangle(position, distance);
+
+                expect(H.geo.Rect.fromPoints).toHaveBeenCalledWith(
+                    fakePoint.walk(315, distance),
+                    fakePoint.walk(135, distance)
+                );
+
+            }));
+
+        });
+
+        it ('should add rectangle to map', inject(function (mapApiService) {
+
+            H.geo.Rect.fromPoints = jasmine.createSpy().and.returnValue(fakeGeoRect);
+
+            H.map.Rect = function (r, options) {
+
+                if (r !== fakeGeoRect) {
+                    throw 'NOT proper geo.Rect';
+                }
+
+                if (options.style.fillColor !== '#FFFFCC') {
+                    throw 'WRONG fillColor STYLE';
+                }
+
+                if (options.style.strokeColor !== '#e2e2e2') {
+                    throw 'WRONG strokeColor STYLE';
+                }
+
+                if (options.style.lineWidth !== 8) {
+                    throw 'WRONG lineWidth STYLE';
+                }
+
+                return fakeRect;
+            };
+
+            fakeMap.addObject = jasmine.createSpy('addObject');
+
+            mapApiService.init([]);
+            mapApiService.calculateRectangle(position, distance);
+
+            expect(fakeMap.addObject).toHaveBeenCalledWith(fakeRect);
+
+        }));
+
+        it ('should return rectangle bounding box', inject(function (mapApiService) {
+
+            mapApiService.init([]);
+            var r = mapApiService.calculateRectangle(position, distance);
+
+            expect(r.topLeft.latitude).toEqual(fakeGeoRect.getTopLeft().lat);
+            expect(r.topLeft.longitude).toEqual(fakeGeoRect.getTopLeft().lng);
+            expect(r.bottomRight.latitude).toEqual(fakeGeoRect.getBottomRight().lat);
+            expect(r.bottomRight.longitude).toEqual(fakeGeoRect.getBottomRight().lng);
 
         }));
 
