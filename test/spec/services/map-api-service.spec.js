@@ -502,8 +502,6 @@ describe('map-api-service', function () {
 
             it ('should remove bubble', inject(function (mapApiService) {
 
-                var someBubble = {};
-
                 //init bubble register listener that must be called to add bubble
                 fakeMap.addEventListener = function (event, callback) {
                     callback({ currentPointer: {}});
@@ -526,6 +524,71 @@ describe('map-api-service', function () {
             }));
 
         });
+
+    });
+
+    describe('removeBubble', function () {
+
+        it ('should remove bubble', inject(function (mapApiService) {
+
+            //init bubble register listener that must be called to add bubble
+            fakeMap.addEventListener = function (event, callback) {
+                callback({ currentPointer: {}});
+            };
+
+            //init bubble will create bubble
+            H.ui.InfoBubble = function () {
+
+                return fakeBubble;
+            };
+
+            fakeDefaultUI.removeBubble = jasmine.createSpy('fakeUI.removeBubble');
+
+            mapApiService.init([]);
+            mapApiService.initBubble([]);
+            mapApiService.removeBubble();
+
+            expect(fakeDefaultUI.removeBubble).toHaveBeenCalledWith(fakeBubble);
+
+        }));
+
+    });
+
+    describe('getTapPosition', function () {
+
+        it('should return position of last tapped coordinate', inject(function (mapApiService) {
+
+            var pos,
+                lat = 'lat',
+                lng = 'lng',
+
+                evt = {
+                    currentPointer: {
+                        viewportX: 'viewportX',
+                        viewportY: 'viewportY'
+                    }
+                };
+
+            fakeMap.screenToGeo = function () {
+                return {
+                    lat: lat,
+                    lng: lng
+                };
+            };
+
+            fakeMap.addEventListener = function (eventName, callback) {
+                callback(evt);
+            };
+
+            mapApiService.init([]);
+            mapApiService.initBubble({});
+
+            pos = mapApiService.getTapPosition();
+
+            expect(pos.latitude).toEqual(lat);
+            expect(pos.longitude).toEqual(lng)
+
+        }));
 
     });
 
