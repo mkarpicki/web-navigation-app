@@ -49,6 +49,8 @@ describe('map-api-service', function () {
         fakeMap = {
             addObject: function () {},
             addObjects: function () {},
+            getObjects: function () {},
+            removeObjects: function () {},
             addEventListener: function () {},
             screenToGeo: function () {},
             setCenter: function () {},
@@ -496,17 +498,34 @@ describe('map-api-service', function () {
 
         }));
 
-        //describe('when bubble was on map', function () {
-        //
-        //    it ('should remove bubble', inject(function (mapApiService) {
-        //
-        //        mapApiService.init([]);
-        //        mapApiService.initBubble([]);
-        //        mapApiService.clear();
-        //
-        //    }));
-        //
-        //});
+        describe('when bubble was on map', function () {
+
+            it ('should remove bubble', inject(function (mapApiService) {
+
+                var someBubble = {};
+
+                //init bubble register listener that must be called to add bubble
+                fakeMap.addEventListener = function (event, callback) {
+                    callback({ currentPointer: {}});
+                };
+
+                //init bubble will create bubble
+                H.ui.InfoBubble = function () {
+
+                    return fakeBubble;
+                };
+
+                fakeDefaultUI.removeBubble = jasmine.createSpy('fakeUI.removeBubble');
+
+                mapApiService.init([]);
+                mapApiService.initBubble([]);
+                mapApiService.clear();
+
+                expect(fakeDefaultUI.removeBubble).toHaveBeenCalledWith(fakeBubble);
+
+            }));
+
+        });
 
     });
 
