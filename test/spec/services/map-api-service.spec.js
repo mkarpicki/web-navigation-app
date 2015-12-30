@@ -479,4 +479,35 @@ describe('map-api-service', function () {
 
     });
 
+    describe('clear', function () {
+
+        it ('should remove objects from map', inject(function (mapApiService) {
+
+            var someObject = {};
+
+            fakeMap.getObjects = jasmine.createSpy('fakeMap.getObjects').and.returnValue(someObject);
+            fakeMap.removeObjects = jasmine.createSpy('fakeMap.removeObjects');
+
+            mapApiService.init([]);
+            mapApiService.clear();
+
+            expect(fakeMap.getObjects).toHaveBeenCalled();
+            expect(fakeMap.removeObjects).toHaveBeenCalledWith(fakeMap.getObjects());
+
+        }));
+
+        //describe('when bubble was on map', function () {
+        //
+        //    it ('should remove bubble', inject(function (mapApiService) {
+        //
+        //        mapApiService.init([]);
+        //        mapApiService.initBubble([]);
+        //        mapApiService.clear();
+        //
+        //    }));
+        //
+        //});
+
+    });
+
 });
