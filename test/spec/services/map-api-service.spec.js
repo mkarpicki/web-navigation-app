@@ -13,13 +13,13 @@ describe('map-api-service', function () {
         fakeDefaultUI,
         fakeBubble,
         fakeRect,
-        fakeGeoRect;
+        fakeGeoRect,
+        fakeStrip,
+        fakeRouteLine;
 
     beforeEach(module('navigationApp.services'));
 
     beforeEach(module(function ($provide) {
-
-        //fakeMap = {};
 
         var topLeft = {
             lat: 'tlLat',
@@ -48,10 +48,16 @@ describe('map-api-service', function () {
 
         fakeMap = {
             addObject: function () {},
+            addObjects: function () {},
             addEventListener: function () {},
             screenToGeo: function () {},
             setCenter: function () {},
-            setZoom: function () {}
+            setZoom: function () {},
+            setViewBounds: function () {}
+        };
+
+        fakeRouteLine = {
+            getBounds: function () {}
         };
 
         var fakePlatform = {
@@ -74,7 +80,13 @@ describe('map-api-service', function () {
             Behavior: function () {}
         };
 
+        fakeStrip = {
+            pushLatLngAlt: function () {}
+        };
+
         H.geo = {};
+
+        H.geo.Strip = function () {};
 
         H.geo.Point = function () {
             return fakePoint;
@@ -89,7 +101,11 @@ describe('map-api-service', function () {
         H.map.Rect =  function () {
             return fakeRect;
         };
+        H.map.Polyline = function () {
+            return fakeRouteLine;
+        };
 
+        H.map.Marker = function () {};
 
         fakeDefaultUI = {
             addBubble: function () {},
@@ -387,6 +403,77 @@ describe('map-api-service', function () {
             expect(r.topLeft.longitude).toEqual(fakeGeoRect.getTopLeft().lng);
             expect(r.bottomRight.latitude).toEqual(fakeGeoRect.getBottomRight().lat);
             expect(r.bottomRight.longitude).toEqual(fakeGeoRect.getBottomRight().lng);
+
+        }));
+
+    });
+
+    describe('drawRoute', function () {
+
+        var route,
+            waypoints,
+            color;
+
+        beforeEach(function () {
+
+            route = {
+                shape: ['1,2', '3,4']
+            };
+            waypoints = [{
+                latitude: 1,
+                longitude: 2
+            }, {
+                latitude: 3,
+                longitude: 4
+            }];
+            color = 'blue';
+
+        });
+
+        it ('should create strip and push each lat and long', inject(function (mapApiService) {
+
+            fakeStrip.pushLatLngAlt = jasmine.createSpy('pushLatLngAlt');
+
+            H.geo.Strip = jasmine.createSpy('H.geo.Strip').and.returnValue(fakeStrip);
+
+            mapApiService.init([]);
+            mapApiService.drawRoute(route, waypoints, color);
+
+            expect(H.geo.Strip).toHaveBeenCalled();
+
+        }));
+
+        it ('should add markers and route line to map', inject(function(mapApiService) {
+
+            var fakeMarkers = [];
+
+            fakeRouteLine.getBounds = jasmine.createSpy('getBounds');
+
+            fakeMap.addObjects = jasmine.createSpy('fakeMap.addObjects');
+
+            H.map.Polyline = jasmine.createSpy('new H.map.Polyline').and.returnValue(fakeRouteLine);
+
+            H.map.Marker = function () {
+                var d = new Date();
+                fakeMarkers.push(d);
+
+                return d;
+            };
+
+            H.geo.Strip = function () {
+                return fakeStrip;
+            };
+
+
+            mapApiService.init([]);
+            mapApiService.drawRoute(route, waypoints, color);
+
+            expect(H.map.Polyline).toHaveBeenCalledWith(fakeStrip, {
+                style: { strokeColor: color, lineWidth: 5 }
+            });
+
+            expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeRouteLine]);
+            expect(fakeMap.addObjects).toHaveBeenCalledWith(fakeMarkers);
 
         }));
 
