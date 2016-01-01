@@ -8,4 +8,5 @@ angular.module('navigationApp', [
     'navigationApp.controllers',
     'navigationApp.services',
     'navigationApp.directives'
-]).config( function () {});
+]);
+//]).config( function () {});
