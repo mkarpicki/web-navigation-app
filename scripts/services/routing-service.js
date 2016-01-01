@@ -41,12 +41,6 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
         areasToAvoid = [areasToAvoid.join('!')];
 
-        /**
-         * @fixme - this format will always take last added are to avoid
-         * I need to check how to pass an array to routing service to take
-         * few areas into account
-         */
-
         return buildQuery("&avoidareas={{item}}" , areasToAvoid);
     };
 

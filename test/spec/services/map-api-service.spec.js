@@ -136,8 +136,8 @@ describe('map-api-service', function () {
         $provide.value('$window', $window);
 
         config = {};
-        config.appId = 'someAppId';
-        config.appCode = 'someAppCode';
+        config.APP_ID = 'someAppId';
+        config.APP_CODE = 'someAppCode';
         config.AVOID_AREA_IN_METERS ='AVOID_IN_SOME_METERS';
 
         $provide.value('config', config);
