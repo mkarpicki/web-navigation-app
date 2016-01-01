@@ -153,6 +153,27 @@ describe('stateService', function () {
 
     });
 
+    describe('clear', function () {
+
+        it ('should clear way points and areas to avoid from state', inject(function (stateService) {
+
+            var wayPoints = ['start', 'middle','destination'];
+            var areas = ['area0','area1'];
+
+            var expectedQuery = "";
+
+            stateService.addWayPoint(wayPoints[0]);
+            stateService.addWayPoint(wayPoints[1]);
+
+            stateService.addAreaToAvoid(areas[0]);
+            stateService.addAreaToAvoid(areas[1]);
+
+            stateService.clear();
+
+            expect(stateService.serializeQuery()).toEqual(expectedQuery);
+        }));
+
+    });
 
     describe('serializeQuery', function () {
 
@@ -172,6 +193,55 @@ describe('stateService', function () {
             expect(stateService.serializeQuery()).toEqual(expectedQuery);
 
         }));
+
+    });
+
+    describe('deserializeQuery', function () {
+
+        describe('when $location.search not empty', function () {
+
+            it ('should deserialize $location query', inject(function(stateService) {
+
+                var search = {
+                    'w0': 'waypoint0',
+                    'w1': 'waypoint1',
+                    'a0': 'area0',
+                    'a1': 'area1'
+                };
+
+                _$location_.search = jasmine.createSpy('$location.search').and.returnValue(search);
+
+                var deserialized = stateService.deserializeQuery();
+
+                expect(_$location_.search).toHaveBeenCalled();
+
+                expect(deserialized.wayPoints[0]).toEqual('waypoint0');
+                expect(deserialized.wayPoints[1]).toEqual('waypoint1');
+
+                expect(deserialized.areasToAvoid[0]).toEqual('area0');
+                expect(deserialized.areasToAvoid[1]).toEqual('area1');
+            }));
+
+        });
+
+        describe('when $location.search empty', function () {
+
+            it ('should deserialize $location query', inject(function(stateService) {
+
+                var search = [];
+
+                _$location_.search = jasmine.createSpy('$location.search').and.returnValue(search);
+
+                var deserialized = stateService.deserializeQuery();
+
+                expect(_$location_.search).toHaveBeenCalled();
+
+                expect(deserialized.wayPoints.length).toEqual(0);
+                expect(deserialized.areasToAvoid.length).toEqual(0);
+            }));
+
+        });
+
 
     });
 

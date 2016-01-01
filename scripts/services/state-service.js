@@ -24,8 +24,11 @@ angular.module('navigationApp.services').factory('stateService', ['$interpolate'
 
     var deserializeQuery = function () {
 
-        var wayPoints = deserializeWayPoints($location.search()) || [];
-        var areasToAvoid = deserializeAreasToAvoid($location.search()) || [];
+        var wayPoints = deserializeWayPoints($location.search());
+        var areasToAvoid = deserializeAreasToAvoid($location.search());
+        //
+        //var wayPoints = deserializeWayPoints($location.search()) || [];
+        //var areasToAvoid = deserializeAreasToAvoid($location.search()) || [];
 
         return {
             wayPoints: wayPoints,
