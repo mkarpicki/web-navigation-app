@@ -23,10 +23,11 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             var getRoute = function (index) {
 
-                var nIndex = Number(index);
+                var nIndex = parseInt(index, 10);
 
                 if (isNaN(nIndex)) {
                     $scope.undefinedRoute = true;
+                    return;
                 }
 
                 var routes = routingService.getResults(),
@@ -46,7 +47,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
                     }
                 }
 
-                if (!route) {
+                if (!$scope.route) {
                     $scope.undefinedRoute = true;
                 }
 
