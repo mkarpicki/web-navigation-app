@@ -1,3 +1,9 @@
+/**
+ * @readme
+ * 1st. consider to remove dependency on $location.search as it is used partially now (only one way and second way I guess in controllers)
+ * or make all dependencies inside service to cut them of from controllers level - then it gives possibilities to change where state is being kept
+ * (url, session storage etc).
+ */
 angular.module('navigationApp.services').factory('stateService', ['$interpolate', '$location', function ($interpolate, $location) {
 
     'use strict';

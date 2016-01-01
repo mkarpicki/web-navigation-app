@@ -1,6 +1,5 @@
 describe('routingService', function () {
 
-
     'use strict';
 
     var config;
