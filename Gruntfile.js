@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                         //'scripts/app-events.js',
                         //'scripts/app-routing.js',
                         //'scripts/controllers/**/*.js',
-                        //'scripts/directives/**/*.js',
+                        'scripts/directives/**/*.js',
                         'scripts/services/**/*.js'
                     ]
                 },
