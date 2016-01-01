@@ -46,6 +46,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             if (!routes || routes.length === 0) {
                 $scope.noRouteFound = true;
+                return;
             }
 
             wayPointsUsedForSearch = prepareWayPoints(wayPointsUsedForSearch);
@@ -88,8 +89,9 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             routingService.clearResults();
 
-            var wayPoints = stateService.deserializeQuery().wayPoints,
-                areasToAvoid = stateService.deserializeQuery().areasToAvoid;
+            var deSerializedQuery = stateService.deserializeQuery(),
+                wayPoints = deSerializedQuery.wayPoints,
+                areasToAvoid = deSerializedQuery.areasToAvoid;
 
             if (wayPoints.length > 1) {
                 (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints));

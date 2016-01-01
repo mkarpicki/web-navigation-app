@@ -15,18 +15,13 @@ describe('RouteController', function () {
 
     beforeEach(inject(function (_$rootScope_, _$sce_, _$controller_) {
 
-        //_$routeParams_
-        //_routingService_
-
         $rootScope = _$rootScope_;
         $controller = _$controller_;
         $scope = $rootScope.$new();
 
         $sce = _$sce_;
         $routeParams = {};
-        //$routeParams = _$routeParams_;
 
-        //routingService = _routingService_;
         routingService = {
             getResults: function () {},
             clearResults: function () {},
