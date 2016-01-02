@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 
                         'scripts/app.js',
                         'scripts/app-config.js',
-                        //'scripts/app-events.js',
+                        'scripts/app-events.js',
                         //'scripts/app-routing.js',
                         'scripts/controllers/**/*.js',
                         'scripts/directives/**/*.js',

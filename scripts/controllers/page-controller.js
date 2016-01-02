@@ -8,6 +8,8 @@ angular.module('navigationApp.controllers').controller('PageController',
             longitude: 13.45264
         };
 
+        $scope.ready = false;
+
         var apply = function () {
             routingService.clearResults();
             $scope.$apply();
