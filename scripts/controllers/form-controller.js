@@ -78,8 +78,9 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         var getReady = function(){
 
-            var wayPoints = stateService.deserializeQuery().wayPoints;
-            var areasToAvoid = stateService.deserializeQuery().areasToAvoid;
+            var deSerializedQuery = stateService.deserializeQuery(),
+                wayPoints = deSerializedQuery.wayPoints,
+                areasToAvoid = deSerializedQuery.areasToAvoid;
 
             if (wayPoints.length > 0) {
 
