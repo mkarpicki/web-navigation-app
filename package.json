@@ -4,6 +4,11 @@
   "description": "Example of app showing HERE API possibilities",
   "author": "Mariusz Karpicki",
   "license": "",
+
+  "dependencies": {
+    "express": "~4.12.0"
+  },
+
   "devDependencies": {
       "grunt": "^0.4.5",
       "grunt-cli": "^0.1.13",
@@ -11,13 +16,18 @@
       "grunt-karma": "^0.8.3",
       "grunt-ngdocs": "^0.2.9",
       "grunt-text-replace": "^0.4.0",
+      "grunt-nodemon": "0.4.1",
       "karma": "^0.12.16",
       "karma-coverage": "~0.1",
       "karma-html-reporter": "^0.2.6",
       "karma-jasmine": "^0.3.0",
       "karma-phantomjs-launcher": "^0.1.4",
+      "karma-firefox-launcher": "~0.1",
+      "karma-chrome-launcher": "0.2.2",
       "karma-script-launcher": "^0.1.0",
-      "grunt-bower": "0.20.0"
+      "grunt-bower": "0.20.0",
+      "protractor": "3.0.0",
+      "grunt-protractor-runner": "3.0.0"
   },
   "jshintConfig": {
       "bitwise": false,
