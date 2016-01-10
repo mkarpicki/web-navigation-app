@@ -19,6 +19,14 @@ var getHost = function() {
     return 'http://0.0.0.0:3000';
 };
 
+var getMainPage = function () {
+    return getHost() + "/";
+};
+
+var getSearchPage = function () {
+    return getHost() + '/search';
+};
+
 describe('Navigation App', function () {
 
     var fromPosition,
@@ -51,7 +59,7 @@ describe('Navigation App', function () {
                 element.all(by.css(SELECTORS.BTN_GET_ROUTE)).first().click();
 
                 browser.getCurrentUrl().then(function(url) {
-                    expect(url).toEqual(getHost() + "/search?w0=" + fromPosition + "&w1=" + toPosition);
+                    expect(url).toEqual(getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
                 });
 
             });
@@ -60,7 +68,7 @@ describe('Navigation App', function () {
 
                 it('should redirect to search results page with middle way points', function () {
 
-                    var expectedUrl = getHost() + "/search?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + wayPoints[1] + "&w3=" + toPosition;
+                    var expectedUrl = getSearchPage() + "?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + wayPoints[1] + "&w3=" + toPosition;
 
                     element.all(by.css(SELECTORS.INPUT_FROM)).sendKeys(fromPosition);
 
@@ -121,7 +129,7 @@ describe('Navigation App', function () {
                     expect(element(by.css(SELECTORS.INPUT_TO)).getAttribute('value')).toEqual('');
 
                     var wayPoint0 = element(by.css(SELECTORS.INPUT_WAY_POINT + 0));
-                    
+
                     expect(wayPoint0.isPresent()).toBeFalsy();
 
                 });
@@ -148,7 +156,7 @@ describe('Navigation App', function () {
 
             browser.getCurrentUrl().then(function(url) {
 
-                expectedUrl = getHost() + "/?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + toPosition;
+                expectedUrl = getMainPage() + "?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + toPosition;
 
                 expect(url).toEqual(expectedUrl);
             });
@@ -157,7 +165,7 @@ describe('Navigation App', function () {
 
             browser.getCurrentUrl().then(function(url) {
 
-                expectedUrl = getHost() + "/?w0=" + fromPosition + "&w1=" + toPosition;
+                expectedUrl = getMainPage() + "?w0=" + fromPosition + "&w1=" + toPosition;
 
                 expect(url).toEqual(expectedUrl);
             });
