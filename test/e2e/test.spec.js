@@ -11,7 +11,8 @@ var SELECTORS = {
     INPUT_WAY_POINT: '#waypoint-',
     BTN_ADD_WAY_POINT: 'button[data-ng-click="addWayPoint();"]',
     BTN_REMOVE_WAY_POINT: 'button[data-ng-click="removeWayPoint($index);"]',
-    BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]'
+    BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]',
+    BTN_CLEAR: 'button[data-ng-click="clear();"]'
 };
 
 var getHost = function() {
@@ -55,7 +56,16 @@ describe('Navigation App', function () {
 
         it('should provide clear functionality that rests form', function () {
 
+            element.all(by.css(SELECTORS.INPUT_FROM)).sendKeys(fromPosition);
+            element.all(by.css(SELECTORS.INPUT_TO)).sendKeys(toPosition);
 
+            expect(element(by.css(SELECTORS.INPUT_FROM)).getAttribute('value')).toEqual(fromPosition);
+            expect(element(by.css(SELECTORS.INPUT_TO)).getAttribute('value')).toEqual(toPosition);
+
+            element.all(by.css(SELECTORS.BTN_CLEAR)).first().click();
+
+            expect(element(by.css(SELECTORS.INPUT_FROM)).getAttribute('value')).toEqual('');
+            expect(element(by.css(SELECTORS.INPUT_TO)).getAttribute('value')).toEqual('');
 
         });
 

@@ -139,8 +139,15 @@ describe('FormController', function () {
 
             $scope.$apply();
 
+            $scope.from = '52';
+            $scope.to = '13';
+            $scope.wayPoints = ['52,13'];
+
             $scope.clear();
 
+            expect($scope.from).toEqual(null);
+            expect($scope.to).toEqual(null);
+            expect($scope.wayPoints).toEqual([]);
             expect(stateService.clear).toHaveBeenCalled();
 
         });

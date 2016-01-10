@@ -54,6 +54,10 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.clear = function () {
 
+            $scope.from = null;
+            $scope.to = null;
+            $scope.wayPoints = [];
+
             stateService.clear();
             $location.url('/').replace();
         };
