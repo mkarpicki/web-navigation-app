@@ -27,7 +27,7 @@
       "karma-script-launcher": "^0.1.0",
       "grunt-bower": "0.20.0",
       "protractor": "2.5.1",
-      "grunt-protractor-runner": "3.0.0",
+      "grunt-protractor-runner": "2.1.2",
       "lodash": "3.10.1"
   },
   "jshintConfig": {
