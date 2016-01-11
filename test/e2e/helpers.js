@@ -1,0 +1,30 @@
+var SELECTORS = {
+    INPUT_FROM: '#from',
+    INPUT_TO: '#to',
+    INPUT_WAY_POINT: '#waypoint-',
+    BTN_ADD_WAY_POINT: 'button[data-ng-click="addWayPoint();"]',
+    BTN_REMOVE_WAY_POINT: 'button[data-ng-click="removeWayPoint($index);"]',
+    BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]',
+    BTN_CLEAR: 'button[data-ng-click="clear();"]'
+};
+
+var getHost = function() {
+    return 'http://0.0.0.0:3000';
+};
+
+var getMainPage = function () {
+    return getHost() + "/";
+};
+
+var getSearchPage = function () {
+    return getHost() + '/search';
+};
+
+var helpers = {
+    SELECTORS: SELECTORS,
+
+    getMainPage: getMainPage,
+    getSearchPage: getSearchPage
+};
+
+module.exports = helpers;
