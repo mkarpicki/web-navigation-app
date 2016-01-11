@@ -127,33 +127,6 @@ module.exports = function(grunt) {
                     'karma-chrome-launcher',
                     'karma-html-reporter'
                 ]
-            //},
-            //e2e: {
-            //
-            //    /**
-            //     * @README
-            //     * http://angular.github.io/protractor/#/getting-started
-            //     **/
-            //
-            //    options: {
-            //        files: [
-            //            'test/e2e/**/*.js'
-            //        ]
-            //    },
-            //
-            //    frameworks: ['jasmine'],
-            //
-            //    browsers: ['Chrome'],
-            //
-            //    //preprocessors: {
-            //    //    './scripts/**/*.js': ['coverage']
-            //    //},
-            //
-            //    plugins: [
-            //        'karma-jasmine',
-            //        'karma-chrome-launcher',
-            //        'karma-firefox-launcher'
-            //    ]
             }
         },
         bower: {
@@ -173,7 +146,8 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('tests', [
-        'karma'
+        'tests:frontend',
+        'tests:e2e'
     ]);
 
     grunt.registerTask('start', [
