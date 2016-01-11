@@ -150,7 +150,7 @@ module.exports = function(grunt) {
         'tests:e2e'
     ]);
 
-    grunt.registerTask('start', [
+    grunt.registerTask('server', [
         'nodemon:dev'
     ]);
 
