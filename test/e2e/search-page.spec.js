@@ -100,4 +100,58 @@ describe('Search page', function() {
 
     });
 
+    describe('when valid start and destination points in query params', function () {
+
+        it ('should display that there is not enough info to search', function () {
+
+            browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
+
+            var notEnoughInformationMessage = element(by.css(helpers.SELECTORS.SEARCH_PAGE.NOT_ENOUGH_INFORMATION));
+            var noRouteFoundMessage = element(by.css(helpers.SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND));
+            var resultsList = element(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST));
+
+            expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
+            expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
+            expect(resultsList.isDisplayed()).toBeTruthy();
+
+        });
+
+        describe('when valid middle way point in query params', function () {
+
+            it ('should display that there is not enough info to search', function () {
+
+                browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + toPosition);
+
+                var notEnoughInformationMessage = element(by.css(helpers.SELECTORS.SEARCH_PAGE.NOT_ENOUGH_INFORMATION));
+                var noRouteFoundMessage = element(by.css(helpers.SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND));
+                var resultsList = element(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST));
+
+                expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
+                expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
+                expect(resultsList.isDisplayed()).toBeTruthy();
+
+            });
+
+        });
+
+        describe('when NOT valid middle way point in query params', function () {
+
+            it ('should display that there is not enough info to search', function () {
+
+                browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + "abcdefg" + "&w2=" + toPosition);
+
+                var notEnoughInformationMessage = element(by.css(helpers.SELECTORS.SEARCH_PAGE.NOT_ENOUGH_INFORMATION));
+                var noRouteFoundMessage = element(by.css(helpers.SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND));
+                var resultsList = element(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST));
+
+                expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
+                expect(noRouteFoundMessage.isDisplayed()).toBeTruthy();
+                expect(resultsList.isDisplayed()).toBeFalsy();
+
+            });
+
+        });
+
+    });
+
 });
