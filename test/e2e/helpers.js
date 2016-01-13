@@ -11,7 +11,8 @@ var SELECTORS = {
     SEARCH_PAGE: {
         NOT_ENOUGH_INFORMATION: 'p[data-ng-show="notEnoughInformation"]',
         NO_ROUTES_FOUND: 'p[data-ng-show="noRouteFound"]',
-        RESULTS_LIST: 'ul[data-ng-hide="noRouteFound || notEnoughInformation"]'
+        RESULTS_LIST: 'ul[data-ng-hide="noRouteFound || notEnoughInformation"]',
+        BACK_LINK: 'a[data-ng-click="back();"]'
     }
 };
 
