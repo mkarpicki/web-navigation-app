@@ -69,6 +69,36 @@ describe('Search page', function() {
 
         });
 
+        describe("and visited page before", function () {
+
+            describe('when clicking on back link', function () {
+
+                it('should move user to previous page', function () {
+
+                    browser.get(helpers.getMainPage());
+                    browser.get(helpers.getSearchPage());
+
+                    notEnoughInformationMessageBackLink = element(by.css(
+                        helpers.SELECTORS.SEARCH_PAGE.NOT_ENOUGH_INFORMATION +
+                        " " +
+                        helpers.SELECTORS.SEARCH_PAGE.BACK_LINK));
+
+                    expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
+
+                    notEnoughInformationMessageBackLink.click();
+
+                    browser.getCurrentUrl().then(function(url) {
+
+                        expect(url).toEqual(helpers.getMainPage());
+                    });
+
+
+                });
+
+            });
+
+        });
+
     });
 
     describe('when opened with only start point in query params', function () {
@@ -164,6 +194,37 @@ describe('Search page', function() {
             expect(resultsList.isDisplayed()).toBeFalsy();
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeTruthy();
+
+        });
+
+        describe("and visited page before", function () {
+
+            describe('when clicking on back link', function () {
+
+                it('should move user to previous page', function () {
+
+                    browser.get(helpers.getMainPage());
+                    browser.get(helpers.getSearchPage() + "/?w0=" + "a" + "&w1=" + "b");
+
+                    noRouteFoundMessageBackLink = element(by.css(
+                        helpers.SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND +
+                        " " +
+                        helpers.SELECTORS.SEARCH_PAGE.BACK_LINK));
+
+
+                    expect(noRouteFoundMessageBackLink.isDisplayed()).toBeTruthy();
+
+                    noRouteFoundMessageBackLink.click();
+
+                    browser.getCurrentUrl().then(function(url) {
+
+                        expect(url).toEqual(helpers.getMainPage());
+                    });
+
+
+                });
+
+            });
 
         });
 
