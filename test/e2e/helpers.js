@@ -28,11 +28,16 @@ var getSearchPage = function () {
     return getHost() + '/search';
 };
 
+var getRouteDetailsPage = function () {
+    return getHost() + '/route';
+};
+
 var helpers = {
     SELECTORS: SELECTORS,
 
     getMainPage: getMainPage,
-    getSearchPage: getSearchPage
+    getSearchPage: getSearchPage,
+    getRouteDetailsPage: getRouteDetailsPage
 };
 
 module.exports = helpers;
