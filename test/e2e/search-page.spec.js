@@ -258,26 +258,26 @@ describe('Search page', function() {
 
         });
 
-        //describe('when clicked on result', function () {
-        //
-        //    it('should redirect to route details page', function () {
-        //
-        //        var number = 0;
-        //
-        //        browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
-        //
-        //        resultsList = element.all(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST) + ' li');
-        //
-        //        resultsList.first().click();
-        //
-        //        browser.getCurrentUrl().then(function(url) {
-        //
-        //            expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
-        //        });
-        //
-        //    });
-        //
-        //});
+        describe('when clicked on result', function () {
+
+            it('should redirect to route details page', function () {
+
+                var number = 0;
+
+                browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
+                
+                resultsList = element.all(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li'));
+
+                resultsList.first().click();
+
+                browser.getCurrentUrl().then(function(url) {
+
+                    expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
+                });
+
+            });
+
+        });
 
         describe('when valid middle way point in query params', function () {
 
