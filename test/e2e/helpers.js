@@ -15,7 +15,8 @@ var SELECTORS = {
         BACK_LINK: 'a[data-ng-click="back();"]'
     },
     ROUTE_PAGE: {
-        NO_ROUTE_FOUND: 'p[data-ng-show="undefinedRoute"]'
+        NO_ROUTE_FOUND: 'p[data-ng-show="undefinedRoute"]',
+        ROUTE_MANEUVERS: 'ul[data-ng-hide="undefinedRoute"]'
     }
 };
 

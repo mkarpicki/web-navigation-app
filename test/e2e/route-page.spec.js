@@ -74,6 +74,20 @@ describe('Route page', function() {
 
         it ('should display route details', function () {
 
+            browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
+
+            var notExisitngRoutePage = helpers.getRouteDetailsPage() + "/0",
+                list = element(by.css(helpers.SELECTORS.ROUTE_PAGE.ROUTE_MANEUVERS));
+
+            browser.get(notExisitngRoutePage);
+
+            browser.getCurrentUrl().then(function(url) {
+
+                expect(url).toEqual(notExisitngRoutePage);
+            });
+
+            expect(list.isDisplayed()).toBeFalsy();
+
         });
     });
 });
