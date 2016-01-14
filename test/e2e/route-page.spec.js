@@ -76,17 +76,18 @@ describe('Route page', function() {
 
             browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
 
-            var notExisitngRoutePage = helpers.getRouteDetailsPage() + "/0",
-                list = element(by.css(helpers.SELECTORS.ROUTE_PAGE.ROUTE_MANEUVERS));
+            var existingRoutePage = helpers.getRouteDetailsPage() + "/0",
+                maneuverList = element(by.css(helpers.SELECTORS.ROUTE_PAGE.ROUTE_MANEUVERS)),
+                resultsList = element.all(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li'));
 
-            browser.get(notExisitngRoutePage);
+            resultsList.first().click();
 
             browser.getCurrentUrl().then(function(url) {
 
-                expect(url).toEqual(notExisitngRoutePage);
+                expect(url).toEqual(existingRoutePage);
             });
 
-            expect(list.isDisplayed()).toBeFalsy();
+            expect(maneuverList.isDisplayed()).toBeTruthy();
 
         });
     });

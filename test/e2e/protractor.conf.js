@@ -3,7 +3,8 @@ exports.config = {
     specs: [
         'form-page.spec.js',
         'search-page.spec.js',
-        'route-page.spec.js'
+        'route-page.spec.js',
+        'navigation.spec.js'
     ],
 
     directConnect: true,
