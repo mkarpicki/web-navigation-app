@@ -4,9 +4,7 @@
  * This is only example script with e2e tests supported by protractor 2.5.1
  * http://angular.github.io/protractor/#/tutorial
  * @todo
- * add back button when list displayed
- * add test for back button (on UI) in all cases
- * add test to go to route details page (by clicking on found route)
+ * add back button when list displayed (??)
  * **/
 
 var helpers = require('./helpers.js');
@@ -33,11 +31,6 @@ describe('Search page', function() {
         wayPoints.push('52.5231951048162,13.430666774511337');
         wayPoints.push('52.5182695619384,13.434885218739595');
 
-    });
-
-    beforeEach(function () {
-
-        //browser.get(helpers.getSearchPage());
     });
 
     describe('when opened without query params', function () {
@@ -258,14 +251,14 @@ describe('Search page', function() {
 
         });
 
-        describe('when clicked on result', function () {
+        describe('when clicked on first result', function () {
 
             it('should redirect to route details page', function () {
 
                 var number = 0;
 
                 browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
-                
+
                 resultsList = element.all(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li'));
 
                 resultsList.first().click();

@@ -2,7 +2,8 @@ exports.config = {
     seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
     specs: [
         'form-page.spec.js',
-        'search-page.spec.js'
+        'search-page.spec.js',
+        'route-page.spec.js'
     ],
 
     directConnect: true,
