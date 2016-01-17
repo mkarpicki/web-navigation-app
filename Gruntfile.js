@@ -63,7 +63,7 @@ module.exports = function(grunt) {
                         'public/scripts/app.js',
                         'public/scripts/app-config.js',
                         'public/scripts/app-events.js',
-                        //'public/scripts/app-routing.js',
+                        'public/scripts/app-routing.js',
                         'public/scripts/controllers/**/*.js',
                         'public/scripts/directives/**/*.js',
                         'public/scripts/services/**/*.js',
