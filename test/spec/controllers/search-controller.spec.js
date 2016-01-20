@@ -249,34 +249,6 @@ describe('SearchController', function () {
 
     });
 
-    describe('selectRoute', function () {
-
-        it('should set $location.url to /route/index', function () {
-
-            var someIndex = 666;
-
-            $location.url = jasmine.createSpy();
-
-            $controller("SearchController", {
-                $scope: $scope,
-                $sce: $sce,
-                $location: $location,
-                $window: $window,
-                routingService: routingService,
-                colorThemesService: colorThemesService,
-                stateService: stateService
-            });
-
-            $scope.$apply();
-
-            $scope.selectRoute(someIndex);
-
-            expect($location.url).toHaveBeenCalledWith('/route/' + someIndex );
-
-        });
-
-    });
-
     describe('trustedText', function (){
 
         it ('should return text with HTML', function () {

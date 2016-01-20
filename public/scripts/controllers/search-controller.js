@@ -4,10 +4,6 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
         'use strict';
 
-        $scope.selectRoute = function (index) {
-            $location.url('/route/' + index );
-        };
-
         $scope.back = function () {
             $window.history.back();
         };
