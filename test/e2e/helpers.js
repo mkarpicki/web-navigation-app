@@ -21,7 +21,7 @@ var SELECTORS = {
 };
 
 var getHost = function() {
-    return 'http://0.0.0.0:3000';
+    return browser.baseUrl;
 };
 
 var getMainPage = function () {

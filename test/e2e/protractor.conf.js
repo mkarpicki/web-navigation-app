@@ -1,5 +1,6 @@
 exports.config = {
     seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
+    baseUrl: 'http://localhost:3000',
     specs: [
         'form-page.spec.js',
         'search-page.spec.js',
@@ -12,6 +13,7 @@ exports.config = {
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
         'browserName': 'chrome'
+        //'browserName': 'firefox'
     },
 
     // Framework to use. Jasmine is recommended.
