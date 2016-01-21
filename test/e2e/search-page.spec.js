@@ -255,19 +255,24 @@ describe('Search page', function() {
 
             it('should redirect to route details page', function () {
 
-                var number = 0;
+                var number = 0,
+                    listItemSelector = helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a',
+                    firstItem;
 
                 browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
 
-                resultsList = element.all(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li'));
+                firstItem = element(by.css(listItemSelector));
 
-                resultsList.first().click();
+                browser.wait(firstItem.isDisplayed()).then(function () {
 
-                browser.getCurrentUrl().then(function(url) {
+                    firstItem.click();
 
-                    expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
+                    browser.getCurrentUrl().then(function (url) {
+
+                        expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
+                    });
                 });
-
+                
             });
 
         });
