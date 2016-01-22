@@ -69,39 +69,12 @@ describe('Navigation between pages', function() {
 
                         });
 
-                        //browser.getCurrentUrl().then(function(url) {
-                        //    expect(url).toEqual(helpers.getMainPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
-                        //});
-
                     });
 
                 });
 
-
-
             });
         });
-
-
-
-
-
-
-
-        //
-        //
-        //browser.navigate().forward();
-        //
-        //browser.getCurrentUrl().then(function(url) {
-        //    expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
-        //});
-        //
-        //browser.navigate().forward();
-        //
-        //browser.getCurrentUrl().then(function(url) {
-        //
-        //    expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + routeNumber);
-        //});
 
     });
 });
