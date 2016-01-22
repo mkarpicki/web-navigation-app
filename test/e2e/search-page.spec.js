@@ -272,7 +272,7 @@ describe('Search page', function() {
                         expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
                     });
                 });
-                
+
             });
 
         });

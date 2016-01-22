@@ -39,42 +39,69 @@ describe('Navigation between pages', function() {
             expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
         });
 
-        resultsList = element.all(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li'));
+        var number = 0,
+            listItemSelector = helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a',
+            firstItem;
 
-        resultsList.first().click(); // that is why routeNumber is 0
+        //browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
 
-        browser.getCurrentUrl().then(function(url) {
+        firstItem = element(by.css(listItemSelector));
 
-            expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + routeNumber);
+        browser.wait(firstItem.isDisplayed()).then(function () {
+
+            firstItem.click();
+
+            browser.getCurrentUrl().then(function (url) {
+
+                expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
+
+                browser.navigate().back().then(function () {
+
+                    browser.getCurrentUrl().then(function(url) {
+
+                        expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
+
+                        browser.navigate().forward().then(function () {
+
+                            browser.getCurrentUrl().then(function(url) {
+                                expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + routeNumber);
+                            });
+
+                        });
+
+                        //browser.getCurrentUrl().then(function(url) {
+                        //    expect(url).toEqual(helpers.getMainPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
+                        //});
+
+                    });
+
+                });
+
+
+
+            });
         });
 
-        browser.navigate().back();
-
-        browser.getCurrentUrl().then(function(url) {
-            expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
-
-        });
-
-        browser.navigate().back();
 
 
-        browser.getCurrentUrl().then(function(url) {
-            expect(url).toEqual(helpers.getMainPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
-        });
 
 
-        browser.navigate().forward();
 
-        browser.getCurrentUrl().then(function(url) {
-            expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
-        });
 
-        browser.navigate().forward();
-
-        browser.getCurrentUrl().then(function(url) {
-
-            expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + routeNumber);
-        });
+        //
+        //
+        //browser.navigate().forward();
+        //
+        //browser.getCurrentUrl().then(function(url) {
+        //    expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
+        //});
+        //
+        //browser.navigate().forward();
+        //
+        //browser.getCurrentUrl().then(function(url) {
+        //
+        //    expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + routeNumber);
+        //});
 
     });
 });

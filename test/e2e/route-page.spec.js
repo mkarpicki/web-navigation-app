@@ -74,20 +74,26 @@ describe('Route page', function() {
 
         it ('should display route details', function () {
 
+            var number = 0,
+                maneuverList = element(by.css(helpers.SELECTORS.ROUTE_PAGE.ROUTE_MANEUVERS)),
+                listItemSelector = helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a';
+
+
             browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
 
-            var existingRoutePage = helpers.getRouteDetailsPage() + "/0",
-                maneuverList = element(by.css(helpers.SELECTORS.ROUTE_PAGE.ROUTE_MANEUVERS)),
-                resultsList = element.all(by.css(helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li'));
+            var firstRouteItem = element(by.css(listItemSelector));
 
-            resultsList.first().click();
+            browser.wait(firstRouteItem.isDisplayed()).then(function () {
 
-            browser.getCurrentUrl().then(function(url) {
+                firstRouteItem.click();
 
-                expect(url).toEqual(existingRoutePage);
+                browser.getCurrentUrl().then(function (url) {
+
+                    expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
+
+                    expect(maneuverList.isDisplayed()).toBeTruthy();
+                });
             });
-
-            expect(maneuverList.isDisplayed()).toBeTruthy();
 
         });
     });
