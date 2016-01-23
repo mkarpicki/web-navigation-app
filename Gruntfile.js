@@ -14,7 +14,8 @@ module.exports = function(grunt) {
                         PORT: '3000'
                     }
                 }
-            }
+            },
+            ignore: ['test/**/*.js', 'test-results/**/*.js']
         },
 
         jshint: {
