@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$scope", '$location', 'events', 'routingService', 'stateService', function($scope, $location, events, routingService, stateService) {
+    ["$scope", '$location', 'events', 'routingService', 'stateService', '$window', function($scope, $location, events, routingService, stateService, $window) {
 
         'use strict';
 
@@ -47,6 +47,39 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
+        var onGeoLocationSuccess = function (position) {
+
+            console.log('onGeoLocationSuccess', position);
+            $scope.$broadcast(events.POSITION_EVENT, {
+                eventType: events.POSITION_EVENT_TYPES.CHANGE,
+                param: position
+            });
+            //$scope.$apply();
+        };
+
+        var onGeoLocationError = function (error) {
+
+            console.log('onGeoLocationError', error);
+            $scope.$broadcast(events.POSITION_EVENT, {
+                eventType: events.POSITION_EVENT_TYPES.ERROR,
+                param: error
+            });
+            //$scope.$apply();
+        };
+
+        var initGeoLocation = function (geoLocationObject) {
+
+            if (geoLocationObject) {
+                geoLocationObject.getCurrentPosition(function (position) {
+
+                    onGeoLocationSuccess(position);
+
+                    geoLocationObject.watchPosition(onGeoLocationSuccess);
+
+                }, onGeoLocationError);
+            }
+        };
+
         $scope.$on(events.MAP_EVENT, function (event, params) {
 
             var geoParam = params.geoParam;
@@ -84,7 +117,12 @@ angular.module('navigationApp.controllers').controller('PageController',
         });
 
         $scope.pageReady = function () {
+
             $scope.ready = true;
+
+            initGeoLocation($window.navigator.geolocation);
+
         };
+
 
 }]);

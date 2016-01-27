@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$scope", '$location', '$timeout', 'routingService', 'stateService',
-        function($scope, $location, $timeout, routingService, stateService) {
+    ["$scope", '$location', '$timeout', 'routingService', 'stateService', 'events',
+        function($scope, $location, $timeout, routingService, stateService, events) {
 
         'use strict';
 
@@ -10,6 +10,8 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.wayPoints = [];
         $scope.areasToAvoid = [];
+
+        $scope.geoLocation = null;
 
         $scope.getRoute = function () {
 
@@ -99,6 +101,20 @@ angular.module('navigationApp.controllers').controller('FormController',
             }
 
             routingService.clearResults();
+
+            $scope.$on(events.POSITION_EVENT, function (event, params) {
+
+                if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
+
+                    //console.log('form position changed: ', params.param);
+
+                } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
+
+                    //console.log('form position error: ', params.param);
+                }
+
+
+            });
 
         };
 
