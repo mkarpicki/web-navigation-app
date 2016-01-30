@@ -49,7 +49,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var onGeoLocationSuccess = function (position) {
 
-            console.log('onGeoLocationSuccess', position);
+            //console.log('onGeoLocationSuccess', position);
             $scope.$broadcast(events.POSITION_EVENT, {
                 eventType: events.POSITION_EVENT_TYPES.CHANGE,
                 param: position
@@ -59,7 +59,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var onGeoLocationError = function (error) {
 
-            console.log('onGeoLocationError', error);
+            //console.log('onGeoLocationError', error);
             $scope.$broadcast(events.POSITION_EVENT, {
                 eventType: events.POSITION_EVENT_TYPES.ERROR,
                 param: error
