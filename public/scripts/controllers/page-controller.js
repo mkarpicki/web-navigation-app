@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$scope", '$location', 'events', 'routingService', 'stateService', 'geoLocationService', function($scope, $location, events, routingService, stateService, geoLoctionService) {
+    ["$scope", '$location', 'events', 'routingService', 'stateService', 'geoLocationService', function($scope, $location, events, routingService, stateService, geoLocationService) {
 
         'use strict';
 
@@ -126,7 +126,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             initPositionListener();
 
-            geoLoctionService.watchPosition();
+            geoLocationService.watchPosition();
         };
 
 

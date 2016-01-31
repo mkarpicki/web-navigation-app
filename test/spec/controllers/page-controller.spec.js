@@ -10,6 +10,7 @@ describe('PageController', function () {
 
         routingService,
         stateService,
+        geoLocationService,
         events,
 
         fakeDeSerializedQuery,
@@ -33,6 +34,10 @@ describe('PageController', function () {
 
         routingService = {
             clearResults: function () {}
+        };
+
+        geoLocationService = {
+            watchPosition: function () {}
         };
 
         fakeDeSerializedQuery = {
@@ -66,7 +71,7 @@ describe('PageController', function () {
         };
 
         /**
-         * @todo - maybe load reall events value instead o creating copied mock
+         * @todo - maybe load real events value instead o creating copied mock
          * @type {{MAP_EVENT: string, MAP_EVENT_TYPES: {}}}
          */
         events = {
@@ -76,6 +81,12 @@ describe('PageController', function () {
                 ADD_WAY_POINT: 1,
                 OVERWRITE_DESTINATION_POINT: 2,
                 AVOID_AREA: 3
+            },
+
+            POSITION_EVENT_TYPES: {
+
+                CHANGE: 0,
+                ERROR: 1
             }
         };
 
@@ -89,7 +100,8 @@ describe('PageController', function () {
                 $scope: $scope,
                 events: events,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                geoLocationService: geoLocationService
             });
 
             $scope.$apply();
@@ -117,7 +129,8 @@ describe('PageController', function () {
                 $location: $location,
                 events: events,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                geoLocationService: geoLocationService
             });
 
             $scope.$apply();
@@ -142,7 +155,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();
@@ -168,7 +182,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();
@@ -194,7 +209,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();
@@ -220,7 +236,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();

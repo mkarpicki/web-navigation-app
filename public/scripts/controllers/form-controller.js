@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$scope", '$location', '$timeout', 'routingService', 'stateService', 'events',
-        function($scope, $location, $timeout, routingService, stateService, events) {
+    ["$scope", '$location', '$timeout', 'routingService', 'stateService',
+        function($scope, $location, $timeout, routingService, stateService) {
 
         'use strict';
 

@@ -92,11 +92,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
         currentPositionMarker = new H.map.Circle({lat: 52.51, lng: 13.4}, 20);
 
-
         map.addObject(currentPositionMarker);
-
-        window.mariusz= map;
-
 
     };
 

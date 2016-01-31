@@ -10,6 +10,7 @@ describe('map-api-service', function () {
         fakePoint,
         fakeMap,
         fakeUI,
+        fakeCircle,
         fakeDefaultUI,
         fakeBubble,
         fakeRect,
@@ -49,7 +50,7 @@ describe('map-api-service', function () {
         fakeMap = {
             addObject: function () {},
             addObjects: function () {},
-            getObjects: function () {},
+            getObjects: function () { return []; },
             removeObjects: function () {},
             addEventListener: function () {},
             screenToGeo: function () {},
@@ -86,6 +87,11 @@ describe('map-api-service', function () {
             pushLatLngAlt: function () {}
         };
 
+        fakeCircle = {
+            setCenter: function () {},
+            setVisibility: function () {}
+        };
+
         H.geo = {};
 
         H.geo.Strip = function () {};
@@ -108,6 +114,10 @@ describe('map-api-service', function () {
         };
 
         H.map.Marker = function () {};
+
+        H.map.Circle = function () {
+            return fakeCircle;
+        };
 
         fakeDefaultUI = {
             addBubble: function () {},
@@ -173,14 +183,12 @@ describe('map-api-service', function () {
 
         it('should create default UI component', inject(function (mapApiService) {
 
-            var map = {};
-
-            H.Map = jasmine.createSpy().and.returnValue(map);
+            H.Map = jasmine.createSpy().and.returnValue(fakeMap);
             H.ui.UI.createDefault = jasmine.createSpy();
 
             mapApiService.init([]);
 
-            expect(H.ui.UI.createDefault).toHaveBeenCalledWith(map, fakeDefaultLayers);
+            expect(H.ui.UI.createDefault).toHaveBeenCalledWith(fakeMap, fakeDefaultLayers);
 
         }));
     });
@@ -206,7 +214,8 @@ describe('map-api-service', function () {
             var fakeGeo = 'geo',
                 bubbleElement = 'bubbleElement',
                 fakeMap = {
-                    screenToGeo: jasmine.createSpy().and.returnValue(fakeGeo)
+                    screenToGeo: jasmine.createSpy().and.returnValue(fakeGeo),
+                    addObject: function () {}
                 },
                 fakeEvent = {
                     currentPointer: {
@@ -485,7 +494,7 @@ describe('map-api-service', function () {
 
         it ('should remove objects from map', inject(function (mapApiService) {
 
-            var someObject = {};
+            var someObject = [];
 
             fakeMap.getObjects = jasmine.createSpy('fakeMap.getObjects').and.returnValue(someObject);
             fakeMap.removeObjects = jasmine.createSpy('fakeMap.removeObjects');
