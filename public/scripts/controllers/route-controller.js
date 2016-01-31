@@ -6,6 +6,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             $scope.route = null;
             $scope.undefinedRoute = false;
+            $scope.driveModeEnabled = false;
 
             $scope.getManeuver = function () {
                 var maneuver = [];
@@ -19,6 +20,14 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             $scope.trustedText = function (text) {
                 return $sce.trustAsHtml(text);
+            };
+
+            $scope.enableDriveMode = function () {
+                $scope.driveModeEnabled = true;
+            };
+
+            $scope.disableDriveMode = function () {
+                $scope.driveModeEnabled = false;
             };
 
             var getRoute = function (index) {
