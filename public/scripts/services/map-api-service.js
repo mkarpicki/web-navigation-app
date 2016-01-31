@@ -10,7 +10,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         map,
         ui,
         bubble,
-        tappedCoordinates;
+        tappedCoordinates,
+        currentPositionMarker;
 
 
     //Step 1: initialize communication with the platform
@@ -73,7 +74,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var init = function (element) {
 
-        //Step 2: initialize a map  - not specificing a location will give a whole world view.
+        //Step 2: initialize a map  - not specifying a location will give a whole world view.
         map = new H.Map(element[0], defaultLayers.normal.map);
 
         //Step 3: make the map interactive
@@ -84,7 +85,16 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         // Create the default UI components
         ui = H.ui.UI.createDefault(map, defaultLayers);
 
+        // Create maker for displaying current position
+        var icon = new H.map.Icon('images/current-position.png');
+
+        currentPositionMarker = new H.map.Marker({ lat: 52.4928606, lng: 13.4600705 }, { icon: icon });
+
+        map.addObject(currentPositionMarker);
+
     };
+
+
 
     var initBubble = function (bubbleElement) {
 
@@ -121,6 +131,20 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
     var clear = function () {
         map.removeObjects(map.getObjects());
         removeBubble();
+    };
+
+    var updateCurrentPosition = function (position) {
+
+        if (currentPositionMarker) {
+
+            currentPositionMarker.setVisibility(true);
+            currentPositionMarker.setPosition({
+                lat: position.latitude,
+                lng: position.longitude
+            });
+
+        }
+
     };
 
     var drawRoute = function (route, waypoints, color) {
@@ -176,7 +200,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         drawRoute: drawRoute,
         clear: clear,
         getTapPosition: getTapPosition,
-        removeBubble: removeBubble
+        removeBubble: removeBubble,
+        updateCurrentPosition: updateCurrentPosition
     };
 
 }]);

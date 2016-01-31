@@ -39,7 +39,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         var overwrittenStartItem = node.getElementsByClassName('from')[0],
             newWayPointItem = node.getElementsByClassName('waypoint')[0],
             overwrittenDestinationItem = node.getElementsByClassName('to')[0],
-            avoidItem =node.getElementsByClassName('avoid')[0];
+            avoidItem = node.getElementsByClassName('avoid')[0];
 
 
         attachMenuAction(overwrittenStartItem, function () {
@@ -76,16 +76,46 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
         });
 
-        scope.$watch(attrs.centerPosition, function (centerPosition) {
+        //scope.$on(events.POSITION_EVENT, function (event, params) {
+        //
+        //    if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
+        //
+        //        var geoPosition = params.param;
+        //
+        //        console.log('map position: ', params.param);
+        //        console.log(geoPosition.coords.latitude, ' ', geoPosition.coords.longitude);
+        //
+        //        var currentPosition = {
+        //            latitude: geoPosition.coords.latitude,
+        //            longitude: geoPosition.coords.longitude
+        //        };
+        //
+        //        if (currentPosition) {
+        //            mapApiService.center(currentPosition);
+        //            mapApiService.updateCurrentPosition(currentPosition);
+        //        }
+        //
+        //    } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
+        //
+        //        console.log('map position error: ', params.param);
+        //    }
+        //
+        //
+        //});
 
-            if (centerPosition) {
-                mapApiService.center(centerPosition);
+        scope.$watch(attrs.currentPosition, function (currentPosition) {
+
+            console.log('map:', currentPosition);
+
+            if (currentPosition) {
+                mapApiService.center(currentPosition);
+                mapApiService.updateCurrentPosition(currentPosition);
             }
         }, true);
 
         /**
          * @todo - re think this (maybe no good idea to watch something that in theory will not change to often)
-         * @todo - move that to controller of directive
+         * @todo - move that to controller of directive (or even to controller that uses map and make attr to be used in directive)
          */
         scope.$watch(function () { return routingService.getResults(); }, function (proposedRoutes) {
 
@@ -102,7 +132,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
     };
 
     var scope = {
-        centerPosition: '=centerPosition'
+        currentPosition: '=currentPosition'
     };
 
     return {
