@@ -1,14 +1,16 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$scope", '$location', 'events', 'routingService', 'stateService', '$window', function($scope, $location, events, routingService, stateService, $window) {
+    ["$scope", '$location', 'events', 'routingService', 'stateService', 'geoLocationService', function($scope, $location, events, routingService, stateService, geoLoctionService) {
 
         'use strict';
 
-        $scope.centerPosition = {
+        $scope.currentPosition = {
             latitude: 52.51083,
             longitude: 13.45264
         };
 
         $scope.ready = false;
+
+        var onPositionChangeHandler = null;
 
         var apply = function () {
             routingService.clearResults();
@@ -47,38 +49,40 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
-        var onGeoLocationSuccess = function (position) {
+        var initPositionListener = function () {
 
-            //console.log('onGeoLocationSuccess', position);
-            $scope.$broadcast(events.POSITION_EVENT, {
-                eventType: events.POSITION_EVENT_TYPES.CHANGE,
-                param: position
+            onPositionChangeHandler = $scope.$on(events.POSITION_EVENT, function (event, params) {
+
+                if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
+
+                    var geoPosition = params.param;
+
+                    console.log('geo position changed: ', params.param);
+                    console.log(geoPosition.coords.latitude, ' ', geoPosition.coords.longitude);
+
+                    $scope.currentPosition = {
+                        latitude : geoPosition.coords.latitude,
+                        longitude : geoPosition.coords.longitude
+                    };
+                    $scope.$apply();
+
+                } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
+
+                    console.log('geo position error: ', params.param);
+                }
+
+
             });
-            //$scope.$apply();
+
         };
 
-        var onGeoLocationError = function (error) {
+        var stopPositionListener = function () {
 
-            //console.log('onGeoLocationError', error);
-            $scope.$broadcast(events.POSITION_EVENT, {
-                eventType: events.POSITION_EVENT_TYPES.ERROR,
-                param: error
-            });
-            //$scope.$apply();
+            onPositionChangeHandler();
+            onPositionChangeHandler = null;
+
         };
 
-        var initGeoLocation = function (geoLocationObject) {
-
-            if (geoLocationObject) {
-                geoLocationObject.getCurrentPosition(function (position) {
-
-                    onGeoLocationSuccess(position);
-
-                    geoLocationObject.watchPosition(onGeoLocationSuccess);
-
-                }, onGeoLocationError);
-            }
-        };
 
         $scope.$on(events.MAP_EVENT, function (event, params) {
 
@@ -120,8 +124,9 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             $scope.ready = true;
 
-            initGeoLocation($window.navigator.geolocation);
+            initPositionListener();
 
+            geoLoctionService.watchPosition();
         };
 
 
