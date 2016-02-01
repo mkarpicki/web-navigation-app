@@ -38,6 +38,8 @@ angular.module('navigationApp.services').factory('geoLocationService', ['$window
                 geoLocationObject.watchPosition(onGeoLocationSuccess);
 
             }, onGeoLocationError);
+        } else {
+            onGeoLocationError({});
         }
     };
 

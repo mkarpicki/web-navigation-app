@@ -119,6 +119,50 @@ describe('RouteController', function () {
 
     });
 
+    describe('enableDriveMode', function () {
+
+        it ('should set set driveModeEnabled to true', function () {
+
+            $controller("RouteController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService
+            });
+
+            $scope.$apply();
+
+            $scope.driveModeEnabled = false;
+
+            $scope.enableDriveMode();
+
+            expect($scope.driveModeEnabled).toEqual(true);
+
+        });
+    });
+
+    describe('disableDriveMode', function () {
+
+        it ('should set set driveModeEnabled to false', function () {
+
+            $controller("RouteController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService
+            });
+
+            $scope.$apply();
+
+            $scope.driveModeEnabled = true;
+
+            $scope.disableDriveMode();
+
+            expect($scope.driveModeEnabled).toEqual(false);
+
+        });
+    });
+
     describe('trustedText', function (){
 
         it ('should return text with HTML', function () {

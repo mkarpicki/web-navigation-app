@@ -144,15 +144,11 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var updateCurrentPosition = function (position) {
 
-        if (currentPositionMarker) {
-
-            currentPositionMarker.setVisibility(true);
-            currentPositionMarker.setCenter({
-                lat: position.latitude,
-                lng: position.longitude
-            });
-
-        }
+        currentPositionMarker.setVisibility(true);
+        currentPositionMarker.setCenter({
+            lat: position.latitude,
+            lng: position.longitude
+        });
 
     };
 

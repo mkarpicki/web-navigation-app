@@ -191,6 +191,55 @@ describe('map-api-service', function () {
             expect(H.ui.UI.createDefault).toHaveBeenCalledWith(fakeMap, fakeDefaultLayers);
 
         }));
+
+        it('should create currentPositionMarker', inject(function (mapApiService) {
+
+            H.Map = jasmine.createSpy().and.returnValue(fakeMap);
+            H.map.Circle = jasmine.createSpy();
+
+            mapApiService.init([]);
+
+            expect(H.map.Circle).toHaveBeenCalled();
+
+        }));
+    });
+
+    describe('updateCurrentPosition', function () {
+
+        it ('should update position of currentPositionMarker', inject(function (mapApiService) {
+
+            var somePosition = {
+                latitude: 1,
+                longitude: 2
+            };
+
+            fakeCircle.setCenter = jasmine.createSpy();
+
+            mapApiService.init([]);
+
+            mapApiService.updateCurrentPosition(somePosition);
+
+            expect(fakeCircle.setCenter).toHaveBeenCalledWith({
+                lat: somePosition.latitude,
+                lng: somePosition.longitude
+            });
+
+        }));
+
+        it ('should make currentPositionMarker visible', inject(function(mapApiService) {
+
+            var somePosition = {};
+
+            fakeCircle.setVisibility = jasmine.createSpy();
+
+            mapApiService.init([]);
+
+            mapApiService.updateCurrentPosition(somePosition);
+
+            expect(fakeCircle.setVisibility).toHaveBeenCalledWith(true);
+
+        }));
+
     });
 
     describe('initBubble', function () {
@@ -504,6 +553,31 @@ describe('map-api-service', function () {
 
             expect(fakeMap.getObjects).toHaveBeenCalled();
             expect(fakeMap.removeObjects).toHaveBeenCalledWith(fakeMap.getObjects());
+
+            describe('and currentPosition marker exists', function () {
+
+                it ('should remove objects from map Except currentPosition marker', inject(function (mapApiService) {
+
+                    var currentPositionMarker = {};
+
+                    var someObject = [1,2, currentPositionMarker];
+
+                    H.map.Circle = function () {
+                       return currentPositionMarker;
+                    };
+
+                    fakeMap.getObjects = jasmine.createSpy('fakeMap.getObjects').and.returnValue(someObject);
+                    fakeMap.removeObjects = jasmine.createSpy('fakeMap.removeObjects');
+
+                    mapApiService.init([]);
+                    mapApiService.clear();
+
+                    expect(fakeMap.getObjects).toHaveBeenCalled();
+                    expect(fakeMap.removeObjects).toHaveBeenCalledWith([1,2]);
+
+                }));
+
+            });
 
         }));
 
