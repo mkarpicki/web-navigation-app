@@ -1,4 +1,4 @@
-angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', 'events', function(mapApiService, routingService, events) {
+angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', 'stateService', 'events', function(mapApiService, routingService, stateService, events) {
 
     'use strict';
 
@@ -76,39 +76,15 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
         });
 
-        //scope.$on(events.POSITION_EVENT, function (event, params) {
-        //
-        //    if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
-        //
-        //        var geoPosition = params.param;
-        //
-        //        console.log('map position: ', params.param);
-        //        console.log(geoPosition.coords.latitude, ' ', geoPosition.coords.longitude);
-        //
-        //        var currentPosition = {
-        //            latitude: geoPosition.coords.latitude,
-        //            longitude: geoPosition.coords.longitude
-        //        };
-        //
-        //        if (currentPosition) {
-        //            mapApiService.center(currentPosition);
-        //            mapApiService.updateCurrentPosition(currentPosition);
-        //        }
-        //
-        //    } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
-        //
-        //        console.log('map position error: ', params.param);
-        //    }
-        //
-        //
-        //});
-
         scope.$watch(attrs.currentPosition, function (currentPosition) {
 
-            console.log('map:', currentPosition);
+            //console.log('map:', currentPosition);
 
             if (currentPosition) {
-                mapApiService.center(currentPosition);
+
+                if (stateService.isNavigationModeEnabled()) {
+                    mapApiService.center(currentPosition);
+                }
                 mapApiService.updateCurrentPosition(currentPosition);
             }
         }, true);

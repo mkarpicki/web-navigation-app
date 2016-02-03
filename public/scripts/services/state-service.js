@@ -12,7 +12,9 @@ angular.module('navigationApp.services').factory('stateService', ['$interpolate'
         AvoidAreaVariable = 'a';
 
     var wayPointsStorage = [],
-        areasToAvoidStorage = [];
+        areasToAvoidStorage = [],
+
+        navigationMode = false;
 
     var serializeQuery = function () {
 
@@ -150,6 +152,18 @@ angular.module('navigationApp.services').factory('stateService', ['$interpolate'
         areasToAvoidStorage.push(area);
     };
 
+    var isNavigationModeEnabled = function () {
+        return navigationMode;
+    };
+
+    var disableNavigationMode = function () {
+        navigationMode = false;
+    };
+
+    var enableNavigationMode = function () {
+        navigationMode = true;
+    };
+
     return {
         serializeQuery: serializeQuery,
         deserializeQuery: deserializeQuery,
@@ -161,7 +175,11 @@ angular.module('navigationApp.services').factory('stateService', ['$interpolate'
         overwriteStartPoint: overwriteStartPoint,
         overwriteDestinationPoint: overwriteDestinationPoint,
         addWayPoint: addWayPoint,
-        addAreaToAvoid: addAreaToAvoid
+        addAreaToAvoid: addAreaToAvoid,
+
+        isNavigationModeEnabled: isNavigationModeEnabled,
+        enableNavigationMode: enableNavigationMode,
+        disableNavigationMode: disableNavigationMode
     };
 
 }]);
