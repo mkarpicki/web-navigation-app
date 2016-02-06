@@ -121,7 +121,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             lat: position.latitude,
             lng: position.longitude
         });
-        map.setZoom(14);
+
     };
 
     var removeBubble = function () {
@@ -197,6 +197,11 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     };
 
+    var zoomLevel = function (level) {
+
+        map.setZoom(level);
+    };
+
     return {
         init: init,
         initBubble: initBubble,
@@ -206,7 +211,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         clear: clear,
         getTapPosition: getTapPosition,
         removeBubble: removeBubble,
-        updateCurrentPosition: updateCurrentPosition
+        updateCurrentPosition: updateCurrentPosition,
+        zoomLevel: zoomLevel
     };
 
 }]);
