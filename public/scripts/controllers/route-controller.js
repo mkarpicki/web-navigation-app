@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('RouteController',
-    ["$scope", '$sce', '$routeParams', "routingService",
-        function($scope, $sce, $routeParams, routingService) {
+    ["$scope", '$sce', '$routeParams', "routingService", 'stateService',
+        function($scope, $sce, $routeParams, routingService, stateService) {
 
             'use strict';
 
@@ -24,11 +24,14 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             $scope.enableDriveMode = function () {
                 $scope.driveModeEnabled = true;
+                stateService.enableNavigationMode();
             };
 
             $scope.disableDriveMode = function () {
                 $scope.driveModeEnabled = false;
+                stateService.disableNavigationMode();
             };
+
 
             var getRoute = function (index) {
 

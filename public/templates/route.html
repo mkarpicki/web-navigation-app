@@ -1,6 +1,6 @@
 <form>
-    <button data-ng-show="driveModeEnabled" data-ng-click="disableDriveMode();">Stop navigation</button>
-    <button data-ng-hide="driveModeEnabled" data-ng-click="enableDriveMode();">Start navigation</button>
+    <button data-ng-show="!undefinedRoute && driveModeEnabled" data-ng-click="disableDriveMode();">Stop navigation</button>
+    <button data-ng-hide="undefinedRoute || driveModeEnabled" data-ng-click="enableDriveMode();">Start navigation</button>
 
     <ul data-ng-hide="undefinedRoute">
         <li data-ng-repeat="maneuver in getManeuver();">
