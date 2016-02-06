@@ -5,8 +5,9 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
     /**
      * fire event with specific type.
      * position is optional - in case not delivered - taken current tapped position from mapService
+     * @param scope
      * @param type
-     * @param position
+     * @param geoParam
      */
     var emitEvent = function (scope, type, geoParam) {
 
@@ -76,13 +77,21 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
         });
 
-        scope.$watch(attrs.currentPosition, function (currentPosition) {
+        scope.$watch(attrs.zoomLevel, function (zoomLevel) {
 
-            //console.log('map:', currentPosition);
+            if (zoomLevel) {
+                mapApiService.zoomLevel(zoomLevel);
+            }
+        });
+
+        scope.$watchGroup([attrs.currentPosition, attrs.updateToPosition], function (newValues) {
+
+            var currentPosition = newValues[0],
+                doUpdatePosition = newValues[1];
 
             if (currentPosition) {
 
-                if (stateService.isNavigationModeEnabled()) {
+                if (doUpdatePosition) {
                     mapApiService.center(currentPosition);
                 }
                 mapApiService.updateCurrentPosition(currentPosition);
@@ -108,7 +117,9 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
     };
 
     var scope = {
-        currentPosition: '=currentPosition'
+        currentPosition: '=currentPosition',
+        zoomLevel: '=zoomLevel',
+        updateToPosition: '=updateToPosition'
     };
 
     return {

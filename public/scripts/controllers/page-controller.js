@@ -3,14 +3,21 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         'use strict';
 
+        var defaultZoomLevel = 14,
+            navigationZoomLevel = 16,
+            onPositionChangeHandler = null;
+
+        $scope.updateToPosition = false;
+        $scope.zoomLevel = defaultZoomLevel;
+
         $scope.currentPosition = {
             latitude: 52.51083,
             longitude: 13.45264
         };
 
+        $scope.gettingLocationError = false;
         $scope.ready = false;
 
-        var onPositionChangeHandler = null;
 
         var apply = function () {
             routingService.clearResults();
@@ -57,8 +64,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                     var geoPosition = params.param;
 
-                    console.log('geo position changed: ', params.param);
-                    console.log(geoPosition.coords.latitude, ' ', geoPosition.coords.longitude);
+                    $scope.gettingLocationError = false;
 
                     $scope.currentPosition = {
                         latitude : geoPosition.coords.latitude,
@@ -68,7 +74,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                 } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
 
-                    console.log('geo position error: ', params.param);
+                    $scope.gettingLocationError = true;
                 }
 
 
@@ -76,13 +82,35 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
-        var stopPositionListener = function () {
+        //var stopPositionListener = function () {
+        //
+        //    onPositionChangeHandler();
+        //    onPositionChangeHandler = null;
+        //
+        //};
 
-            onPositionChangeHandler();
-            onPositionChangeHandler = null;
 
-        };
+        $scope.$on(events.NAVIGATION_STATE_EVENT, function (event, params) {
 
+            switch (params.eventType) {
+
+                case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON:
+
+                    $scope.zoomLevel = navigationZoomLevel;
+                    $scope.updateToPosition = true;
+                    break;
+
+                case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF:
+
+                    $scope.zoomLevel = defaultZoomLevel;
+                    $scope.updateToPosition = false;
+                    break;
+
+                default:
+                    break;
+
+            }
+        });
 
         $scope.$on(events.MAP_EVENT, function (event, params) {
 
