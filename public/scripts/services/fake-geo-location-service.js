@@ -10,22 +10,20 @@ angular.module('navigationApp.services').factory('geoLocationService', ['$interv
 
     var onGeoLocationSuccess = function (position) {
 
-        //console.log('onGeoLocationSuccess', position);
         $rootScope.$broadcast(events.POSITION_EVENT, {
             eventType: events.POSITION_EVENT_TYPES.CHANGE,
             param: position
         });
-        //$scope.$apply();
+
     };
 
     var onGeoLocationError = function (error) {
 
-        //console.log('onGeoLocationError', error);
         $rootScope.$broadcast(events.POSITION_EVENT, {
             eventType: events.POSITION_EVENT_TYPES.ERROR,
             param: error
         });
-        //$scope.$apply();
+
     };
 
     var initGeoLocation = function (geoLocationObject) {
@@ -34,7 +32,7 @@ angular.module('navigationApp.services').factory('geoLocationService', ['$interv
         var count = 0;
 
         $interval(function () {
-            console.log(steps[count]);
+            //console.log(steps[count]);
 
             var lat = steps[count].split(',')[0];
             var lng = steps[count].split(',')[1];
@@ -45,7 +43,7 @@ angular.module('navigationApp.services').factory('geoLocationService', ['$interv
                     longitude: lng
                 }
             });
-            count++
+            count++;
         }, 300, steps.length - 1, false);
     };
 

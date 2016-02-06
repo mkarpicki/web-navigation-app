@@ -10,22 +10,20 @@ angular.module('navigationApp.services').factory('geoLocationService', ['$window
 
     var onGeoLocationSuccess = function (position) {
 
-        //console.log('onGeoLocationSuccess', position);
         $rootScope.$broadcast(events.POSITION_EVENT, {
             eventType: events.POSITION_EVENT_TYPES.CHANGE,
             param: position
         });
-        //$scope.$apply();
+
     };
 
     var onGeoLocationError = function (error) {
 
-        //console.log('onGeoLocationError', error);
         $rootScope.$broadcast(events.POSITION_EVENT, {
             eventType: events.POSITION_EVENT_TYPES.ERROR,
             param: error
         });
-        //$scope.$apply();
+
     };
 
     var initGeoLocation = function (geoLocationObject) {
