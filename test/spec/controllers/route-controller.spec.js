@@ -130,7 +130,9 @@ describe('RouteController', function () {
 
     describe('enableDriveMode', function () {
 
-        it ('should set set driveModeEnabled to true', function () {
+        it ('should set set driveModeEnabled to true and called stateService.enableNavigationMode', function () {
+
+            stateService.enableNavigationMode = jasmine.createSpy('stateService.enableNavigationMode');
 
             $controller("RouteController", {
                 $scope: $scope,
@@ -147,13 +149,16 @@ describe('RouteController', function () {
             $scope.enableDriveMode();
 
             expect($scope.driveModeEnabled).toEqual(true);
+            expect(stateService.enableNavigationMode).toHaveBeenCalled();
 
         });
     });
 
     describe('disableDriveMode', function () {
 
-        it ('should set set driveModeEnabled to false', function () {
+        it ('should set set driveModeEnabled to false and called stateService.disableNavigationMode', function () {
+
+            stateService.disableNavigationMode = jasmine.createSpy('stateService.disableNavigationMode');
 
             $controller("RouteController", {
                 $scope: $scope,
@@ -170,6 +175,7 @@ describe('RouteController', function () {
             $scope.disableDriveMode();
 
             expect($scope.driveModeEnabled).toEqual(false);
+            expect(stateService.disableNavigationMode).toHaveBeenCalled();
 
         });
     });
