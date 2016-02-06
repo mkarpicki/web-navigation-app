@@ -2,7 +2,8 @@ describe('stateService', function () {
 
     'use strict';
 
-    var _$location_;
+    var _$location_,
+        _events_;
 
     beforeEach(module('navigationApp.services'));
 
@@ -11,6 +12,10 @@ describe('stateService', function () {
         _$location_ = {};
 
         $provide.value('$location', _$location_);
+
+        _events_ = {};
+
+        $provide.value('events', _events_);
 
     }));
 

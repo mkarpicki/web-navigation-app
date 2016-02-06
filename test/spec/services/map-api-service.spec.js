@@ -354,7 +354,6 @@ describe('map-api-service', function () {
                 lat: position.latitude,
                 lng: position.longitude
             });
-            expect(fakeMap.setZoom).toHaveBeenCalledWith(14);
 
         }));
 

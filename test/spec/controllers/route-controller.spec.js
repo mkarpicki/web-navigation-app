@@ -9,7 +9,8 @@ describe('RouteController', function () {
         $sce,
         $routeParams,
 
-        routingService;
+        routingService,
+        stateService;
 
     beforeEach(module('navigationApp.controllers'));
 
@@ -26,6 +27,11 @@ describe('RouteController', function () {
             getResults: function () {},
             clearResults: function () {},
             saveRoute: function () {}
+        };
+
+        stateService = {
+            enableNavigationMode: function () {},
+            disableNavigationMode: function (){}
         };
 
     }));
@@ -47,7 +53,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -76,7 +83,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -105,7 +113,8 @@ describe('RouteController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService
+                routingService: routingService,
+                stateService: stateService
             });
 
             $scope.$apply();
@@ -127,7 +136,8 @@ describe('RouteController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService
+                routingService: routingService,
+                stateService: stateService
             });
 
             $scope.$apply();
@@ -149,7 +159,8 @@ describe('RouteController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService
+                routingService: routingService,
+                stateService: stateService
             });
 
             $scope.$apply();
@@ -173,7 +184,8 @@ describe('RouteController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService
+                routingService: routingService,
+                stateService: stateService
             });
 
             $scope.$apply();
@@ -196,7 +208,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -217,7 +230,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -246,7 +260,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
