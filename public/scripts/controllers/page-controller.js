@@ -4,8 +4,7 @@ angular.module('navigationApp.controllers').controller('PageController',
         'use strict';
 
         var defaultZoomLevel = 14,
-            navigationZoomLevel = 16,
-            onPositionChangeHandler = null;
+            navigationZoomLevel = 16;
 
         $scope.updateToPosition = false;
         $scope.zoomLevel = defaultZoomLevel;
@@ -56,31 +55,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
-        var initPositionListener = function () {
 
-            onPositionChangeHandler = $scope.$on(events.POSITION_EVENT, function (event, params) {
-
-                if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
-
-                    var geoPosition = params.param;
-
-                    $scope.gettingLocationError = false;
-
-                    $scope.currentPosition = {
-                        latitude : geoPosition.coords.latitude,
-                        longitude : geoPosition.coords.longitude
-                    };
-                    $scope.$apply();
-
-                } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
-
-                    $scope.gettingLocationError = true;
-                }
-
-
-            });
-
-        };
 
         //var stopPositionListener = function () {
         //
@@ -89,6 +64,28 @@ angular.module('navigationApp.controllers').controller('PageController',
         //
         //};
 
+        $scope.$on(events.POSITION_EVENT, function (event, params) {
+
+            if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
+
+                var geoPosition = params.param;
+
+                $scope.gettingLocationError = false;
+
+                $scope.currentPosition = {
+                    latitude : geoPosition.coords.latitude,
+                    longitude : geoPosition.coords.longitude
+                };
+
+                $scope.$apply();
+
+            } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
+
+                $scope.gettingLocationError = true;
+            }
+
+
+        });
 
         $scope.$on(events.NAVIGATION_STATE_EVENT, function (event, params) {
 
@@ -151,8 +148,6 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.pageReady = function () {
 
             $scope.ready = true;
-
-            initPositionListener();
 
             geoLocationService.watchPosition();
         };
