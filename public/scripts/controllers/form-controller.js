@@ -102,20 +102,6 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             routingService.clearResults();
 
-            //$scope.$on(events.POSITION_EVENT, function (event, params) {
-            //
-            //    if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
-            //
-            //        console.log('form position changed: ', params.param);
-            //
-            //    } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
-            //
-            //        console.log('form position error: ', params.param);
-            //    }
-            //
-            //
-            //});
-
         };
 
         getReady();
