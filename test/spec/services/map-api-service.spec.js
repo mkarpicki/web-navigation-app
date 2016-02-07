@@ -254,7 +254,7 @@ describe('map-api-service', function () {
             mapApiService.init([]);
             mapApiService.initBubble(someBubbleElement);
 
-            expect(fakeMap.addEventListener).toHaveBeenCalledWith('tap', jasmine.any(Function));
+            expect(fakeMap.addEventListener).toHaveBeenCalledWith('longpress', jasmine.any(Function));
 
         }));
 

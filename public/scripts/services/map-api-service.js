@@ -100,7 +100,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var initBubble = function (bubbleElement) {
 
-        map.addEventListener('tap', function (evt) {
+        //map.addEventListener('tap', function (evt) {
+        map.addEventListener('longpress', function (evt) {
 
             removeBubble();
 
