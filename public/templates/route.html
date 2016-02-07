@@ -1,8 +1,13 @@
-<ul data-ng-hide="undefinedRoute">
-    <li data-ng-repeat="maneuver in getManeuver();">
-        <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
-    </li>
-</ul>
+<form>
+    <button data-ng-show="!undefinedRoute && driveModeEnabled" data-ng-click="disableDriveMode();">Stop navigation</button>
+    <button data-ng-hide="undefinedRoute || driveModeEnabled" data-ng-click="enableDriveMode();">Start navigation</button>
+
+    <ul data-ng-hide="undefinedRoute">
+        <li data-ng-repeat="maneuver in getManeuver();">
+            <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
+        </li>
+    </ul>
+</form>
 <p data-ng-show="undefinedRoute">
     No route found.
 </p>

@@ -4,6 +4,12 @@
     <input id="from" data-ng-model="from">
     <br>
 
+    <!--<label for="use-location">Use location</label>-->
+    <!--<input id="use-location" type="checkbox" data-ng-model="useGeoLocation">-->
+
+    <!--<span data-ng-show="useGeoLocation">{{geoPosition}}</span>-->
+    <span>geo: {{geoLocation}}</span>
+
     <ul>
         <li data-ng-repeat="wayPoint in wayPoints track by $index">
             <label for="waypoint-{{$index}}">Thru:</label>

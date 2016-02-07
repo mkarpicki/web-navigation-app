@@ -10,6 +10,7 @@ describe('map-api-service', function () {
         fakePoint,
         fakeMap,
         fakeUI,
+        fakeCircle,
         fakeDefaultUI,
         fakeBubble,
         fakeRect,
@@ -49,7 +50,7 @@ describe('map-api-service', function () {
         fakeMap = {
             addObject: function () {},
             addObjects: function () {},
-            getObjects: function () {},
+            getObjects: function () { return []; },
             removeObjects: function () {},
             addEventListener: function () {},
             screenToGeo: function () {},
@@ -86,6 +87,11 @@ describe('map-api-service', function () {
             pushLatLngAlt: function () {}
         };
 
+        fakeCircle = {
+            setCenter: function () {},
+            setVisibility: function () {}
+        };
+
         H.geo = {};
 
         H.geo.Strip = function () {};
@@ -108,6 +114,10 @@ describe('map-api-service', function () {
         };
 
         H.map.Marker = function () {};
+
+        H.map.Circle = function () {
+            return fakeCircle;
+        };
 
         fakeDefaultUI = {
             addBubble: function () {},
@@ -173,16 +183,63 @@ describe('map-api-service', function () {
 
         it('should create default UI component', inject(function (mapApiService) {
 
-            var map = {};
-
-            H.Map = jasmine.createSpy().and.returnValue(map);
+            H.Map = jasmine.createSpy().and.returnValue(fakeMap);
             H.ui.UI.createDefault = jasmine.createSpy();
 
             mapApiService.init([]);
 
-            expect(H.ui.UI.createDefault).toHaveBeenCalledWith(map, fakeDefaultLayers);
+            expect(H.ui.UI.createDefault).toHaveBeenCalledWith(fakeMap, fakeDefaultLayers);
 
         }));
+
+        it('should create currentPositionMarker', inject(function (mapApiService) {
+
+            H.Map = jasmine.createSpy().and.returnValue(fakeMap);
+            H.map.Circle = jasmine.createSpy();
+
+            mapApiService.init([]);
+
+            expect(H.map.Circle).toHaveBeenCalled();
+
+        }));
+    });
+
+    describe('updateCurrentPosition', function () {
+
+        it ('should update position of currentPositionMarker', inject(function (mapApiService) {
+
+            var somePosition = {
+                latitude: 1,
+                longitude: 2
+            };
+
+            fakeCircle.setCenter = jasmine.createSpy();
+
+            mapApiService.init([]);
+
+            mapApiService.updateCurrentPosition(somePosition);
+
+            expect(fakeCircle.setCenter).toHaveBeenCalledWith({
+                lat: somePosition.latitude,
+                lng: somePosition.longitude
+            });
+
+        }));
+
+        it ('should make currentPositionMarker visible', inject(function(mapApiService) {
+
+            var somePosition = {};
+
+            fakeCircle.setVisibility = jasmine.createSpy();
+
+            mapApiService.init([]);
+
+            mapApiService.updateCurrentPosition(somePosition);
+
+            expect(fakeCircle.setVisibility).toHaveBeenCalledWith(true);
+
+        }));
+
     });
 
     describe('initBubble', function () {
@@ -206,7 +263,8 @@ describe('map-api-service', function () {
             var fakeGeo = 'geo',
                 bubbleElement = 'bubbleElement',
                 fakeMap = {
-                    screenToGeo: jasmine.createSpy().and.returnValue(fakeGeo)
+                    screenToGeo: jasmine.createSpy().and.returnValue(fakeGeo),
+                    addObject: function () {}
                 },
                 fakeEvent = {
                     currentPointer: {
@@ -296,7 +354,23 @@ describe('map-api-service', function () {
                 lat: position.latitude,
                 lng: position.longitude
             });
-            expect(fakeMap.setZoom).toHaveBeenCalledWith(14);
+
+        }));
+
+    });
+
+    describe('zoomLevel', function () {
+
+        it('should call setZoom of map js library', inject(function(mapApiService) {
+
+            var level = 666;
+
+            fakeMap.setZoom = jasmine.createSpy('H.Map.setZoom');
+
+            mapApiService.init([]);
+            mapApiService.zoomLevel(level);
+
+            expect(fakeMap.setZoom).toHaveBeenCalledWith(level);
 
         }));
 
@@ -485,7 +559,7 @@ describe('map-api-service', function () {
 
         it ('should remove objects from map', inject(function (mapApiService) {
 
-            var someObject = {};
+            var someObject = [];
 
             fakeMap.getObjects = jasmine.createSpy('fakeMap.getObjects').and.returnValue(someObject);
             fakeMap.removeObjects = jasmine.createSpy('fakeMap.removeObjects');
@@ -495,6 +569,31 @@ describe('map-api-service', function () {
 
             expect(fakeMap.getObjects).toHaveBeenCalled();
             expect(fakeMap.removeObjects).toHaveBeenCalledWith(fakeMap.getObjects());
+
+            describe('and currentPosition marker exists', function () {
+
+                it ('should remove objects from map Except currentPosition marker', inject(function (mapApiService) {
+
+                    var currentPositionMarker = {};
+
+                    var someObject = [1,2, currentPositionMarker];
+
+                    H.map.Circle = function () {
+                       return currentPositionMarker;
+                    };
+
+                    fakeMap.getObjects = jasmine.createSpy('fakeMap.getObjects').and.returnValue(someObject);
+                    fakeMap.removeObjects = jasmine.createSpy('fakeMap.removeObjects');
+
+                    mapApiService.init([]);
+                    mapApiService.clear();
+
+                    expect(fakeMap.getObjects).toHaveBeenCalled();
+                    expect(fakeMap.removeObjects).toHaveBeenCalledWith([1,2]);
+
+                }));
+
+            });
 
         }));
 

@@ -1,12 +1,13 @@
-angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', 'events', function(mapApiService, routingService, events) {
+angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', 'stateService', 'events', function(mapApiService, routingService, stateService, events) {
 
     'use strict';
 
     /**
      * fire event with specific type.
      * position is optional - in case not delivered - taken current tapped position from mapService
+     * @param scope
      * @param type
-     * @param position
+     * @param geoParam
      */
     var emitEvent = function (scope, type, geoParam) {
 
@@ -39,7 +40,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         var overwrittenStartItem = node.getElementsByClassName('from')[0],
             newWayPointItem = node.getElementsByClassName('waypoint')[0],
             overwrittenDestinationItem = node.getElementsByClassName('to')[0],
-            avoidItem =node.getElementsByClassName('avoid')[0];
+            avoidItem = node.getElementsByClassName('avoid')[0];
 
 
         attachMenuAction(overwrittenStartItem, function () {
@@ -76,16 +77,30 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
         });
 
-        scope.$watch(attrs.centerPosition, function (centerPosition) {
+        scope.$watch(attrs.zoomLevel, function (zoomLevel) {
 
-            if (centerPosition) {
-                mapApiService.center(centerPosition);
+            if (zoomLevel) {
+                mapApiService.zoomLevel(zoomLevel);
+            }
+        });
+
+        scope.$watchGroup([attrs.currentPosition, attrs.updateToPosition], function (newValues) {
+
+            var currentPosition = newValues[0],
+                doUpdatePosition = newValues[1];
+
+            if (currentPosition) {
+
+                if (doUpdatePosition) {
+                    mapApiService.center(currentPosition);
+                }
+                mapApiService.updateCurrentPosition(currentPosition);
             }
         }, true);
 
         /**
          * @todo - re think this (maybe no good idea to watch something that in theory will not change to often)
-         * @todo - move that to controller of directive
+         * @todo - move that to controller of directive (or even to controller that uses map and make attr to be used in directive)
          */
         scope.$watch(function () { return routingService.getResults(); }, function (proposedRoutes) {
 
@@ -102,7 +117,9 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
     };
 
     var scope = {
-        centerPosition: '=centerPosition'
+        currentPosition: '=currentPosition',
+        zoomLevel: '=zoomLevel',
+        updateToPosition: '=updateToPosition'
     };
 
     return {

@@ -10,7 +10,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         map,
         ui,
         bubble,
-        tappedCoordinates;
+        tappedCoordinates,
+        currentPositionMarker;
 
 
     //Step 1: initialize communication with the platform
@@ -73,7 +74,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var init = function (element) {
 
-        //Step 2: initialize a map  - not specificing a location will give a whole world view.
+        //Step 2: initialize a map  - not specifying a location will give a whole world view.
         map = new H.Map(element[0], defaultLayers.normal.map);
 
         //Step 3: make the map interactive
@@ -84,7 +85,18 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         // Create the default UI components
         ui = H.ui.UI.createDefault(map, defaultLayers);
 
+        // Create maker for displaying current position
+        //var icon = new H.map.Icon('images/current-position.png');
+        //
+        //currentPositionMarker = new H.map.Marker({ lat: 52.4928606, lng: 13.4600705 }, { icon: icon });
+
+        currentPositionMarker = new H.map.Circle({lat: 52.51, lng: 13.4}, 20);
+
+        map.addObject(currentPositionMarker);
+
     };
+
+
 
     var initBubble = function (bubbleElement) {
 
@@ -109,7 +121,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             lat: position.latitude,
             lng: position.longitude
         });
-        map.setZoom(14);
+
     };
 
     var removeBubble = function () {
@@ -119,16 +131,33 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
     };
 
     var clear = function () {
-        map.removeObjects(map.getObjects());
+
+        var objects = map.getObjects();
+
+        objects = objects.filter(function (o) {
+           return o !== currentPositionMarker;
+        });
+
+        map.removeObjects(objects);
         removeBubble();
     };
 
-    var drawRoute = function (route, waypoints, color) {
+    var updateCurrentPosition = function (position) {
+
+        currentPositionMarker.setVisibility(true);
+        currentPositionMarker.setCenter({
+            lat: position.latitude,
+            lng: position.longitude
+        });
+
+    };
+
+    var drawRoute = function (route, wayPoints, color) {
 
         var routeShape,
             strip,
             markers = [],
-            waypoint;
+            wayPoint;
 
         // Pick the route's shape:
         routeShape = route.shape;
@@ -147,13 +176,13 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             style: { strokeColor: color, lineWidth: 5 }
         });
 
-        for (var i = 0, l = waypoints.length; i < l; i++) {
+        for (var i = 0, l = wayPoints.length; i < l; i++) {
 
-            waypoint = waypoints[i];
+            wayPoint = wayPoints[i];
 
             markers.push(new H.map.Marker({
-                lat: waypoint.latitude,
-                lng: waypoint.longitude
+                lat: wayPoint.latitude,
+                lng: wayPoint.longitude
             }));
         }
 
@@ -168,6 +197,11 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     };
 
+    var zoomLevel = function (level) {
+
+        map.setZoom(level);
+    };
+
     return {
         init: init,
         initBubble: initBubble,
@@ -176,7 +210,9 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         drawRoute: drawRoute,
         clear: clear,
         getTapPosition: getTapPosition,
-        removeBubble: removeBubble
+        removeBubble: removeBubble,
+        updateCurrentPosition: updateCurrentPosition,
+        zoomLevel: zoomLevel
     };
 
 }]);

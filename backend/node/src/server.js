@@ -32,6 +32,7 @@ app.use('/public', express.static(rootFolder  + '/public'));
 app.use('/templates', express.static(rootFolder  + '/public/templates'));
 app.use('/styles', express.static(rootFolder  + '/public/styles'));
 app.use('/scripts', express.static(rootFolder  + '/public/scripts'));
+app.use('/images', express.static(rootFolder  + '/public/images'));
 
 app.use('/', routes);
 

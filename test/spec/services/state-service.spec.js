@@ -2,7 +2,9 @@ describe('stateService', function () {
 
     'use strict';
 
-    var _$location_;
+    var _$location_,
+        _events_,
+        _$rootScope_;
 
     beforeEach(module('navigationApp.services'));
 
@@ -12,7 +14,65 @@ describe('stateService', function () {
 
         $provide.value('$location', _$location_);
 
+        _events_ = {
+            NAVIGATION_STATE_EVENT: 'NAVIGATION_STATE_EVENT',
+            NAVIGATION_STATE_EVENT_TYPES: {
+                NAVIGATION_OFF: 'NAVIGATION_OFF',
+                NAVIGATION_ON: 'NAVIGATION_ON'
+            }
+        };
+
+        $provide.value('events', _events_);
+
+        _$rootScope_ = {
+            $broadcast: function () {}
+        };
+
+        $provide.value('$rootScope', _$rootScope_);
+
     }));
+
+    describe('enableNavigationMode', function (){
+
+        it ('should set navigation mode to true', inject(function(stateService) {
+
+            _$rootScope_.$broadcast= jasmine.createSpy('$rootScope.$broadcast');
+
+            expect(stateService.isNavigationModeEnabled()).toEqual(false);
+
+            stateService.enableNavigationMode();
+
+            expect(stateService.isNavigationModeEnabled()).toEqual(true);
+            expect(_$rootScope_.$broadcast).toHaveBeenCalledWith(_events_.NAVIGATION_STATE_EVENT, {
+                eventType: _events_.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON
+            })
+
+        }));
+
+    });
+
+    describe('disableNavigationMode', function (){
+
+        it ('should set navigation mode to true', inject(function(stateService) {
+
+            _$rootScope_.$broadcast= jasmine.createSpy('$rootScope.$broadcast');
+
+            expect(stateService.isNavigationModeEnabled()).toEqual(false);
+
+            stateService.enableNavigationMode();
+
+            expect(stateService.isNavigationModeEnabled()).toEqual(true);
+
+            stateService.disableNavigationMode();
+
+            expect(stateService.isNavigationModeEnabled()).toEqual(false);
+            expect(_$rootScope_.$broadcast).toHaveBeenCalledWith(_events_.NAVIGATION_STATE_EVENT, {
+                eventType: _events_.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF
+            })
+
+        }));
+
+    })
 
     describe('addAreaToAvoid', function () {
 

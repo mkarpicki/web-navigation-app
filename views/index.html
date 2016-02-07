@@ -9,17 +9,16 @@
 </head>
 <body data-ng-app="navigationApp" class="page">
     <div data-ng-controller="PageController" data-ng-class="ready" data-ng-init="pageReady();">
-        <section id="panel" data-ng-view>
-
-            <!--<br/>-->
-            <!--<label for="centerLatitude">latitude:</label>-->
-            <!--<input id="centerLatitude" data-ng-model="centerPosition.latitude">-->
-            <!--<label for="centerLongitude">longitude:</label>-->
-            <!--<input id="centerLongitude" data-ng-model="centerPosition.longitude">-->
-            <!--<p>center: {{centerPosition}}</p>-->
-
+        <section id="panel">
+            <!--<span data-ng-hid="gettingLocationError">geo:{{currentPosition.latitude}} {{currentPosition.longitude}}</span>-->
+            <span data-ng-show="gettingLocationError">Problem with finding geo localisation.</span>
+            <section data-ng-view></section>
         </section>
-        <section id="map" data-map data-center-position="centerPosition">
+        <section
+                id="map"
+                data-map data-current-position="currentPosition"
+                data-update-to-position="updateToPosition"
+                data-zoom-level="zoomLevel">
             <form>
                 <ul class="bubble">
                     <li><button class="menu from">from</button></li>
@@ -40,6 +39,8 @@
     <script type="text/javascript" charset="UTF-8" src="scripts/app-config.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/app-events.js"></script>
 
+    <!--<script type="text/javascript" charset="UTF-8" src="scripts/services/fake-geo-location-service.js"></script>-->
+    <script type="text/javascript" charset="UTF-8" src="scripts/services/geo-location-service.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/services/state-service.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/services/color-themes-service.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/services/routing-service.js"></script>

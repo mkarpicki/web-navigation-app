@@ -11,6 +11,8 @@ angular.module('navigationApp.controllers').controller('FormController',
         $scope.wayPoints = [];
         $scope.areasToAvoid = [];
 
+        $scope.geoLocation = null;
+
         $scope.getRoute = function () {
 
             if (!$scope.from || !$scope.to) {

@@ -112,6 +112,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
     };
 
     var saveRoute = function (route) {
+        //console.log(JSON.stringify(route.shape));
         results.push(route);
     };
 

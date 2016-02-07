@@ -9,7 +9,8 @@ describe('RouteController', function () {
         $sce,
         $routeParams,
 
-        routingService;
+        routingService,
+        stateService;
 
     beforeEach(module('navigationApp.controllers'));
 
@@ -26,6 +27,11 @@ describe('RouteController', function () {
             getResults: function () {},
             clearResults: function () {},
             saveRoute: function () {}
+        };
+
+        stateService = {
+            enableNavigationMode: function () {},
+            disableNavigationMode: function (){}
         };
 
     }));
@@ -47,7 +53,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -76,7 +83,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -105,7 +113,8 @@ describe('RouteController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService
+                routingService: routingService,
+                stateService: stateService
             });
 
             $scope.$apply();
@@ -119,6 +128,58 @@ describe('RouteController', function () {
 
     });
 
+    describe('enableDriveMode', function () {
+
+        it ('should set set driveModeEnabled to true and called stateService.enableNavigationMode', function () {
+
+            stateService.enableNavigationMode = jasmine.createSpy('stateService.enableNavigationMode');
+
+            $controller("RouteController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService,
+                stateService: stateService
+            });
+
+            $scope.$apply();
+
+            $scope.driveModeEnabled = false;
+
+            $scope.enableDriveMode();
+
+            expect($scope.driveModeEnabled).toEqual(true);
+            expect(stateService.enableNavigationMode).toHaveBeenCalled();
+
+        });
+    });
+
+    describe('disableDriveMode', function () {
+
+        it ('should set set driveModeEnabled to false and called stateService.disableNavigationMode', function () {
+
+            stateService.disableNavigationMode = jasmine.createSpy('stateService.disableNavigationMode');
+
+            $controller("RouteController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService,
+                stateService: stateService
+            });
+
+            $scope.$apply();
+
+            $scope.driveModeEnabled = true;
+
+            $scope.disableDriveMode();
+
+            expect($scope.driveModeEnabled).toEqual(false);
+            expect(stateService.disableNavigationMode).toHaveBeenCalled();
+
+        });
+    });
+
     describe('trustedText', function (){
 
         it ('should return text with HTML', function () {
@@ -129,7 +190,8 @@ describe('RouteController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService
+                routingService: routingService,
+                stateService: stateService
             });
 
             $scope.$apply();
@@ -152,7 +214,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -173,7 +236,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();
@@ -202,7 +266,8 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService
+                    routingService: routingService,
+                    stateService: stateService
                 });
 
                 $scope.$apply();

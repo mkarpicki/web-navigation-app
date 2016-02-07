@@ -10,6 +10,7 @@ describe('PageController', function () {
 
         routingService,
         stateService,
+        geoLocationService,
         events,
 
         fakeDeSerializedQuery,
@@ -33,6 +34,10 @@ describe('PageController', function () {
 
         routingService = {
             clearResults: function () {}
+        };
+
+        geoLocationService = {
+            watchPosition: function () {}
         };
 
         fakeDeSerializedQuery = {
@@ -66,16 +71,30 @@ describe('PageController', function () {
         };
 
         /**
-         * @todo - maybe load reall events value instead o creating copied mock
+         * @todo - maybe load real events value instead o creating copied mock
          * @type {{MAP_EVENT: string, MAP_EVENT_TYPES: {}}}
          */
         events = {
             MAP_EVENT: "MAP_EVENT",
+            POSITION_EVENT: 'POSITION_EVENT',
+            NAVIGATION_STATE_EVENT: 'NAVIGATION_STATE_EVENT',
+
             MAP_EVENT_TYPES: {
                 OVERWRITE_START_POINT: 0,
                 ADD_WAY_POINT: 1,
                 OVERWRITE_DESTINATION_POINT: 2,
                 AVOID_AREA: 3
+            },
+
+            POSITION_EVENT_TYPES: {
+
+                CHANGE: 0,
+                ERROR: 1
+            },
+
+            NAVIGATION_STATE_EVENT_TYPES: {
+                NAVIGATION_ON: 0,
+                NAVIGATION_OFF: 1
             }
         };
 
@@ -89,7 +108,8 @@ describe('PageController', function () {
                 $scope: $scope,
                 events: events,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                geoLocationService: geoLocationService
             });
 
             $scope.$apply();
@@ -99,6 +119,194 @@ describe('PageController', function () {
             $scope.pageReady();
 
             expect($scope.ready).toEqual(true);
+
+        });
+
+    });
+
+    describe('when NAVIGATION_EVENT fired', function () {
+
+        describe('and navigation started', function () {
+
+            it ('should set zoom level to navigationZoomLevel and flag to update position of map to true', function () {
+
+                fakeEventParams.eventType = events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON;
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
+                });
+
+                $scope.$apply();
+
+                expect($scope.zoomLevel).toEqual(14);
+                expect($scope.updateToPosition).toEqual(false);
+
+                $scope.$emit(events.NAVIGATION_STATE_EVENT, fakeEventParams);
+
+                expect($scope.zoomLevel).toEqual(16);
+                expect($scope.updateToPosition).toEqual(true);
+
+            });
+
+        });
+
+        describe('and navigation stopped', function () {
+
+            it ('should set zoom level to defaultZoomLevel and flag to update position of map to false', function () {
+
+                fakeEventParams.eventType = events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF;
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
+                });
+
+                $scope.$apply();
+
+                $scope.zoomLevel = 'anything';
+                $scope.updateToPosition = true;
+
+                $scope.$emit(events.NAVIGATION_STATE_EVENT, fakeEventParams);
+
+                expect($scope.zoomLevel).toEqual(14);
+                expect($scope.updateToPosition).toEqual(false);
+
+            });
+
+        });
+
+        describe('and unknown event info came', function () {
+
+            it ('should do nothing', function () {
+
+                fakeEventParams.eventType = "undefined type";
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
+                });
+
+                $scope.$apply();
+
+                $scope.zoomLevel = 'anything';
+                $scope.updateToPosition = 'not sure';
+
+                $scope.$emit(events.NAVIGATION_STATE_EVENT, fakeEventParams);
+
+                $scope.zoomLevel = 'anything';
+                $scope.updateToPosition = 'not sure';
+
+            });
+
+        });
+
+    });
+
+    describe('when POSITION_EVENT fired', function () {
+
+        describe('position changed', function () {
+
+            it ('should update currentPosition with position from event and set error on finding position to false', function () {
+
+                fakeEventParams.eventType = events.POSITION_EVENT_TYPES.CHANGE;
+                fakeEventParams.param = {
+                    coords: {
+                        latitude: 'lat',
+                        longitude: 'lng'
+                    }
+                };
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
+                });
+
+                $scope.$apply();
+
+                $scope.gettingLocationError = true;
+
+                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                expect($scope.currentPosition).toEqual({
+                    latitude: fakeEventParams.param.coords.latitude,
+                    longitude: fakeEventParams.param.coords.longitude
+                });
+                expect($scope.gettingLocationError).toEqual(false);
+
+            });
+
+        });
+
+        describe('error detected', function () {
+
+            it ('should update set error on finding position to true', function () {
+
+                fakeEventParams.eventType = events.POSITION_EVENT_TYPES.ERROR;
+                fakeEventParams.param = {};
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
+                });
+
+                $scope.$apply();
+
+                $scope.gettingLocationError = false;
+
+                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                expect($scope.gettingLocationError).toEqual(true);
+
+            });
+
+        });
+
+        describe('unsupported state detected', function () {
+
+            it ('should do nothing', function () {
+
+                fakeEventParams.eventType = 'something unsupported';
+                fakeEventParams.param = {};
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
+                });
+
+                $scope.$apply();
+
+                $scope.gettingLocationError = false;
+
+                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                expect($scope.gettingLocationError).toEqual(false);
+
+            });
 
         });
 
@@ -117,7 +325,8 @@ describe('PageController', function () {
                 $location: $location,
                 events: events,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                geoLocationService: geoLocationService
             });
 
             $scope.$apply();
@@ -142,7 +351,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();
@@ -168,7 +378,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();
@@ -194,7 +405,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();
@@ -220,7 +432,8 @@ describe('PageController', function () {
                     $location: $location,
                     events: events,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    geoLocationService: geoLocationService
                 });
 
                 $scope.$apply();
