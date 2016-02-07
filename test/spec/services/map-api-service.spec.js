@@ -359,6 +359,23 @@ describe('map-api-service', function () {
 
     });
 
+    describe('zoomLevel', function () {
+
+        it('should call setZoom of map js library', inject(function(mapApiService) {
+
+            var level = 666;
+
+            fakeMap.setZoom = jasmine.createSpy('H.Map.setZoom');
+
+            mapApiService.init([]);
+            mapApiService.zoomLevel(level);
+
+            expect(fakeMap.setZoom).toHaveBeenCalledWith(level);
+
+        }));
+
+    });
+
     describe('calculateRectangle', function () {
 
         var position = { latitude: 'lat', longitude: 'lng'},
