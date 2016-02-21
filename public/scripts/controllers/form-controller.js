@@ -1,6 +1,5 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$scope", '$location', '$timeout', 'routingService', 'stateService',
-        function($scope, $location, $timeout, routingService, stateService) {
+    ["$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService' , function($scope, $location, $timeout, routingService, stateService, searchService) {
 
         'use strict';
 
@@ -10,7 +9,6 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.wayPoints = [];
         $scope.areasToAvoid = [];
-
         $scope.geoLocation = null;
 
         $scope.getRoute = function () {
@@ -31,7 +29,7 @@ angular.module('navigationApp.controllers').controller('FormController',
              * @readme
              * used timeout here to replace state with filled form
              * and then go to search
-             * will consider different approach like keeping waypoints in session storage and
+             * will consider different approach like keeping wayPoints in session storage and
              * use it if no deep link to pre fill form, lets see
              */
             $timeout(function () {
