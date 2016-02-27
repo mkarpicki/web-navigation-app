@@ -39,15 +39,15 @@ describe('app-routing', function(){
 
     describe('when requested search page ("/search")', function () {
 
-        it('should load the search.html template', function(){
+        it('should load the search-results.html template', function(){
 
-            $httpBackend.whenGET('templates/search.html').respond('...');
+            $httpBackend.whenGET('templates/search-results.html').respond('...');
 
             $scope.$apply(function() {
                 $location.path('/search');
             });
 
-            expect($route.current.templateUrl).toEqual('templates/search.html');
+            expect($route.current.templateUrl).toEqual('templates/search-results.html');
             expect($route.current.controller).toEqual('SearchController');
         });
 

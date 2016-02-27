@@ -8,7 +8,7 @@ angular.module('navigationApp').config(['$routeProvider', '$locationProvider', f
             controller: 'FormController'
         }).
         when('/search', {
-            templateUrl: 'templates/search.html',
+            templateUrl: 'templates/search-results.html',
             controller: 'SearchController'
         }).
         when('/route/:index', {
