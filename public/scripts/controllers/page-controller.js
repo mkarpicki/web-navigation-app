@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$scope", '$location', 'events', 'routingService', 'stateService', 'geoLocationService', function($scope, $location, events, routingService, stateService, geoLocationService) {
+    ["$rootScope", "$scope", '$location', 'events', 'routingService', 'stateService', 'geoLocationService', function($rootScope, $scope, $location, events, routingService, stateService, geoLocationService) {
 
         'use strict';
 
@@ -9,7 +9,7 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.updateToPosition = false;
         $scope.zoomLevel = defaultZoomLevel;
 
-        $scope.currentPosition = {
+        $rootScope.currentPosition = {
             latitude: 52.51083,
             longitude: 13.45264
         };
@@ -72,7 +72,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                 $scope.gettingLocationError = false;
 
-                $scope.currentPosition = {
+                $rootScope.currentPosition = {
                     latitude : geoPosition.coords.latitude,
                     longitude : geoPosition.coords.longitude
                 };
@@ -148,6 +148,8 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.pageReady = function () {
 
             $scope.ready = true;
+
+            $scope.updateToPosition = true;
 
             geoLocationService.watchPosition();
         };
