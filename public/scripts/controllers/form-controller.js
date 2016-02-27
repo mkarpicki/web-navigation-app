@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService' , function($scope, $location, $timeout, routingService, stateService, searchService) {
+    ["$rootScope", "$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService' , function($rootScope, $scope, $location, $timeout, routingService, stateService, searchService) {
 
         'use strict';
 
@@ -7,15 +7,25 @@ angular.module('navigationApp.controllers').controller('FormController',
         //$scope.to = '52.51083,13.45264';
         //$scope.wayPoints = ['52.46325,13.3882'];
 
+        var serviceHandler,
+            activeFieldIndex = null,
+
+            WayPoint = function (t, s, c) {
+
+                this.text = t || '';
+                this.suggestions = s || [];
+                this.coordinates = c || '';
+            };
+
         $scope.wayPoints = [];
         $scope.areasToAvoid = [];
         $scope.geoLocation = null;
 
         $scope.getRoute = function () {
 
-            if (!$scope.from || !$scope.to) {
-                return;
-            }
+            //if (!$scope.from || !$scope.to) {
+            //    return;
+            //}
 
             var query = buildSearchQuery();
 
@@ -39,12 +49,16 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         $scope.addWayPoint = function () {
-            $scope.wayPoints.push('');
+            $scope.wayPoints.push(new WayPoint());
         };
 
         $scope.removeWayPoint = function (index) {
             $scope.wayPoints.splice(index, 1);
-            $location.url('/?' + buildSearchQuery());
+            /**
+             * @fixem
+             * and bring me back
+             */
+            //$location.url('/?' + buildSearchQuery());
         };
 
         $scope.removeWayAreaToAvoid = function (index) {
@@ -54,9 +68,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.clear = function () {
 
-            $scope.from = null;
-            $scope.to = null;
-            $scope.wayPoints = [];
+            $scope.wayPoints = getClearWaypoints();
 
             stateService.clear();
             $location.url('/').replace();
@@ -67,9 +79,73 @@ angular.module('navigationApp.controllers').controller('FormController',
             $location.url('/?' + buildSearchQuery());
         };
 
+        $scope.markActiveField = function(index) {
+            activeFieldIndex = index;
+        };
+
+        $scope.unMarkActiveField = function () {
+            activeFieldIndex = null;
+        };
+
+        $scope.isActiveField = function (index) {
+            return (index === activeFieldIndex);
+        };
+
+        $scope.getSuggestions = function (){
+
+            var searchValue = $scope.wayPoints[activeFieldIndex].text;
+
+            if (serviceHandler) {
+                serviceHandler.cancel();
+            }
+
+            serviceHandler = searchService.getSuggestions(searchValue, $rootScope.currentPosition);
+
+            serviceHandler.promise.then(function (httpResponse) {
+
+                if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
+                    $scope.wayPoints[activeFieldIndex].suggestions = httpResponse.data.suggestions;
+                }
+            });
+
+        };
+
+        $scope.search = function (searchValue) {
+
+            if (serviceHandler) {
+                serviceHandler.cancel();
+            }
+
+            serviceHandler = searchService.getResults(searchValue, $rootScope.currentPosition);
+
+            serviceHandler.promise.then(function (httpResponse) {
+
+                if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
+
+                    var data = httpResponse.data.results.items;
+
+                    if (data) {
+                        $scope.wayPoints[activeFieldIndex] = new WayPoint(data[0].title, [], data[0].position.join(','));
+                        //$scope.wayPoints[activeFieldIndex] = {
+                        //    text: data[0].title,
+                        //    suggestions: [],
+                        //    coordinates: data[0].position.join(',')
+                        //};
+                        $scope.unMarkActiveField();
+                    }
+
+                }
+            });
+        };
+
+        var getClearWaypoints = function () {
+            return [new WayPoint(), new WayPoint()];
+        };
+
         var buildSearchQuery = function () {
 
-            var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
+            //var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
+            var allPoints = $scope.wayPoints;
             var areasToAvoid = $scope.areasToAvoid;
 
             stateService.clear();
@@ -86,12 +162,14 @@ angular.module('navigationApp.controllers').controller('FormController',
                 wayPoints = deSerializedQuery.wayPoints,
                 areasToAvoid = deSerializedQuery.areasToAvoid;
 
-            if (wayPoints.length > 0) {
+            if (wayPoints.length > 1) {
 
-                $scope.from = wayPoints.shift();
-                $scope.to = wayPoints.pop();
-                $scope.wayPoints = wayPoints;
+                $scope.wayPoints = wayPoints.map(function (wayPoint) {
+                    return new WayPoint(wayPoint.text, [], wayPoint.coordinates);
+                });
 
+            } else {
+                $scope.wayPoints = getClearWaypoints();
             }
 
             if (areasToAvoid.length > 0) {

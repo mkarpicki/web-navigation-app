@@ -7,12 +7,40 @@ angular.module('navigationApp.directives').directive('searchField', ['searchServ
 
     var link = function (scope, element, attrs, controller) {
 
-        scope.suggestions = suggestions;
+        var getSuggestions = function (searchValue){
+
+            scope.suggestions = [];
+
+            if (serviceHandler) {
+                serviceHandler.cancel();
+            }
+
+            serviceHandler = searchService.getSuggestions(searchValue, null);
+
+            serviceHandler.promise.then(function (httpResponse) {
+
+                if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
+                    scope.suggestions = httpResponse.data.suggestions;
+                    console.log('res: ', scope.suggestions);
+                }
+            })
+
+        };
 
         element.bind('keyup', function() {
 
             getSuggestions(element.val());
         });
+
+        scope.$watch(scope.suggestions, function (suggestions) {
+
+            console.log('suggestions');
+            console.log(scope.suggestions);
+        });
+    };
+
+    var controller = function () {
+
     };
 
     //var getSuggestions = function () {
@@ -33,25 +61,25 @@ angular.module('navigationApp.directives').directive('searchField', ['searchServ
     //    })
     //};
 
-    var getSuggestions = function (searchValue){
-
-        suggestions = [];
-
-        if (serviceHandler) {
-            serviceHandler.cancel();
-        }
-
-        serviceHandler = searchService.getSuggestions(searchValue, null);
-
-        serviceHandler.promise.then(function (httpResponse) {
-
-            if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
-                suggestions = httpResponse.data.suggestions;
-                console.log(suggestions);
-            }
-        })
-
-    };
+    //var getSuggestions = function (searchValue){
+    //
+    //    suggestions = [];
+    //
+    //    if (serviceHandler) {
+    //        serviceHandler.cancel();
+    //    }
+    //
+    //    serviceHandler = searchService.getSuggestions(searchValue, null);
+    //
+    //    serviceHandler.promise.then(function (httpResponse) {
+    //
+    //        if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
+    //            suggestions = httpResponse.data.suggestions;
+    //            console.log(suggestions);
+    //        }
+    //    })
+    //
+    //};
 
     var scope = {
         currentPosition: '=currentPosition',
@@ -60,8 +88,10 @@ angular.module('navigationApp.directives').directive('searchField', ['searchServ
 
     return {
         restrict: 'A',
+        templateUrl: '/scripts/directives/suggestions.html',
         scope: scope,
-        link: link
+        link: link,
+        controller: controller
     };
 
 }]);

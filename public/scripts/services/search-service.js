@@ -39,6 +39,8 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
 
         if (!at) {
             at = '0,0';
+        } else {
+            at = at.latitude + ',' + at.longitude;
         }
 
         var exp = $interpolate(URL),

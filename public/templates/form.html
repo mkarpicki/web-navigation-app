@@ -1,18 +1,9 @@
 <!-- replace with directives for suggestions -->
 <form>
 
-
-    <input
-            type="text"
-            data-search-field
-            data-current-position=""
-            data-suggestions=""
-            >
-
-
-    <label for="from">From:</label>
-    <input id="from" data-ng-model="from">
-    <br>
+    <!--<label for="from">From:</label>-->
+    <!--<input id="from" data-ng-model="from">-->
+    <!--<br>-->
 
     <!--<label for="use-location">Use location</label>-->
     <!--<input id="use-location" type="checkbox" data-ng-model="useGeoLocation">-->
@@ -22,18 +13,40 @@
 
     <ul>
         <li data-ng-repeat="wayPoint in wayPoints track by $index">
-            <label for="waypoint-{{$index}}">Thru:</label>
-            <!--<input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]" data-ng-blur="onInputDefined()">-->
-            <input id="waypoint-{{$index}}" type="text" data-ng-model="wayPoints[$index]">
-            <button data-ng-click="removeWayPoint($index);" >-</button>
+            <label data-ng-if="$index === 0" for="search-field-{{$index}}">From:</label>
+            <label data-ng-if="$index > 0 && $index < (wayPoints.length - 1)" for="search-field-{{$index}}">Thru:</label>
+            <label data-ng-if="$index === (wayPoints.length - 1)" for="search-field-{{$index}}">To:</label>
+
+            <input
+                    id="search-field-{{$index}}"
+                    type="text"
+                    autocomplete="off"
+                    data-ng-focus="markActiveField($index);"
+                    data-ng-blug="unMarkActiveField();"
+                    data-ng-keyup="getSuggestions();"
+                    data-ng-model="wayPoints[$index].text"
+                    >
+            <ul data-ng-if="isActiveField($index);">
+                <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
+                    <button data-ng-click="search(suggestion);">{{suggestion}}</button>
+                </li>
+            </ul>
+
+            <input
+                    id="waypoint-{{$index}}"
+                    type="hidden"
+                    data-ng-model="wayPoints[$index].coordinates"
+                    >
+            <button data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
+                    data-ng-click="removeWayPoint($index);" >-</button>
         </li>
     </ul>
 
-    <button data-ng-click="addWayPoint();">+</button>
+    <button data-ng-click="unMarkActiveField(); addWayPoint();">+</button>
     <br>
 
-    <label for="to">To:</label>
-    <input id="to" data-ng-model="to">
+    <!--<label for="to">To:</label>-->
+    <!--<input id="to" data-ng-model="to">-->
 
     <br>
 

@@ -48,7 +48,21 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var deserializeWayPoints = function (search) {
-        return parseSearch(search, WayPointVariable);
+
+        var wayPoints = parseSearch(search, WayPointVariable),
+            wayPointParsed;
+
+        for (var i = 0, l = wayPoints.length; i < l; i++) {
+
+            wayPointParsed = wayPoints[i].split('|');
+
+            wayPoints[i] = {
+                text: wayPointParsed[0],
+                coordinates: wayPointParsed[1]
+            };
+        }
+
+        return wayPoints;
     };
 
     var buildQuery = function (variable, values) {
@@ -104,6 +118,11 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var setWayPoints = function (wayPoints) {
+
+        for (var i = 0, l = wayPoints.length; i < l; i++) {
+            wayPoints[i] = wayPoints[i].text + '|' + wayPoints[i].coordinates;
+        }
+
         wayPointsStorage = wayPoints;
     };
 
