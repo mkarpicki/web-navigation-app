@@ -24,6 +24,8 @@ angular.module('navigationApp.controllers').controller('FormController',
                 return;
             }
 
+            $scope.wayPoints = enteredWayPoints;
+
             var query = buildSearchQuery();
 
             /**
