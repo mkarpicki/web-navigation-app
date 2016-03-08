@@ -16,9 +16,13 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.getRoute = function () {
 
-            //if (!$scope.from || !$scope.to) {
-            //    return;
-            //}
+            var enteredWayPoints = $scope.wayPoints.filter(function (wayPoint) {
+                return (wayPoint.coordinates !== "");
+            });
+
+            if (enteredWayPoints.length < 2) {
+                return;
+            }
 
             var query = buildSearchQuery();
 
@@ -126,7 +130,6 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         var buildSearchQuery = function () {
 
-            //var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
             var allPoints = $scope.wayPoints;
             var areasToAvoid = $scope.areasToAvoid;
 
