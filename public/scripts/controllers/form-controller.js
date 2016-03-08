@@ -68,7 +68,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.clear = function () {
 
-            $scope.wayPoints = getClearWaypoints();
+            $scope.wayPoints = getClearWayPoints();
 
             stateService.clear();
             $location.url('/').replace();
@@ -91,11 +91,6 @@ angular.module('navigationApp.controllers').controller('FormController',
             return (index === activeFieldIndex);
         };
 
-        /**
-         * @todo
-         * move http resolving into service and return promise from it
-         * that should be encapsulated from controller level
-         */
         $scope.getSuggestions = function (){
 
             var searchValue = $scope.wayPoints[activeFieldIndex].text;
@@ -106,20 +101,13 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             serviceHandler = searchService.getSuggestions(searchValue, $rootScope.currentPosition);
 
-            serviceHandler.promise.then(function (httpResponse) {
+            serviceHandler.promise.then(function (suggestions) {
 
-                if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
-                    $scope.wayPoints[activeFieldIndex].suggestions = httpResponse.data.suggestions;
-                }
+                $scope.wayPoints[activeFieldIndex].suggestions = suggestions;
             });
 
         };
 
-        /**
-         * @todo
-         * move http resolving into service and return promise from it
-         * that should be encapsulated from controller level
-         */
         $scope.search = function (searchValue) {
 
             if (serviceHandler) {
@@ -128,27 +116,20 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             serviceHandler = searchService.getResults(searchValue, $rootScope.currentPosition);
 
-            serviceHandler.promise.then(function (httpResponse) {
+            serviceHandler.promise.then(function (searchResults) {
 
-                if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
+                if (searchResults) {
 
-                    var data = httpResponse.data.results.items;
+                    $scope.wayPoints[activeFieldIndex] = new WayPoint(searchResults[0].title, [], searchResults[0].position.join(','));
 
-                    if (data) {
-                        $scope.wayPoints[activeFieldIndex] = new WayPoint(data[0].title, [], data[0].position.join(','));
-                        //$scope.wayPoints[activeFieldIndex] = {
-                        //    text: data[0].title,
-                        //    suggestions: [],
-                        //    coordinates: data[0].position.join(',')
-                        //};
-                        $scope.unMarkActiveField();
-                    }
-
+                    $scope.unMarkActiveField();
                 }
+
             });
+
         };
 
-        var getClearWaypoints = function () {
+        var getClearWayPoints = function () {
             return [new WayPoint(), new WayPoint()];
         };
 
@@ -172,7 +153,7 @@ angular.module('navigationApp.controllers').controller('FormController',
                 wayPoints = deSerializedQuery.wayPoints,
                 areasToAvoid = deSerializedQuery.areasToAvoid;
 
-            $scope.wayPoints = getClearWaypoints();
+            $scope.wayPoints = getClearWayPoints();
 
             if (wayPoints.length > 0) {
 

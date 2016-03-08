@@ -15,7 +15,7 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
         "&at={{at}}" +
         "&q={{q}}";
 
-    var get = function (apiUrl, q, at) {
+    var get = function (apiUrl, q, at, field) {
 
         if (!at) {
             at = '0,0';
@@ -24,7 +24,8 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
         }
 
         var exp = $interpolate(URL),
-            canceller = $q.defer();
+            canceller = $q.defer(),
+            deferred = $q.defer();
 
         var url = exp({
             appId: appId,
@@ -38,19 +39,39 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
             canceller.resolve();
         };
 
+        var findProperty = function(obj, key) {
+            return key.split(".").reduce(function(o, x) {
+                return (typeof o == 'undefined' || o === null) ? o : o[x];
+            }, obj);
+        };
+
+        $http.get(url, { timeout: canceller.promise}).then(function (httpResponse) {
+
+            if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
+
+                var data = findProperty(httpResponse.data, field);
+
+                deferred.resolve(data);
+                return;
+            }
+
+            deferred.reject();
+
+        }, deferred.reject);
+
         return {
-            promise: $http.get(url, { timeout: canceller.promise}),
+            promise: deferred.promise,
             cancel: cancel
         };
 
     };
 
     var getSuggestions = function (q, at) {
-        return get(SEARCH_SUGGESTIONS_URL, q, at);
+        return get(SEARCH_SUGGESTIONS_URL, q, at, 'suggestions');
     };
 
     var getResults = function (q, at) {
-        return get(SEARCH_URL, q, at);
+        return get(SEARCH_URL, q, at, 'results.items');
     };
 
     return {
