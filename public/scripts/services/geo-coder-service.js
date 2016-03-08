@@ -9,13 +9,14 @@ angular.module('navigationApp.services').factory('geoCoderService', ['$http', '$
 
 
     var REVERSE_GEO_CODER_URL = "https://reverse.geocoder.api.here.com/6.2/reversegeocode.json",
-        DEFAULT_RADIUS = 10;
+        DEFAULT_RADIUS = 200;
 
     var URL = "{{url}}?" +
         "app_id={{appId}}" +
         "&app_code={{appCode}}" +
         "&gen=9" +
         "&prox={{prox}},{{radius}}" +
+        "&maxresults=1" +
         "&mode=retrieveAddresses";
 
     var reverse = function (coordinate, radius) {
