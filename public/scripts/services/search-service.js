@@ -15,26 +15,6 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
         "&at={{at}}" +
         "&q={{q}}";
 
-    //var get = function (apiUrl, q, at) {
-    //
-    //    if (!at) {
-    //        at = '0,0';
-    //    }
-    //
-    //    var exp = $interpolate(URL);
-    //
-    //    var url = exp({
-    //        appId: appId,
-    //        appCode: appCode,
-    //        url: apiUrl,
-    //        at: at,
-    //        q: q
-    //    });
-    //
-    //    return $http.get(url);
-    //
-    //};
-
     var get = function (apiUrl, q, at) {
 
         if (!at) {

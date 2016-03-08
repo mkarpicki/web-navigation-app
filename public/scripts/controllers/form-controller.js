@@ -49,13 +49,13 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         $scope.addWayPoint = function () {
-            $scope.wayPoints.push(new WayPoint());
+            $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, new WayPoint());
         };
 
         $scope.removeWayPoint = function (index) {
             $scope.wayPoints.splice(index, 1);
             /**
-             * @fixem
+             * @fixme
              * and bring me back
              */
             //$location.url('/?' + buildSearchQuery());
@@ -91,6 +91,11 @@ angular.module('navigationApp.controllers').controller('FormController',
             return (index === activeFieldIndex);
         };
 
+        /**
+         * @todo
+         * move http resolving into service and return promise from it
+         * that should be encapsulated from controller level
+         */
         $scope.getSuggestions = function (){
 
             var searchValue = $scope.wayPoints[activeFieldIndex].text;
@@ -110,6 +115,11 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         };
 
+        /**
+         * @todo
+         * move http resolving into service and return promise from it
+         * that should be encapsulated from controller level
+         */
         $scope.search = function (searchValue) {
 
             if (serviceHandler) {
@@ -162,14 +172,14 @@ angular.module('navigationApp.controllers').controller('FormController',
                 wayPoints = deSerializedQuery.wayPoints,
                 areasToAvoid = deSerializedQuery.areasToAvoid;
 
-            if (wayPoints.length > 1) {
+            $scope.wayPoints = getClearWaypoints();
 
-                $scope.wayPoints = wayPoints.map(function (wayPoint) {
-                    return new WayPoint(wayPoint.text, [], wayPoint.coordinates);
-                });
+            if (wayPoints.length > 0) {
 
-            } else {
-                $scope.wayPoints = getClearWaypoints();
+                for (var i = 0, len = wayPoints.length; i < len; i++) {
+                    $scope.wayPoints[i] = new WayPoint(wayPoints[i].text, [], wayPoints[i].coordinates);
+                }
+
             }
 
             if (areasToAvoid.length > 0) {

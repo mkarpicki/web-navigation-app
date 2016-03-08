@@ -1,15 +1,6 @@
-<!-- replace with directives for suggestions -->
 <form>
 
-    <!--<label for="from">From:</label>-->
-    <!--<input id="from" data-ng-model="from">-->
-    <!--<br>-->
-
-    <!--<label for="use-location">Use location</label>-->
-    <!--<input id="use-location" type="checkbox" data-ng-model="useGeoLocation">-->
-
-    <!--<span data-ng-show="useGeoLocation">{{geoPosition}}</span>-->
-    <span>geo: {{geoLocation}}</span>
+    <!--<span>geo: {{geoLocation}}</span>-->
 
     <ul>
         <li data-ng-repeat="wayPoint in wayPoints track by $index">
@@ -43,10 +34,6 @@
     </ul>
 
     <button data-ng-click="unMarkActiveField(); addWayPoint();">+</button>
-    <br>
-
-    <!--<label for="to">To:</label>-->
-    <!--<input id="to" data-ng-model="to">-->
 
     <br>
 

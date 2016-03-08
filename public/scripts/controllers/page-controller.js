@@ -1,10 +1,17 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$rootScope", "$scope", '$location', 'events', 'routingService', 'stateService', 'geoLocationService', function($rootScope, $scope, $location, events, routingService, stateService, geoLocationService) {
+    ["$rootScope", "$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', function($rootScope, $scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService) {
 
         'use strict';
 
         var defaultZoomLevel = 14,
-            navigationZoomLevel = 16;
+            navigationZoomLevel = 16,
+
+            WayPoint = function (t, s, c) {
+
+                this.text = t || '';
+                this.suggestions = s || [];
+                this.coordinates = c || '';
+            };
 
         $scope.updateToPosition = false;
         $scope.zoomLevel = defaultZoomLevel;
@@ -18,32 +25,27 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.ready = false;
 
 
-        var apply = function () {
-            routingService.clearResults();
-            $scope.$apply();
-        };
+        //var apply = function () {
+        //    routingService.clearResults();
+        //    $scope.$apply();
+        //};
 
-        var overwriteStartPoint = function (position) {
 
-            var point = position.latitude + ',' + position.longitude;
+        var overwriteStartPoint = function (point, text) {
 
-            stateService.overwriteStartPoint(point);
-
-        };
-
-        var overwriteDestinationPoint = function (position) {
-
-            var point = position.latitude + ',' + position.longitude;
-
-            stateService.overwriteDestinationPoint(point);
+            stateService.overwriteStartPoint(new WayPoint(text, [], point));
 
         };
 
-        var addWayPoint = function (position) {
+        var overwriteDestinationPoint = function (point, text) {
 
-            var point = position.latitude + ',' + position.longitude;
+            stateService.overwriteDestinationPoint(new WayPoint(text, [], point));
 
-            stateService.addWayPoint(point);
+        };
+
+        var addWayPoint = function (point, text) {
+
+            stateService.addWayPoint(new WayPoint(text, [], point));
 
         };
 
@@ -55,7 +57,13 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
+        var updateState = function () {
 
+            var query = stateService.serializeQuery();
+
+            $location.url('/?' + query);
+            routingService.clearResults();
+        };
 
         //var stopPositionListener = function () {
         //
@@ -111,38 +119,43 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         $scope.$on(events.MAP_EVENT, function (event, params) {
 
-            var geoParam = params.geoParam;
+            var geoParam = params.geoParam,
+                point = geoParam.latitude + ',' + geoParam.longitude;
 
-            switch (params.eventType) {
+            geoCoderService.reverse(point).then(function (text) {
 
-                case events.MAP_EVENT_TYPES.OVERWRITE_START_POINT:
+                console.log('pagecontr: ', text);
 
-                    overwriteStartPoint(geoParam);
-                    break;
+                switch (params.eventType) {
 
-                case events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT:
+                    case events.MAP_EVENT_TYPES.OVERWRITE_START_POINT:
 
-                    overwriteDestinationPoint(geoParam);
-                    break;
+                        overwriteStartPoint(point, text);
+                        break;
 
-                case events.MAP_EVENT_TYPES.ADD_WAY_POINT:
+                    case events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT:
 
-                    addWayPoint(geoParam);
-                    break;
+                        overwriteDestinationPoint(point, text);
+                        break;
 
-                case events.MAP_EVENT_TYPES.AVOID_AREA:
+                    case events.MAP_EVENT_TYPES.ADD_WAY_POINT:
 
-                    addAreaToAvoid(geoParam);
-                    break;
+                        addWayPoint(point, text);
+                        break;
 
-                default:
-                    break;
-            }
+                    case events.MAP_EVENT_TYPES.AVOID_AREA:
 
-            var query = stateService.serializeQuery();
+                        addAreaToAvoid(geoParam);
+                        break;
 
-            $location.url('/?' + query);
-            apply();
+                    default:
+                        break;
+                }
+
+                updateState();
+
+            });
+
         });
 
         $scope.pageReady = function () {

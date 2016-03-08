@@ -16,6 +16,10 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
         navigationMode = false;
 
+    var serializeWayPoint = function (point) {
+        return point.text + '|' + point.coordinates;
+    };
+
     var serializeQuery = function () {
 
         var w = serializeWayPoints(wayPointsStorage),
@@ -120,7 +124,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     var setWayPoints = function (wayPoints) {
 
         for (var i = 0, l = wayPoints.length; i < l; i++) {
-            wayPoints[i] = wayPoints[i].text + '|' + wayPoints[i].coordinates;
+            wayPoints[i] = serializeWayPoint(wayPoints[i]);
         }
 
         wayPointsStorage = wayPoints;
@@ -132,10 +136,12 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var overwriteStartPoint = function (point) {
-        wayPointsStorage[0] = point;
+        wayPointsStorage[0] = serializeWayPoint(point);
     };
 
     var overwriteDestinationPoint = function (point) {
+
+        point = serializeWayPoint(point);
 
         if (wayPointsStorage.length < 3) {
 
@@ -150,6 +156,8 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var addWayPoint = function (point) {
+
+        point = serializeWayPoint(point);
 
         if (wayPointsStorage.length < 2) {
 
