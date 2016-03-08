@@ -36,7 +36,7 @@ angular.module('navigationApp.controllers').controller('FormController',
              * use it if no deep link to pre fill form, lets see
              */
             $timeout(function () {
-                $location.url('/search?' + query );
+                $location.url('/search?' + query);
             }, 500);
 
         };
@@ -47,11 +47,8 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.removeWayPoint = function (index) {
             $scope.wayPoints.splice(index, 1);
-            /**
-             * @fixme
-             * and bring me back
-             */
-            //$location.url('/?' + buildSearchQuery());
+
+            $location.url('/?' + buildSearchQuery());
         };
 
         $scope.removeWayAreaToAvoid = function (index) {
@@ -67,10 +64,10 @@ angular.module('navigationApp.controllers').controller('FormController',
             $location.url('/').replace();
         };
 
-        $scope.onInputDefined = function () {
-
-            $location.url('/?' + buildSearchQuery());
-        };
+        //$scope.onInputDefined = function () {
+        //
+        //    $location.url('/?' + buildSearchQuery());
+        //};
 
         $scope.markActiveField = function(index) {
             activeFieldIndex = index;
@@ -115,7 +112,8 @@ angular.module('navigationApp.controllers').controller('FormController',
 
                     $scope.wayPoints[activeFieldIndex] = dataModel.getWayPoint(searchResults[0].title, [], searchResults[0].position.join(','));
 
-                    $scope.unMarkActiveField();
+                    $location.url('/?' + buildSearchQuery());
+                    //$scope.unMarkActiveField();
                 }
 
             });

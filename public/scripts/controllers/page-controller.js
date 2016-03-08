@@ -117,8 +117,6 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             geoCoderService.reverse(point).then(function (text) {
 
-                console.log('pagecontr: ', text);
-
                 switch (params.eventType) {
 
                     case events.MAP_EVENT_TYPES.OVERWRITE_START_POINT:

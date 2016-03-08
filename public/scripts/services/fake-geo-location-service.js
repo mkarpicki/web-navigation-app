@@ -32,7 +32,6 @@ angular.module('navigationApp.services').factory('geoLocationService', ['$interv
         var count = 0;
 
         $interval(function () {
-            //console.log(steps[count]);
 
             var lat = steps[count].split(',')[0];
             var lng = steps[count].split(',')[1];
