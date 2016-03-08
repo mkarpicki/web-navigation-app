@@ -4,14 +4,7 @@ angular.module('navigationApp.controllers').controller('PageController',
         'use strict';
 
         var defaultZoomLevel = 14,
-            navigationZoomLevel = 16,
-
-            WayPoint = function (t, s, c) {
-
-                this.text = t || '';
-                this.suggestions = s || [];
-                this.coordinates = c || '';
-            };
+            navigationZoomLevel = 16;
 
         $scope.updateToPosition = false;
         $scope.zoomLevel = defaultZoomLevel;
