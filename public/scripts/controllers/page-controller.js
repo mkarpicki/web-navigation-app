@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$rootScope", "$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', function($rootScope, $scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService) {
+    ["$rootScope", "$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', 'dataModel', function($rootScope, $scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService, dataModel) {
 
         'use strict';
 
@@ -33,19 +33,19 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var overwriteStartPoint = function (point, text) {
 
-            stateService.overwriteStartPoint(new WayPoint(text, [], point));
+            stateService.overwriteStartPoint(dataModel.getWayPoint(text, [], point));
 
         };
 
         var overwriteDestinationPoint = function (point, text) {
 
-            stateService.overwriteDestinationPoint(new WayPoint(text, [], point));
+            stateService.overwriteDestinationPoint(dataModel.getWayPoint(text, [], point));
 
         };
 
         var addWayPoint = function (point, text) {
 
-            stateService.addWayPoint(new WayPoint(text, [], point));
+            stateService.addWayPoint(dataModel.getWayPoint(text, [], point));
 
         };
 

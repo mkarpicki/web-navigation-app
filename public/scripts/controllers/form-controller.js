@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$rootScope", "$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService' , function($rootScope, $scope, $location, $timeout, routingService, stateService, searchService) {
+    ["$rootScope", "$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService', 'dataModel' , function($rootScope, $scope, $location, $timeout, routingService, stateService, searchService, dataModel) {
 
         'use strict';
 
@@ -8,14 +8,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         //$scope.wayPoints = ['52.46325,13.3882'];
 
         var serviceHandler,
-            activeFieldIndex = null,
-
-            WayPoint = function (t, s, c) {
-
-                this.text = t || '';
-                this.suggestions = s || [];
-                this.coordinates = c || '';
-            };
+            activeFieldIndex = null;
 
         $scope.wayPoints = [];
         $scope.areasToAvoid = [];
@@ -49,7 +42,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         $scope.addWayPoint = function () {
-            $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, new WayPoint());
+            $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, dataModel.getWayPoint());
         };
 
         $scope.removeWayPoint = function (index) {
@@ -120,7 +113,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
                 if (searchResults) {
 
-                    $scope.wayPoints[activeFieldIndex] = new WayPoint(searchResults[0].title, [], searchResults[0].position.join(','));
+                    $scope.wayPoints[activeFieldIndex] = dataModel.getWayPoint(searchResults[0].title, [], searchResults[0].position.join(','));
 
                     $scope.unMarkActiveField();
                 }
@@ -130,7 +123,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         var getClearWayPoints = function () {
-            return [new WayPoint(), new WayPoint()];
+            return [dataModel.getWayPoint(), dataModel.getWayPoint()];
         };
 
         var buildSearchQuery = function () {
@@ -158,7 +151,7 @@ angular.module('navigationApp.controllers').controller('FormController',
             if (wayPoints.length > 0) {
 
                 for (var i = 0, len = wayPoints.length; i < len; i++) {
-                    $scope.wayPoints[i] = new WayPoint(wayPoints[i].text, [], wayPoints[i].coordinates);
+                    $scope.wayPoints[i] = dataModel.getWayPoint(wayPoints[i].text, [], wayPoints[i].coordinates);
                 }
 
             }

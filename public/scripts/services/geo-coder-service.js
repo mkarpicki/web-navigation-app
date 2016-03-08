@@ -1,5 +1,3 @@
-//https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?app_id=6HRrANORgYjdfDFtrTID&app_code=D4Mlaon1qumiQ9goQ4k9lQ&gen=9&prox=52.518252836075156,13.445196986767968,10&mode=retrieveAddresses
-
 angular.module('navigationApp.services').factory('geoCoderService', ['$http', '$q', '$interpolate', 'config', function ($http, $q, $interpolate, config) {
 
     'use strict';
