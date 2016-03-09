@@ -89,7 +89,9 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 wayPoints = deSerializedQuery.wayPoints.map(function (wayPoint) {
                     return wayPoint.coordinates;
                 }),
-                areasToAvoid = deSerializedQuery.areasToAvoid;
+                areasToAvoid = deSerializedQuery.areasToAvoid.map(function (areaToAvoid) {
+                    return areaToAvoid.boundingBox;
+                });
 
 
             if (wayPoints.length > 1) {

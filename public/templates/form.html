@@ -39,7 +39,8 @@
 
     <ul>
         <li data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
-            <span>{{$index}}</span>
+            <span>{{$index}}.</span>
+            <span>{{areaToAvoid.text}}</span>
             <button data-ng-click="removeWayAreaToAvoid($index);" >-</button>
         </li>
     </ul>

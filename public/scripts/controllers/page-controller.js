@@ -42,9 +42,17 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
-        var addAreaToAvoid = function (geoParam) {
+        var addAreaToAvoid = function (geoParam, text) {
 
-            var item = geoParam.topLeft.latitude + "," + geoParam.topLeft.longitude + ";" + geoParam.bottomRight.latitude + "," + geoParam.bottomRight.longitude;
+            /**
+             * @todo
+             * think about usage of dataModel here but then object with params should be passed and same for wayPoint instead of coordinates as string
+             * @type {{boundingBox: string, text: *}}
+             */
+            var item = {
+                boundingBox : geoParam.topLeft.latitude + "," + geoParam.topLeft.longitude + ";" + geoParam.bottomRight.latitude + "," + geoParam.bottomRight.longitude,
+                text: text
+            };
 
             stateService.addAreaToAvoid(item);
 
@@ -136,7 +144,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                     case events.MAP_EVENT_TYPES.AVOID_AREA:
 
-                        addAreaToAvoid(geoParam);
+                        addAreaToAvoid(geoParam, text);
                         break;
 
                     default:
