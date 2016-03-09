@@ -36,10 +36,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
         var wayPoints = deserializeWayPoints($location.search());
         var areasToAvoid = deserializeAreasToAvoid($location.search());
-        //
-        //var wayPoints = deserializeWayPoints($location.search()) || [];
-        //var areasToAvoid = deserializeAreasToAvoid($location.search()) || [];
-
+        
         return {
             wayPoints: wayPoints,
             areasToAvoid: areasToAvoid
