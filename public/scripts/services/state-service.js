@@ -4,7 +4,7 @@
  * or make all dependencies inside service to cut them of from controllers level - then it gives possibilities to change where state is being kept
  * (url, session storage etc).
  */
-angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', 'events', function ($rootScope, $interpolate, $location, events) {
+angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', 'events', 'dataModel', function ($rootScope, $interpolate, $location, events, dataModel) {
 
     'use strict';
 
@@ -36,7 +36,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
         var wayPoints = deserializeWayPoints($location.search());
         var areasToAvoid = deserializeAreasToAvoid($location.search());
-        
+
         return {
             wayPoints: wayPoints,
             areasToAvoid: areasToAvoid
@@ -56,20 +56,12 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
             areaParsed = areas[i].split('|');
 
-            areas[i] = {
-                text: areaParsed[0],
-                boundingBox: areaParsed[1]
-            };
+            areas[i] = dataModel.getBoundingBox(areaParsed[0], areaParsed[1]);
         }
 
         return areas;
     };
 
-    /**
-     * @todo
-     * use dataModel here
-     * @param search
-     */
     var deserializeWayPoints = function (search) {
 
         var wayPoints = parseSearch(search, WayPointVariable),
@@ -79,10 +71,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
             wayPointParsed = wayPoints[i].split('|');
 
-            wayPoints[i] = {
-                text: wayPointParsed[0],
-                coordinates: wayPointParsed[1]
-            };
+            wayPoints[i] = dataModel.getWayPoint(wayPointParsed[0], [], wayPointParsed[1]);
         }
 
         return wayPoints;
@@ -200,7 +189,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     var addAreaToAvoid = function (area) {
 
-        area = area.text + '|' + area.boundingBox;
+        area = serializeAreaToAvoid(area);
 
         areasToAvoidStorage.push(area);
     };

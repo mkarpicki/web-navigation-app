@@ -152,11 +152,7 @@ angular.module('navigationApp.controllers').controller('FormController',
             $scope.wayPoints = getClearWayPoints();
 
             if (wayPoints.length > 0) {
-
-                for (var i = 0, len = wayPoints.length; i < len; i++) {
-                    $scope.wayPoints[i] = dataModel.getWayPoint(wayPoints[i].text, [], wayPoints[i].coordinates);
-                }
-
+                $scope.wayPoints = wayPoints;
             }
 
             if (areasToAvoid.length > 0) {
