@@ -78,9 +78,18 @@ describe('stateService', function () {
 
         it('should add area to state', inject(function (stateService) {
 
-            var areas = ['area0','area1'];
+            var area0 = {
+                text: 'area0',
+                boundingBox: '1,2,3,4'
+            };
+            var area1 = {
+                text: 'area1',
+                boundingBox: '5,6,7,8'
+            };
 
-            var expectedQuery = "&a0=area0&a1=area1";
+            var areas = [area0,area1];
+
+            var expectedQuery = "&a0=area0|1,2,3,4&a1=area1|5,6,7,8";
 
             stateService.addAreaToAvoid(areas[0]);
             stateService.addAreaToAvoid(areas[1]);
@@ -95,9 +104,19 @@ describe('stateService', function () {
 
         it('should add wayPoint to state', inject(function (stateService) {
 
-            var wayPoints = ['waypoint0','waypoint1'];
+            var wayPoint0 = {
+                text: 'waypoint0',
+                coordinates: '1,2'
+            };
 
-            var expectedQuery = "w0=waypoint0&w1=waypoint1";
+            var wayPoint1 = {
+                text: 'waypoint1',
+                coordinates: '3,4'
+            };
+
+            var wayPoints = [wayPoint0, wayPoint1];
+
+            var expectedQuery = "w0=waypoint0|1,2&w1=waypoint1|3,4";
 
             stateService.addWayPoint(wayPoints[0]);
             stateService.addWayPoint(wayPoints[1]);
@@ -110,9 +129,25 @@ describe('stateService', function () {
 
             it ('should add new way point before end point', inject(function (stateService) {
 
-                var wayPoints = ['start','destination', 'waypoint'];
+                var start = {
+                    text: 'start',
+                    coordinates: '1,2'
+                };
 
-                var expectedQuery = "w0=start&w1=waypoint&w2=destination";
+                var wayPoint = {
+                    text: 'waypoint',
+                    coordinates: '3,4'
+                };
+
+                var destination = {
+                    text: 'destination',
+                    coordinates: '5,6'
+                };
+
+                var wayPoints = [start, destination, wayPoint];
+
+                var expectedQuery = "w0=start|1,2&w1=waypoint|3,4&w2=destination|5,6";
+
 
                 stateService.addWayPoint(wayPoints[0]);
                 stateService.addWayPoint(wayPoints[1]);
@@ -132,13 +167,26 @@ describe('stateService', function () {
 
             it('should add destination point at the end', inject(function(stateService) {
 
-                var wayPoints = ['start','destination_first', 'destination_second'];
+                var start = {
+                    text: 'start',
+                    coordinates: '1,2'
+                };
 
-                var expectedQuery = "w0=start&w1=destination_first&w2=destination_second";
+                var destinationFirst = {
+                    text: 'destination-1',
+                    coordinates: '3,4'
+                };
 
-                stateService.addWayPoint(wayPoints[0]);
-                stateService.addWayPoint(wayPoints[1]);
-                stateService.overwriteDestinationPoint(wayPoints[2]);
+                var destinationSecond = {
+                    text: 'destination-2',
+                    coordinates: '5,6'
+                };
+
+                var expectedQuery = "w0=start|1,2&w1=destination-1|3,4&w2=destination-2|5,6";
+
+                stateService.addWayPoint(start);
+                stateService.addWayPoint(destinationFirst);
+                stateService.overwriteDestinationPoint(destinationSecond);
 
                 expect(stateService.serializeQuery()).toEqual(expectedQuery);
 
@@ -148,9 +196,29 @@ describe('stateService', function () {
 
         it('should set overwrite destination point', inject(function(stateService) {
 
-            var wayPoints = ['start', 'middle_point', 'destination_first', 'destination_second'];
+            var start = {
+                text: 'start',
+                coordinates: '1,2'
+            };
 
-            var expectedQuery = "w0=start&w1=destination_first&w2=destination_second";
+            var middlePoint = {
+                text: 'middle-point',
+                coordinates: '3,4'
+            };
+
+            var destinationFirst = {
+                text: 'destination-1',
+                coordinates: '5,6'
+            };
+
+            var destinationSecond = {
+                text: 'destination-2',
+                coordinates: '7,8'
+            };
+
+            var wayPoints = [start, middlePoint, destinationFirst, destinationSecond];
+
+            var expectedQuery = "w0=start|1,2&w1=destination-1|5,6&w2=destination-2|7,8";
 
             stateService.addWayPoint(wayPoints[0]);
             stateService.addWayPoint(wayPoints[1]);
@@ -167,9 +235,25 @@ describe('stateService', function () {
 
         it('should add start point  at the beginning', inject(function(stateService) {
 
-            var wayPoints = ['start','destination', 'start_second'];
+            var start = {
+                text: 'start-1',
+                coordinates: '1,2'
+            };
 
-            var expectedQuery = "w0=start_second&w1=destination";
+            var startSecond = {
+                text: 'start-2',
+                coordinates: '3,4'
+            };
+
+            var destination = {
+                text: 'destination',
+                coordinates: '5,6'
+            };
+
+
+            var wayPoints = [start, destination, startSecond];
+
+            var expectedQuery = "w0=start-2|3,4&w1=destination|5,6";
 
             stateService.addWayPoint(wayPoints[0]);
             stateService.addWayPoint(wayPoints[1]);
@@ -185,9 +269,19 @@ describe('stateService', function () {
 
         it('should set all areas to avoid', inject(function(stateService) {
 
-            var areas = ['area0','area1'];
+            var area0 = {
+                text: 'area-0',
+                boundingBox: '1,2,3,4'
+            };
 
-            var expectedQuery = "&a0=area0&a1=area1";
+            var area1 = {
+                text: 'area-1',
+                boundingBox: '5,6,7,8'
+            };
+
+            var areas = [area0, area1];
+
+            var expectedQuery = "&a0=area-0|1,2,3,4&a1=area-1|5,6,7,8";
 
             stateService.setAreasToAvoid(areas);
 
@@ -201,9 +295,25 @@ describe('stateService', function () {
 
         it('should set all way points', inject(function(stateService) {
 
-            var wayPoints = ['start', 'middle','destination'];
+            var start = {
+                text: 'start',
+                coordinates: '1,2'
+            };
 
-            var expectedQuery = "w0=start&w1=middle&w2=destination";
+            var middle = {
+                text: 'middle',
+                coordinates: '3,4'
+            };
+
+            var destination = {
+                text: 'destination',
+                coordinates: '5,6'
+            };
+
+
+            var wayPoints = [start, middle, destination];
+
+            var expectedQuery = "w0=start|1,2&w1=middle|3,4&w2=destination|5,6";
 
             stateService.setWayPoints(wayPoints);
 
@@ -239,10 +349,30 @@ describe('stateService', function () {
 
         it ('should build query from all added objects', inject(function (stateService) {
 
-            var wayPoints = ['waypoint0','waypoint1'];
-            var areas = ['area0','area1'];
+            var start = {
+                text: 'start',
+                coordinates: '1,2'
+            };
 
-            var expectedQuery = "w0=waypoint0&w1=waypoint1" + "&a0=area0&a1=area1";
+            var destination = {
+                text: 'destination',
+                coordinates: '3,4'
+            };
+
+            var area0 = {
+                text: 'area-0',
+                boundingBox: '1,2,3,4'
+            };
+
+            var area1 = {
+                text: 'area-1',
+                boundingBox: '5,6,7,8'
+            };
+
+            var wayPoints = [start, destination];
+            var areas = [area0, area1];
+
+            var expectedQuery = "w0=start|1,2&w1=destination|3,4" + "&a0=area-0|1,2,3,4&a1=area-1|5,6,7,8";
 
             stateService.addWayPoint(wayPoints[0]);
             stateService.addWayPoint(wayPoints[1]);
@@ -263,10 +393,10 @@ describe('stateService', function () {
             it ('should deserialize $location query', inject(function(stateService) {
 
                 var search = {
-                    'w0': 'waypoint0',
-                    'w1': 'waypoint1',
-                    'a0': 'area0',
-                    'a1': 'area1'
+                    'w0': 'waypoint0|1,2',
+                    'w1': 'waypoint1|3,4',
+                    'a0': 'area0|1,2,3,4',
+                    'a1': 'area1|5,6,7,8'
                 };
 
                 _$location_.search = jasmine.createSpy('$location.search').and.returnValue(search);
@@ -275,11 +405,17 @@ describe('stateService', function () {
 
                 expect(_$location_.search).toHaveBeenCalled();
 
-                expect(deserialized.wayPoints[0]).toEqual('waypoint0');
-                expect(deserialized.wayPoints[1]).toEqual('waypoint1');
+                expect(deserialized.wayPoints[0].text).toEqual('waypoint0');
+                expect(deserialized.wayPoints[0].coordinates).toEqual('1,2');
 
-                expect(deserialized.areasToAvoid[0]).toEqual('area0');
-                expect(deserialized.areasToAvoid[1]).toEqual('area1');
+                expect(deserialized.wayPoints[1].text).toEqual('waypoint1');
+                expect(deserialized.wayPoints[1].coordinates).toEqual('3,4');
+
+                expect(deserialized.areasToAvoid[0].text).toEqual('area0');
+                expect(deserialized.areasToAvoid[0].boundingBox).toEqual('1,2,3,4');
+
+                expect(deserialized.areasToAvoid[1].text).toEqual('area1');
+                expect(deserialized.areasToAvoid[1].boundingBox).toEqual('5,6,7,8');
             }));
 
         });
