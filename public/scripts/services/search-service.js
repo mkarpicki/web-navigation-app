@@ -6,7 +6,7 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
         appCode = config.APP_CODE;
 
 
-    var SEARCH_SUGGESTIONS_URL = "https://places.demo.api.here.com/places/v1/suggest",
+    var SEARCH_SUGGESTIONS_URL = "https://places.api.here.com/places/v1/suggest",
         SEARCH_URL = "https://places.api.here.com/places/v1/discover/search";
 
     var URL = "{{url}}?" +
@@ -41,21 +41,14 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
 
         var findProperty = function(obj, key) {
             return key.split(".").reduce(function(o, x) {
-                return (typeof o == 'undefined' || o === null) ? o : o[x];
+                //return (typeof o == 'undefined' || o === null) ? o : o[x];
+                return o[x];
             }, obj);
         };
 
-        $http.get(url, { timeout: canceller.promise}).then(function (httpResponse) {
+        $http.get(url, { timeout: canceller.promise }).then(function (httpResponse) {
 
-            if (httpResponse && httpResponse.status === 200 && httpResponse.data) {
-
-                var data = findProperty(httpResponse.data, field);
-
-                deferred.resolve(data);
-                return;
-            }
-
-            deferred.reject();
+            deferred.resolve(findProperty(httpResponse.data, field));
 
         }, deferred.reject);
 
