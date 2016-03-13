@@ -37,7 +37,9 @@ angular.module('navigationApp.services').factory('geoCoderService', ['$http', '$
 
         $http.get(url).then(function (httpResponse) {
 
-            if (httpResponse && httpResponse.status === 200 && httpResponse.data && httpResponse.data.Response) {
+            var label = '';
+
+            if (httpResponse.data.Response) {
 
                 var response = httpResponse.data.Response;
 
@@ -49,16 +51,14 @@ angular.module('navigationApp.services').factory('geoCoderService', ['$http', '$
                     response.View[0].Result[0].Location.Address &&
                     response.View[0].Result[0].Location.Address.Label) {
 
-                    deferred.resolve(response.View[0].Result[0].Location.Address.Label);
-                    return;
-                }
+                    label = response.View[0].Result[0].Location.Address.Label;
 
+                }
             }
 
-            deferred.resolve([]);
+            deferred.resolve(label);
 
-
-        }, deferred.resolve);
+        }, deferred.reject);
 
         return deferred.promise;
     };

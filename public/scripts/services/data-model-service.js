@@ -1,4 +1,4 @@
-angular.module('navigationApp.services').factory('dataModel', [function () {
+angular.module('navigationApp.services').factory('dataModelService', [function () {
 
     'use strict';
 

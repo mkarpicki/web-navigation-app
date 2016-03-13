@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$rootScope", "$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService', 'dataModel' , function($rootScope, $scope, $location, $timeout, routingService, stateService, searchService, dataModel) {
+    ["$rootScope", "$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService', 'dataModelService' , function($rootScope, $scope, $location, $timeout, routingService, stateService, searchService, dataModelService) {
 
         'use strict';
 
@@ -48,7 +48,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         $scope.addWayPoint = function () {
-            $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, dataModel.getWayPoint());
+            $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, dataModelService.getWayPoint());
         };
 
         $scope.removeWayPoint = function (index) {
@@ -116,7 +116,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
                 if (searchResults) {
 
-                    $scope.wayPoints[activeFieldIndex] = dataModel.getWayPoint(searchResults[0].title, [], searchResults[0].position.join(','));
+                    $scope.wayPoints[activeFieldIndex] = dataModelService.getWayPoint(searchResults[0].title, [], searchResults[0].position.join(','));
 
                     $location.url('/?' + buildSearchQuery());
                     //$scope.unMarkActiveField();
@@ -127,7 +127,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         var getClearWayPoints = function () {
-            return [dataModel.getWayPoint(), dataModel.getWayPoint()];
+            return [dataModelService.getWayPoint(), dataModelService.getWayPoint()];
         };
 
         var buildSearchQuery = function () {

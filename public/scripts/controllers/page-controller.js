@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$rootScope", "$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', 'dataModel', function($rootScope, $scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService, dataModel) {
+    ["$rootScope", "$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', 'dataModelService', function($rootScope, $scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService, dataModelService) {
 
         'use strict';
 
@@ -26,19 +26,19 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var overwriteStartPoint = function (point, text) {
 
-            stateService.overwriteStartPoint(dataModel.getWayPoint(text, [], point));
+            stateService.overwriteStartPoint(dataModelService.getWayPoint(text, [], point));
 
         };
 
         var overwriteDestinationPoint = function (point, text) {
 
-            stateService.overwriteDestinationPoint(dataModel.getWayPoint(text, [], point));
+            stateService.overwriteDestinationPoint(dataModelService.getWayPoint(text, [], point));
 
         };
 
         var addWayPoint = function (point, text) {
 
-            stateService.addWayPoint(dataModel.getWayPoint(text, [], point));
+            stateService.addWayPoint(dataModelService.getWayPoint(text, [], point));
 
         };
 
@@ -46,7 +46,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
             /**
              * @todo
-             * think about usage of dataModel here but then object with params should be passed and same for wayPoint instead of coordinates as string
+             * think about usage of dataModelService here but then object with params should be passed and same for wayPoint instead of coordinates as string
              * @type {{boundingBox: string, text: *}}
              */
             var item = {

@@ -54,7 +54,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
         var routes;
 
-        if (httpResponse && httpResponse.status === 200 && httpResponse.data && httpResponse.data.response) {
+        if (httpResponse && httpResponse.data && httpResponse.data.response) {
             routes = httpResponse.data.response.route;
         }
 
@@ -66,9 +66,9 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         var deferred = $q.defer(),
             exp = $interpolate(URL);
 
-        var calculateFailure = function () {
-            return deferred.resolve([]);
-        };
+        //var calculateFailure = function () {
+        //    return deferred.resolve([]);
+        //};
 
         var url = exp({
             appId: appId,
@@ -90,7 +90,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
                 deferred.resolve([]);
             }
 
-        }, calculateFailure);
+        }, deferred.reject);
 
         return deferred.promise;
     };
