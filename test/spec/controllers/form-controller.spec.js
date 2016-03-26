@@ -11,6 +11,8 @@ describe('FormController', function () {
 
         routingService,
         stateService,
+        searchService,
+        dataModelService,
 
         fakeDeSerializedQuery;
 
@@ -22,9 +24,9 @@ describe('FormController', function () {
         $controller = _$controller_;
         $scope = $rootScope.$new();
 
-        $location = {
-            url: function () {}
-        };
+        $location = {};
+        $location.replace = function () {};
+        $location.url = function () { return $location.replace; };
 
         $timeout = function () {};
 
@@ -47,6 +49,18 @@ describe('FormController', function () {
             }
         };
 
+        searchService = {
+            getSuggestions: function () {},
+            getResults: function () {}
+        };
+
+        dataModelService = {
+            getWayPoint: function () {
+                return {coordinates: '2,3', text: 'some text', suggestions: []}
+            },
+            getBoundingBox: function () {}
+        };
+
     }));
 
     describe('when initialized', function () {
@@ -60,7 +74,9 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
@@ -73,21 +89,37 @@ describe('FormController', function () {
 
             it('should set start point, destination point and way points in scope', function () {
 
-                fakeDeSerializedQuery.wayPoints = ['start', 'middle1', 'middle2', 'destination'];
+                var start = {
+                        text: 'start'
+                    },
+                    middle1 = {
+                        text: 'middle1'
+                    },
+                    middle2 = {
+                        text: 'middle2'
+                    },
+                    destination = {
+                        text: 'destination'
+                    };
+
+                fakeDeSerializedQuery.wayPoints = [start, middle1, middle2, destination];
 
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
                     $timeout: $timeout,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
                 });
 
                 $scope.$apply();
 
-                expect($scope.from).toEqual('start');
-                expect($scope.to).toEqual('destination');
-                expect($scope.wayPoints).toEqual([ 'middle1', 'middle2' ]);
+                expect($scope.wayPoints[0]).toEqual(start);
+                expect($scope.wayPoints[1]).toEqual(middle1);
+                expect($scope.wayPoints[2]).toEqual(middle2);
+                expect($scope.wayPoints[3]).toEqual(destination);
 
             });
 
@@ -104,7 +136,9 @@ describe('FormController', function () {
                     $location: $location,
                     $timeout: $timeout,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
                 });
 
                 $scope.$apply();
@@ -134,20 +168,22 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
 
-            $scope.from = '52';
-            $scope.to = '13';
-            $scope.wayPoints = ['52,13'];
+            $scope.wayPoints = [
+                dataModelService.getWayPoint('t', [], '1,2'),
+                dataModelService.getWayPoint('t', [], '1,2'),
+                dataModelService.getWayPoint('t', [], '1,2')
+            ];
 
             $scope.clear();
 
-            expect($scope.from).toEqual(null);
-            expect($scope.to).toEqual(null);
-            expect($scope.wayPoints).toEqual([]);
+            expect($scope.wayPoints).toEqual([dataModelService.getWayPoint(), dataModelService.getWayPoint()]);
             expect(stateService.clear).toHaveBeenCalled();
 
         });
@@ -164,7 +200,9 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
@@ -187,67 +225,39 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
 
-            expect($scope.wayPoints).toEqual([]);
+            expect($scope.wayPoints).toEqual([
+                dataModelService.getWayPoint(),
+                dataModelService.getWayPoint()
+            ]);
 
             $scope.addWayPoint();
 
-            expect($scope.wayPoints).toEqual(['']);
+            expect($scope.wayPoints).toEqual([
+                dataModelService.getWayPoint(),
+                dataModelService.getWayPoint(),
+                dataModelService.getWayPoint()
+            ]);
 
             $scope.addWayPoint();
 
-            expect($scope.wayPoints).toEqual(['', '']);
+            expect($scope.wayPoints).toEqual([
+                dataModelService.getWayPoint(),
+                dataModelService.getWayPoint(),
+                dataModelService.getWayPoint(),
+                dataModelService.getWayPoint()
+            ]);
 
         });
 
     });
 
-    describe('onInputDefined', function () {
-
-        it('should update url to "/" and add search query', function () {
-
-            var searchQuery = 'some=query';
-
-            $location.url = jasmine.createSpy('$location.url');
-
-            stateService.serializeQuery = jasmine.createSpy('stateService.serializeQuery').and.returnValue(searchQuery);
-            stateService.clear = jasmine.createSpy('stateService.clear');
-            stateService.setWayPoints = jasmine.createSpy('stateService.setWayPoints');
-            stateService.setAreasToAvoid = jasmine.createSpy('stateService.setAreasToAvoid');
-
-            $controller("FormController", {
-                $scope: $scope,
-                $location: $location,
-                $timeout: $timeout,
-                routingService: routingService,
-                stateService: stateService
-            });
-
-            $scope.$apply();
-
-            $scope.areasToAvoid = [1,2,3];
-
-            $scope.from = 'from';
-            $scope.wayPoints = ['middle1', 'middle2'];
-            $scope.to = 'destination';
-
-            var allPoints = [$scope.from].concat($scope.wayPoints).concat($scope.to);
-
-            $scope.onInputDefined();
-
-            expect(stateService.clear).toHaveBeenCalled();
-            expect(stateService.setWayPoints).toHaveBeenCalledWith(allPoints);
-            expect(stateService.setAreasToAvoid).toHaveBeenCalledWith($scope.areasToAvoid);
-
-            expect($location.url).toHaveBeenCalledWith('/?' + searchQuery);
-
-        });
-
-    });
 
     describe('removeWayPoint', function () {
 
@@ -258,7 +268,9 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
@@ -284,7 +296,9 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
@@ -306,7 +320,9 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
@@ -332,7 +348,9 @@ describe('FormController', function () {
                 $location: $location,
                 $timeout: $timeout,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
             });
 
             $scope.$apply();
@@ -354,7 +372,7 @@ describe('FormController', function () {
                 var searchQuery = 'param=value';
 
                 $location.replace = jasmine.createSpy('$location.replace');
-                $location.url = jasmine.createSpy('$location.url').and.returnValue($location.replace);
+                $location.url = jasmine.createSpy('$location.url').and.returnValue($location);
 
                 stateService.serializeQuery = jasmine.createSpy('stateService.serializeQuery').and.returnValue(searchQuery);
 
@@ -363,13 +381,14 @@ describe('FormController', function () {
                     $location: $location,
                     $timeout: $timeout,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
                 });
 
                 $scope.$apply();
 
-                $scope.from = null;
-                $scope.to = '13.1';
+                $scope.wayPoints = [{ coordinates: null}, { coordinates: '2,3'}];
 
                 $scope.getRoute();
 
@@ -388,7 +407,7 @@ describe('FormController', function () {
                 var searchQuery = 'param=value';
 
                 $location.replace = jasmine.createSpy('$location.replace');
-                $location.url = jasmine.createSpy('$location.url').and.returnValue($location.replace);
+                $location.url = jasmine.createSpy('$location.url').and.returnValue($location);
 
                 stateService.serializeQuery = jasmine.createSpy('stateService.serializeQuery').and.returnValue(searchQuery);
 
@@ -397,13 +416,14 @@ describe('FormController', function () {
                     $location: $location,
                     $timeout: $timeout,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
                 });
 
                 $scope.$apply();
 
-                $scope.from = '52.1';
-                $scope.to = null;
+                $scope.wayPoints = [{ coordinates: '2,3'}, { coordinates: null}];
 
                 $scope.getRoute();
 
@@ -436,7 +456,9 @@ describe('FormController', function () {
                     $location: $location,
                     $timeout: $timeout,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
                 });
 
                 $scope.$apply();
