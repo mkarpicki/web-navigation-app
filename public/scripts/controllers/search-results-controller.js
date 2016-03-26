@@ -93,7 +93,6 @@ angular.module('navigationApp.controllers').controller('SearchController',
                     return areaToAvoid.boundingBox;
                 });
 
-
             if (wayPoints.length > 1) {
                 (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints));
                 (routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(false, wayPoints));

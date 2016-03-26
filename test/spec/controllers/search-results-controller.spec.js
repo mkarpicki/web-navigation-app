@@ -174,9 +174,14 @@ describe('SearchController', function () {
                 it('should set in scope noRouteFound value to true', function () {
 
                     var wayPoints = [
-                        '52.1,13.1',
-                        '52.2,13.2'
-                    ];
+                        {
+                            coordinates: '52.1,13.1',
+                            test: 'some-address-1'
+                        },
+                        {
+                            coordinates: '52.2,13.2',
+                            test: 'some-address-2'
+                        }];
 
                     var routes = [1,2];
 
