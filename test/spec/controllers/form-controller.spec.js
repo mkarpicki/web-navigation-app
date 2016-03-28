@@ -55,9 +55,10 @@ describe('FormController', function () {
         };
 
         dataModelService = {
-            getWayPoint: function () {
-                return {coordinates: '2,3', text: 'some text', suggestions: []}
-            },
+            getWayPoint: function () {},
+            //getWayPoint: function () {
+            //    return {coordinates: '2,3', text: 'some text', suggestions: []}
+            //},
             getBoundingBox: function () {}
         };
 
@@ -257,7 +258,6 @@ describe('FormController', function () {
         });
 
     });
-
 
     describe('removeWayPoint', function () {
 
@@ -463,8 +463,10 @@ describe('FormController', function () {
 
                 $scope.$apply();
 
-                $scope.from = '52.1';
-                $scope.to = '13.1';
+                $scope.wayPoints = [
+                    { coordinates: '3,4', text: 'some w1'},
+                    { coordinates: '5,6', text: 'some w2'}
+                ];
 
                 $scope.getRoute();
 
@@ -481,5 +483,327 @@ describe('FormController', function () {
 
     });
 
+    describe('active field', function () {
+
+        it('should be markable, unmarkable and checkable', function () {
+
+            $controller("FormController", {
+                $scope: $scope,
+                $location: $location,
+                $timeout: $timeout,
+                routingService: routingService,
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
+            });
+
+            $scope.$apply();
+
+            expect($scope.isActiveField(null)).toEqual(true);
+
+            $scope.markActiveField(666);
+
+            expect($scope.isActiveField(666)).toEqual(true);
+
+            $scope.unMarkActiveField();
+
+            expect($scope.isActiveField(null)).toEqual(true);
+
+        });
+
+    });
+
+    describe('search', function () {
+
+        var fakeQuery = 'some-query';
+
+        beforeEach(function () {
+
+            $location.url = jasmine.createSpy('$location.url');
+
+            stateService.serializeQuery = jasmine.createSpy('stateService.serializeQuery()').and.returnValue(fakeQuery);
+
+        });
+
+
+        it('should call service.getResults and add save results to active wayPoint and update location', function () {
+
+            var index = 1;
+
+            var results = [{
+                position: [33,22],
+                title: 'some restaurant'
+            }];
+
+            var fakePromise = {
+                then: function (a) {
+                    a(results)
+                }
+            };
+
+            var fakeSearchObj = {
+                promise: fakePromise
+            };
+
+            var fakeWayPoint = {};
+
+            searchService.getResults = function () {
+                return fakeSearchObj;
+            };
+
+            $controller("FormController", {
+                $scope: $scope,
+                $location: $location,
+                $timeout: $timeout,
+                routingService: routingService,
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
+            });
+
+            $scope.$apply();
+
+            $scope.wayPoints = [
+                { coordinates: '1,2', text: 'some text 1'},
+                { coordinates: '3,4', text: 'some text 2'}
+            ];
+
+            dataModelService.getWayPoint = jasmine.createSpy('dataModelService.getWayPoint').and.returnValue(fakeWayPoint);
+
+            $scope.markActiveField(index);
+
+            $scope.search();
+
+            expect(dataModelService.getWayPoint).toHaveBeenCalledWith(results[0].title, [], results[0].position.join(','));
+
+            expect($scope.wayPoints[index]).toEqual(fakeWayPoint);
+
+            expect(stateService.serializeQuery).toHaveBeenCalled();
+            expect($location.url).toHaveBeenCalledWith('/?' + fakeQuery);
+
+        });
+
+        describe('and no search results delivered', function () {
+
+            it('should not update location and set wayPoint object', function () {
+
+                var index = 1;
+
+                var fakePromise = {
+                    then: function (a) {
+                        a(null)
+                    }
+                };
+
+                var fakeSearchObj = {
+                    promise: fakePromise
+                };
+
+                var fakeWayPoint = {};
+
+                searchService.getResults = function () {
+                    return fakeSearchObj;
+                };
+
+                $controller("FormController", {
+                    $scope: $scope,
+                    $location: $location,
+                    $timeout: $timeout,
+                    routingService: routingService,
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
+                });
+
+                $scope.$apply();
+
+                $scope.wayPoints = [
+                    null,
+                    null
+                ];
+
+                dataModelService.getWayPoint = jasmine.createSpy('dataModelService.getWayPoint').and.returnValue(fakeWayPoint);
+
+                $scope.markActiveField(index);
+
+                $scope.search();
+
+                expect(dataModelService.getWayPoint).not.toHaveBeenCalled();
+
+                expect($scope.wayPoints[index]).toEqual(null);
+
+                expect(stateService.serializeQuery).not.toHaveBeenCalled();
+                expect($location.url).not.toHaveBeenCalled();
+
+            });
+
+        });
+
+        describe('and previous search was not finished', function () {
+
+            it('should cancel promise from previous service execution', function () {
+
+                var index = 1;
+
+                var results = [{
+                    position: [33,22],
+                    title: 'some restaurant'
+                }];
+
+                var fakePromise = {
+                    then: function (a) {
+                        a(results)
+                    }
+                };
+
+                var fakeSearchObj = {
+                    promise: fakePromise,
+                    cancel: jasmine.createSpy()
+                };
+
+                var fakeWayPoint = {};
+
+                searchService.getResults = function () {
+                    return fakeSearchObj;
+                };
+
+                $controller("FormController", {
+                    $scope: $scope,
+                    $location: $location,
+                    $timeout: $timeout,
+                    routingService: routingService,
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
+                });
+
+                $scope.$apply();
+
+                $scope.wayPoints = [
+                    { coordinates: '1,2', text: 'some text 1'},
+                    { coordinates: '3,4', text: 'some text 2'}
+                ];
+
+                dataModelService.getWayPoint = jasmine.createSpy('dataModelService.getWayPoint').and.returnValue(fakeWayPoint);
+
+                $scope.markActiveField(index);
+
+                $scope.search();
+                $scope.search();
+
+                expect(dataModelService.getWayPoint).toHaveBeenCalledWith(results[0].title, [], results[0].position.join(','));
+
+                expect($scope.wayPoints[index]).toEqual(fakeWayPoint);
+                expect(fakeSearchObj.cancel).toHaveBeenCalled();
+
+                expect(stateService.serializeQuery).toHaveBeenCalled();
+                expect($location.url).toHaveBeenCalledWith('/?' + fakeQuery);
+
+            });
+
+        });
+
+    });
+
+    describe('getSuggestions', function () {
+
+        it('should call service.getSuggestions and add suggestions to active wayPoint', function () {
+
+            var index = 1;
+
+            var suggestions = ['sugg1', 'sugg2'];
+
+            var fakePromise = {
+                then: function (a) {
+                    a(suggestions)
+                }
+            };
+
+            var fakeSearchObj = {
+                promise: fakePromise
+            };
+
+            searchService.getSuggestions = function () {
+                return fakeSearchObj;
+            };
+
+            $controller("FormController", {
+                $scope: $scope,
+                $location: $location,
+                $timeout: $timeout,
+                routingService: routingService,
+                stateService: stateService,
+                searchService: searchService,
+                dataModelService: dataModelService
+            });
+
+            $scope.$apply();
+
+            $scope.wayPoints = [
+                { coordinates: '1,2', text: 'some text 1'},
+                { coordinates: '3,4', text: 'some text 2'}
+            ];
+
+            $scope.markActiveField(index);
+
+            $scope.getSuggestions();
+
+            expect($scope.wayPoints[index].suggestions).toEqual(suggestions);
+
+        });
+
+        describe('and previous search suggestions promise not solved yet', function () {
+
+            it('should cancel promise', function () {
+
+                var index = 1;
+
+                var suggestions = ['sugg1', 'sugg2'];
+
+                var fakePromise = {
+                    then: function (a) {
+                        a(suggestions)
+                    }
+                };
+
+                var fakeSearchObj = {
+                    promise: fakePromise,
+                    cancel: jasmine.createSpy()
+                };
+
+                searchService.getSuggestions = function () {
+                    return fakeSearchObj;
+                };
+
+
+                $controller("FormController", {
+                    $scope: $scope,
+                    $location: $location,
+                    $timeout: $timeout,
+                    routingService: routingService,
+                    stateService: stateService,
+                    searchService: searchService,
+                    dataModelService: dataModelService
+                });
+
+                $scope.$apply();
+
+                $scope.wayPoints = [
+                    { coordinates: '1,2', text: 'some text 1'},
+                    { coordinates: '3,4', text: 'some text 2'}
+                ];
+
+                $scope.markActiveField(index);
+
+                $scope.getSuggestions();
+                $scope.getSuggestions();
+
+                expect(fakeSearchObj.cancel).toHaveBeenCalled();
+                expect($scope.wayPoints[index].suggestions).toEqual(suggestions);
+            });
+
+        })
+
+    });
 
 });

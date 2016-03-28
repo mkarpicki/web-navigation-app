@@ -67,7 +67,7 @@ describe('SearchController', function () {
 
     }));
 
-    describe('when executed', function () {
+    describe('when initialised', function () {
 
         it('should reset scope variables and routes in routeService', function () {
 
@@ -92,7 +92,7 @@ describe('SearchController', function () {
 
         });
 
-        describe('and no waypoints delivered in stateService', function () {
+        describe('and no wayPoints delivered in stateService', function () {
 
             it('should set in scope notEnoughInformation value', function () {
 
@@ -119,7 +119,50 @@ describe('SearchController', function () {
 
         });
 
-        describe('and at least two waypoints delivered in stateService', function () {
+
+        describe('and at least two wayPoints delivered in stateService', function () {
+
+            describe('and at lest one are to avoid delivered in stateService', function () {
+
+                it ('should call routing service with both arrays', function () {
+                    
+                    fakeDeSerializedQuery.wayPoints = [
+                        { coordinates: '1,2'},
+                        { coordinates: '4,5'}
+                    ];
+                    fakeDeSerializedQuery.areasToAvoid = [
+                        { boundingBox: 'a,b'}
+                    ];
+
+                    var fakePromise = {
+                        then: function () {}
+                    };
+
+                    routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                    routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+
+                    stateService.deserializeQuery = function () {
+                        return fakeDeSerializedQuery;
+                    };
+
+                    $controller("SearchController", {
+                        $scope: $scope,
+                        $sce: $sce,
+                        $location: $location,
+                        $window: $window,
+                        routingService: routingService,
+                        colorThemesService: colorThemesService,
+                        stateService: stateService
+                    });
+
+                    $scope.$apply();
+
+                    expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalledWith(['1,2', '4,5'], ['a,b']);
+                    expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(['1,2', '4,5'], ['a,b']);
+
+                });
+
+            });
 
             it('should set in scope notEnoughInformation value to false', function () {
 

@@ -13,7 +13,7 @@ angular.module('navigationApp.controllers').controller('FormController',
         $scope.getRoute = function () {
 
             var enteredWayPoints = $scope.wayPoints.filter(function (wayPoint) {
-                return (wayPoint.coordinates !== "" && wayPoint.coordinates !== null);
+                return (wayPoint && wayPoint.coordinates !== "" && wayPoint.coordinates !== null);
             });
 
             if (enteredWayPoints.length < 2) {
