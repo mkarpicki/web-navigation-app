@@ -29,12 +29,12 @@ describe('Main page (form page)', function() {
     describe('get route button', function () {
 
         it('should redirect to search results page after entering start and destination positions', function() {
-            
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+
+            helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
             suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
             suggestion.click();
 
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[3]);
+            helpers.FORM_PAGE.getWayPointByPosition(1).sendKeys(wayPoints[3]);
             suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
             suggestion.click();
 
@@ -55,15 +55,15 @@ describe('Main page (form page)', function() {
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
 
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+                helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
                 suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
                 suggestion.click();
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[1]);
+                helpers.FORM_PAGE.getWayPointByPosition(1).sendKeys(wayPoints[1]);
                 suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
                 suggestion.click();
-                
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).sendKeys(wayPoints[3]);
+
+                helpers.FORM_PAGE.getWayPointByPosition(2).sendKeys(wayPoints[3]);
                 suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
                 suggestion.click();
                 
@@ -87,21 +87,21 @@ describe('Main page (form page)', function() {
 
         it('should provide clear functionality that rests form', function () {
 
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+            helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
+            suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+            suggestion.click();
+
+            helpers.FORM_PAGE.getWayPointByPosition(1).sendKeys(wayPoints[3]);
             suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
             suggestion.click();
             
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[3]);
-            suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
-            suggestion.click();
-            
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(wayPoints[0]);
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(wayPoints[3]);
+            expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual(wayPoints[0]);
+            expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(wayPoints[3]);
 
             element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first().click();
 
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual('');
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual('');
+            expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual('');
+            expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual('');
 
         });
 
@@ -112,26 +112,26 @@ describe('Main page (form page)', function() {
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
 
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+                helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
+
+                helpers.FORM_PAGE.getWayPointByPosition(1).sendKeys(wayPoints[1]);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
+
+                helpers.FORM_PAGE.getWayPointByPosition(2).sendKeys(wayPoints[3]);
                 suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
                 suggestion.click();
                 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[1]);
-                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
-                suggestion.click();
-                
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).sendKeys(wayPoints[3]);
-                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
-                suggestion.click();
-                
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(wayPoints[0]);
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(wayPoints[1]);
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).getAttribute('value')).toEqual(wayPoints[3]);
+                expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual(wayPoints[0]);
+                expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(wayPoints[1]);
+                expect(helpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(wayPoints[3]);
 
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first().click();
 
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual('');
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual('');
+                expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual('');
+                expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual('');
 
                 var thirdWayPoint = element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2));
 
@@ -148,15 +148,15 @@ describe('Main page (form page)', function() {
         element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
 
 
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+        helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
         suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
         suggestion.click();
-        
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[1]);
+
+        helpers.FORM_PAGE.getWayPointByPosition(1).sendKeys(wayPoints[1]);
         suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
         suggestion.click();
-        
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).sendKeys(wayPoints[3]);
+
+        helpers.FORM_PAGE.getWayPointByPosition(2).sendKeys(wayPoints[3]);
         suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
         suggestion.click();
         
@@ -199,10 +199,10 @@ describe('Main page (form page)', function() {
             browser.get(url);
 
             text = wayPoints[0].split("|")[0];
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(text);
+            expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual(text);
 
             text = wayPoints[1].split("|")[0];
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(text);
+            expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(text);
 
         });
 
@@ -226,13 +226,13 @@ describe('Main page (form page)', function() {
                 browser.get(url);
 
                 text = wayPoints[0].split("|")[0];
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(text);
+                expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual(text);
 
                 text = wayPoints[1].split("|")[0];
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(text);
+                expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(text);
 
                 text = wayPoints[2].split("|")[0];
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).getAttribute('value')).toEqual(text);
+                expect(helpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(text);
             });
 
         });

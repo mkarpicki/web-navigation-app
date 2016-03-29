@@ -4,6 +4,7 @@ var SELECTORS = {
         BTN_ADD_WAY_POINT: 'button[data-ng-click*="addWayPoint();"]',
         BTN_REMOVE_WAY_POINT: 'button[data-ng-click="removeWayPoint($index);"]',
         BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]',
+        BTN_SEARCH_SUGGESTION: 'ul.search-suggestions button',
         BTN_CLEAR: 'button[data-ng-click="clear();"]'
     },
     SEARCH_PAGE: {
@@ -22,14 +23,6 @@ var getHost = function() {
     return browser.baseUrl;
 };
 
-//var getMainPage = function () {
-//    return getHost() + "/";
-//};
-
-//var getSearchPage = function () {
-//    return getHost() + '/search';
-//};
-
 var getRouteDetailsPage = function () {
     return getHost() + '/route';
 };
@@ -45,7 +38,11 @@ formPage.getPage = function () {
 };
 
 formPage.getSuggestionByPosition = function (position) {
-    return element.all(by.css("ul.search-suggestions button")).get(position);
+    return element.all(by.css(SELECTORS.FORM_PAGE.BTN_SEARCH_SUGGESTION)).get(position);
+};
+
+formPage.getWayPointByPosition = function (position) {
+    return element.all(by.css(SELECTORS.FORM_PAGE.INPUT_WAY_POINT + position)).first();
 };
 
 var searchResultsPage = {};
@@ -64,8 +61,6 @@ var helpers = {
 
     SELECTORS: SELECTORS,
 
-    //getMainPage: getMainPage,
-    //getSearchPage: getSearchPage,
     getRouteDetailsPage: getRouteDetailsPage
 };
 
