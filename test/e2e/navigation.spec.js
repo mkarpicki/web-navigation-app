@@ -9,43 +9,41 @@ var helpers = require('./helpers.js');
 
 describe('Navigation between pages', function() {
 
-    var fromPosition,
-        toPosition,
-        wayPoints = [];
-
+    var wayPoints = [],
+        suggestion;
 
     beforeEach(function () {
 
-        fromPosition = '52.52096291446619,13.411852988615038';
-        toPosition = '52.515792286169,13.457085761442187';
-
-        wayPoints.push('52.5231951048162,13.430666774511337');
-        wayPoints.push('52.5182695619384,13.434885218739595');
+        wayPoints[0] = "Warsaw";
+        wayPoints[1] = "Poznan";
+        wayPoints[2] = "Szczecin";
+        wayPoints[3] = "Berlin";
 
     });
 
     it("should allow user to use Browser's back and forward buttons to change views", function () {
 
-        var resultsList,
-            routeNumber = 0;
+        browser.get(helpers.FORM_PAGE.getPage());
 
-        browser.get(helpers.getMainPage());
+        helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
 
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).sendKeys(fromPosition);
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).sendKeys(toPosition);
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_GET_ROUTE)).first().click();
+        helpers.FORM_PAGE.getWayPointByPosition(1).sendKeys(wayPoints[3]);
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
+
+        helpers.FORM_PAGE.getCalculateRouteButton().click();
 
         browser.getCurrentUrl().then(function(url) {
-            expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
+            expect(helpers.doesUrlContains(url, helpers.SEARCH_RESULTS_PAGE.getPage())).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
         });
 
-        var number = 0,
-            listItemSelector = helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a',
-            firstItem;
+        var position = 0,
+            firstItem = helpers.SEARCH_RESULTS_PAGE.getFirstResult();
 
-        //browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
-
-        firstItem = element(by.css(listItemSelector));
 
         browser.wait(firstItem.isDisplayed()).then(function () {
 
@@ -53,18 +51,20 @@ describe('Navigation between pages', function() {
 
             browser.getCurrentUrl().then(function (url) {
 
-                expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
+                expect(url).toEqual(helpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
 
                 browser.navigate().back().then(function () {
 
                     browser.getCurrentUrl().then(function(url) {
 
-                        expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
+                        expect(helpers.doesUrlContains(url, helpers.SEARCH_RESULTS_PAGE.getPage())).toEqual(true);
+                        expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+                        expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
 
                         browser.navigate().forward().then(function () {
 
                             browser.getCurrentUrl().then(function(url) {
-                                expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + routeNumber);
+                                expect(url).toEqual(helpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
                             });
 
                         });

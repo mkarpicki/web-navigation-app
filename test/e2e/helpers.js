@@ -23,10 +23,6 @@ var getHost = function() {
     return browser.baseUrl;
 };
 
-var getRouteDetailsPage = function () {
-    return getHost() + '/route';
-};
-
 var doesUrlContains = function (url, stringToCheck) {
     return url.indexOf(stringToCheck) >= 0;
 };
@@ -75,17 +71,33 @@ searchResultsPage.getPage = function () {
     return getHost() + '/search';
 };
 
+searchResultsPage.getResultByPosition = function (position) {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.RESULTS_LIST)).get(position).element('a');
+};
+
+searchResultsPage.getFirstResult = function () {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a')).first();
+};
+
+/****************************************************************************************/
+
+var routeDetailsPage = {};
+
+routeDetailsPage.getPage = function () {
+    return getHost() + '/route';
+};
+
+/****************************************************************************************/
+
 var helpers = {
 
     FORM_PAGE: formPage,
-
     SEARCH_RESULTS_PAGE: searchResultsPage,
+    ROUTE_DETAILS_PAGE: routeDetailsPage,
 
     doesUrlContains: doesUrlContains,
 
-    SELECTORS: SELECTORS,
-
-    getRouteDetailsPage: getRouteDetailsPage
+    SELECTORS: SELECTORS
 };
 
 module.exports = helpers;

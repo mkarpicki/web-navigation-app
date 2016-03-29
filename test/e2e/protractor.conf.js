@@ -3,9 +3,9 @@ exports.config = {
     baseUrl: 'http://localhost:3000',
     specs: [
         //'search-page.spec.js',
-        'form-page.spec.js'
+        'form-page.spec.js',
         //'route-page.spec.js',
-        //'navigation.spec.js'
+        'navigation.spec.js'
     ],
 
     directConnect: true,
