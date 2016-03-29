@@ -75,8 +75,28 @@ searchResultsPage.getResultByPosition = function (position) {
     return element.all(by.css(SELECTORS.SEARCH_PAGE.RESULTS_LIST)).get(position).element('a');
 };
 
+searchResultsPage.getResults = function () {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.RESULTS_LIST)).first();
+};
+
 searchResultsPage.getFirstResult = function () {
     return element.all(by.css(SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a')).first();
+};
+
+searchResultsPage.getNotEnoughInformationElement = function () {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.NOT_ENOUGH_INFORMATION)).first();
+};
+
+searchResultsPage.getNoRoutesFoundElement = function () {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND)).first();
+};
+
+searchResultsPage.getNotEnoughInformationMessageBackLink = function () {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.NOT_ENOUGH_INFORMATION + " " + SELECTORS.SEARCH_PAGE.BACK_LINK)).first();
+};
+
+searchResultsPage.getNoRouteFoundMessageBackLink = function () {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND + " " + SELECTORS.SEARCH_PAGE.BACK_LINK)).first();
 };
 
 /****************************************************************************************/
