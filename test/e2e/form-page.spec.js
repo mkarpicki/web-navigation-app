@@ -38,7 +38,7 @@ describe('Main page (form page)', function() {
             suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
             suggestion.click();
 
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_GET_ROUTE)).first().click();
+            helpers.FORM_PAGE.getCalculateRouteButton().click();
 
             browser.getCurrentUrl().then(function(url) {
                 expect(helpers.doesUrlContains(url, helpers.SEARCH_RESULTS_PAGE.getPage())).toEqual(true);
@@ -66,8 +66,8 @@ describe('Main page (form page)', function() {
                 helpers.FORM_PAGE.getWayPointByPosition(2).sendKeys(wayPoints[3]);
                 suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
                 suggestion.click();
-                
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_GET_ROUTE)).first().click();
+
+                helpers.FORM_PAGE.getCalculateRouteButton().click();
 
                 browser.getCurrentUrl().then(function(url) {
 

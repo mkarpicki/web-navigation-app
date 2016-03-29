@@ -31,6 +31,8 @@ var doesUrlContains = function (url, stringToCheck) {
     return url.indexOf(stringToCheck) >= 0;
 };
 
+/****************************************************************************************/
+
 var formPage = {};
 
 formPage.getPage = function () {
@@ -44,6 +46,12 @@ formPage.getSuggestionByPosition = function (position) {
 formPage.getWayPointByPosition = function (position) {
     return element.all(by.css(SELECTORS.FORM_PAGE.INPUT_WAY_POINT + position)).first();
 };
+
+formPage.getCalculateRouteButton = function () {
+    return element.all(by.css(SELECTORS.FORM_PAGE.BTN_GET_ROUTE)).first();
+};
+
+/****************************************************************************************/
 
 var searchResultsPage = {};
 
