@@ -1,9 +1,7 @@
 var SELECTORS = {
     FORM_PAGE: {
-        INPUT_FROM: '#from',
-        INPUT_TO: '#to',
-        INPUT_WAY_POINT: '#waypoint-',
-        BTN_ADD_WAY_POINT: 'button[data-ng-click="addWayPoint();"]',
+        INPUT_WAY_POINT: '#search-field-',
+        BTN_ADD_WAY_POINT: 'button[data-ng-click*="addWayPoint();"]',
         BTN_REMOVE_WAY_POINT: 'button[data-ng-click="removeWayPoint($index);"]',
         BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]',
         BTN_CLEAR: 'button[data-ng-click="clear();"]'
@@ -24,23 +22,50 @@ var getHost = function() {
     return browser.baseUrl;
 };
 
-var getMainPage = function () {
-    return getHost() + "/";
-};
+//var getMainPage = function () {
+//    return getHost() + "/";
+//};
 
-var getSearchPage = function () {
-    return getHost() + '/search';
-};
+//var getSearchPage = function () {
+//    return getHost() + '/search';
+//};
 
 var getRouteDetailsPage = function () {
     return getHost() + '/route';
 };
 
+var doesUrlContains = function (url, stringToCheck) {
+    return url.indexOf(stringToCheck) >= 0;
+};
+
+var formPage = {};
+
+formPage.getPage = function () {
+    return getHost() + "/";
+};
+
+formPage.getSuggestionByPosition = function (position) {
+    return element.all(by.css("ul.search-suggestions button")).get(position);
+};
+
+var searchResultsPage = {};
+
+searchResultsPage.getPage = function () {
+    return getHost() + '/search';
+};
+
 var helpers = {
+
+    FORM_PAGE: formPage,
+
+    SEARCH_RESULTS_PAGE: searchResultsPage,
+
+    doesUrlContains: doesUrlContains,
+
     SELECTORS: SELECTORS,
 
-    getMainPage: getMainPage,
-    getSearchPage: getSearchPage,
+    //getMainPage: getMainPage,
+    //getSearchPage: getSearchPage,
     getRouteDetailsPage: getRouteDetailsPage
 };
 

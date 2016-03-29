@@ -17,7 +17,7 @@
                     data-ng-keyup="getSuggestions();"
                     data-ng-model="wayPoints[$index].text"
                     >
-            <ul data-ng-if="isActiveField($index);">
+            <ul data-ng-if="isActiveField($index);" class="search-suggestions">
                 <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
                     <button data-ng-click="search(suggestion);">{{suggestion}}</button>
                 </li>

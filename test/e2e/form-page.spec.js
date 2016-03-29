@@ -9,35 +9,41 @@ var helpers = require('./helpers.js');
 
 describe('Main page (form page)', function() {
 
-    var fromPosition,
-        toPosition,
-        wayPoints = [];
+    var wayPoints = [];
+    var suggestion;
 
     beforeEach(function () {
 
-        fromPosition = '52.52096291446619,13.411852988615038';
-        toPosition = '52.515792286169,13.457085761442187';
-
-        wayPoints.push('52.5231951048162,13.430666774511337');
-        wayPoints.push('52.5182695619384,13.434885218739595');
+        wayPoints[0] = "Warsaw";
+        wayPoints[1] = "Poznan";
+        wayPoints[2] = "Szczecin";
+        wayPoints[3] = "Berlin";
 
     });
 
     beforeEach(function() {
 
-        browser.get(helpers.getMainPage());
+        browser.get(helpers.FORM_PAGE.getPage());
     });
 
     describe('get route button', function () {
 
         it('should redirect to search results page after entering start and destination positions', function() {
+            
+            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+            suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+            suggestion.click();
 
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).sendKeys(fromPosition);
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).sendKeys(toPosition);
+            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[3]);
+            suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+            suggestion.click();
+
             element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_GET_ROUTE)).first().click();
 
             browser.getCurrentUrl().then(function(url) {
-                expect(url).toEqual(helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + toPosition);
+                expect(helpers.doesUrlContains(url, helpers.SEARCH_RESULTS_PAGE.getPage())).toEqual(true);
+                expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+                expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
             });
 
         });
@@ -46,22 +52,29 @@ describe('Main page (form page)', function() {
 
             it('should redirect to search results page with middle way points', function () {
 
-                var expectedUrl = helpers.getSearchPage() + "?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + wayPoints[1] + "&w3=" + toPosition;
-
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).sendKeys(fromPosition);
-
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
+
+
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[1]);
-
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).sendKeys(toPosition);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
+                
+                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).sendKeys(wayPoints[3]);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
+                
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_GET_ROUTE)).first().click();
 
                 browser.getCurrentUrl().then(function(url) {
 
-                    expect(url).toEqual(expectedUrl);
+                    expect(helpers.doesUrlContains(url, helpers.SEARCH_RESULTS_PAGE.getPage())).toEqual(true);
+                    expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+                    expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[1]))).toEqual(true);
+                    expect(helpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
                 });
 
             });
@@ -74,16 +87,21 @@ describe('Main page (form page)', function() {
 
         it('should provide clear functionality that rests form', function () {
 
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).sendKeys(fromPosition);
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).sendKeys(toPosition);
-
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).getAttribute('value')).toEqual(fromPosition);
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).getAttribute('value')).toEqual(toPosition);
+            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+            suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+            suggestion.click();
+            
+            element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[3]);
+            suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+            suggestion.click();
+            
+            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(wayPoints[0]);
+            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(wayPoints[3]);
 
             element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first().click();
 
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).getAttribute('value')).toEqual('');
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).getAttribute('value')).toEqual('');
+            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual('');
+            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual('');
 
         });
 
@@ -91,24 +109,33 @@ describe('Main page (form page)', function() {
 
             it('should provide clear functionality that rests form (incl. way points)', function () {
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).sendKeys(fromPosition);
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).sendKeys(toPosition);
-
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
 
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).getAttribute('value')).toEqual(fromPosition);
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).getAttribute('value')).toEqual(toPosition);
+
+                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
+                
+                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[1]);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
+                
+                element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).sendKeys(wayPoints[3]);
+                suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+                suggestion.click();
+                
                 expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(wayPoints[0]);
+                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(wayPoints[1]);
+                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).getAttribute('value')).toEqual(wayPoints[3]);
 
                 element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first().click();
 
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).getAttribute('value')).toEqual('');
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).getAttribute('value')).toEqual('');
+                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual('');
+                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual('');
 
-                var wayPoint0 = element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0));
+                var thirdWayPoint = element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2));
 
-                expect(wayPoint0.isPresent()).toBeFalsy();
+                expect(thirdWayPoint.isPresent()).toBeFalsy();
 
             });
 
@@ -118,34 +145,40 @@ describe('Main page (form page)', function() {
 
     it('should allow to remove add way points', function () {
 
-        var expectedUrl;
-
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).sendKeys(fromPosition);
-
         element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
+
+
         element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).sendKeys(wayPoints[0]);
-
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
+        
         element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).sendKeys(wayPoints[1]);
-
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).sendKeys(toPosition);
-
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_REMOVE_WAY_POINT)).last().click();
-
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
+        
+        element.all(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).sendKeys(wayPoints[3]);
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
+        
         browser.getCurrentUrl().then(function(url) {
 
-            expectedUrl = helpers.getMainPage() + "?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + toPosition;
-
-            expect(url).toEqual(expectedUrl);
+            expect(helpers.doesUrlContains(url, helpers.FORM_PAGE.getPage())).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[1]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
         });
 
         element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_REMOVE_WAY_POINT)).last().click();
 
         browser.getCurrentUrl().then(function(url) {
 
-            expectedUrl = helpers.getMainPage() + "?w0=" + fromPosition + "&w1=" + toPosition;
+            expect(helpers.doesUrlContains(url, helpers.FORM_PAGE.getPage())).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
 
-            expect(url).toEqual(expectedUrl);
+            var thirdWayPoint = element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2));
+
+            expect(thirdWayPoint.isPresent()).toBeFalsy();
         });
 
     });
@@ -154,16 +187,22 @@ describe('Main page (form page)', function() {
 
         it('should pre fill form information', function () {
 
-            var url = helpers.getMainPage() + "?w0=" + fromPosition + "&w1=" + toPosition;
+            var wayPoints = [
+                'Warsaw|52.23558,21.01027',
+                'Berlin|52.51607,13.37699'
+            ];
+
+            var text;
+
+            var url = helpers.FORM_PAGE.getPage() + "?w0=" + encodeURIComponent(wayPoints[0]) + "&w1=" + encodeURIComponent(wayPoints[1]);
 
             browser.get(url);
 
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).getAttribute('value')).toEqual(fromPosition);
-            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).getAttribute('value')).toEqual(toPosition);
+            text = wayPoints[0].split("|")[0];
+            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(text);
 
-            var wayPoint0 = element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0));
-
-            expect(wayPoint0.isPresent()).toBeFalsy();
+            text = wayPoints[1].split("|")[0];
+            expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(text);
 
         });
 
@@ -171,14 +210,29 @@ describe('Main page (form page)', function() {
 
             it('should pre fill form information including way point', function () {
 
-                var url = helpers.getMainPage() + "?w0=" + fromPosition + "&w1=" + wayPoints[0] + "&w2=" + toPosition;
+                var wayPoints = [
+                    'Warsaw|52.23558,21.01027',
+                    'Szczecin|53.42521,14.55549',
+                    'Berlin|52.51607,13.37699'
+                ];
+
+                var text;
+
+                var url = helpers.FORM_PAGE.getPage() +
+                    "?w0=" + encodeURIComponent(wayPoints[0]) +
+                    "&w1=" + encodeURIComponent(wayPoints[1]) +
+                    "&w2=" + encodeURIComponent(wayPoints[2]);
 
                 browser.get(url);
 
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_FROM)).getAttribute('value')).toEqual(fromPosition);
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_TO)).getAttribute('value')).toEqual(toPosition);
-                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(wayPoints[0]);
+                text = wayPoints[0].split("|")[0];
+                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 0)).getAttribute('value')).toEqual(text);
 
+                text = wayPoints[1].split("|")[0];
+                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 1)).getAttribute('value')).toEqual(text);
+
+                text = wayPoints[2].split("|")[0];
+                expect(element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2)).getAttribute('value')).toEqual(text);
             });
 
         });

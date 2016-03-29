@@ -125,7 +125,7 @@ describe('SearchController', function () {
             describe('and at lest one are to avoid delivered in stateService', function () {
 
                 it ('should call routing service with both arrays', function () {
-                    
+
                     fakeDeSerializedQuery.wayPoints = [
                         { coordinates: '1,2'},
                         { coordinates: '4,5'}
