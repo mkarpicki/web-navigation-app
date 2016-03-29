@@ -4,7 +4,7 @@ exports.config = {
     specs: [
         'search-page.spec.js',
         'form-page.spec.js',
-        //'route-page.spec.js',
+        'route-page.spec.js',
         'navigation.spec.js'
     ],
 

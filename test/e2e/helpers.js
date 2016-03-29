@@ -107,6 +107,14 @@ routeDetailsPage.getPage = function () {
     return getHost() + '/route';
 };
 
+routeDetailsPage.getNoRouteFoundElement =function () {
+    return element(by.css(SELECTORS.ROUTE_PAGE.NO_ROUTE_FOUND));
+};
+
+routeDetailsPage.getManeuvers = function () {
+    return element(by.css(SELECTORS.ROUTE_PAGE.ROUTE_MANEUVERS));
+};
+
 /****************************************************************************************/
 
 var helpers = {

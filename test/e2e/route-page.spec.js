@@ -9,20 +9,18 @@ var helpers = require('./helpers.js');
 
 describe('Route page', function() {
 
-    var fromPosition,
-        toPosition,
-        wayPoints = [],
+    var wayPoints = [],
 
         noRouteFound;
 
 
     beforeEach(function () {
 
-        fromPosition = '52.52096291446619,13.411852988615038';
-        toPosition = '52.515792286169,13.457085761442187';
-
-        wayPoints.push('52.5231951048162,13.430666774511337');
-        wayPoints.push('52.5182695619384,13.434885218739595');
+        wayPoints = [
+            'Warsaw|52.23558,21.01027',
+            'Szczecin|53.42521,14.55549',
+            'Berlin|52.51607,13.37699'
+        ];
 
     });
 
@@ -30,11 +28,11 @@ describe('Route page', function() {
 
         it ('should redirect to main page', function () {
 
-            browser.get(helpers.getRouteDetailsPage() + "/");
+            browser.get(helpers.ROUTE_DETAILS_PAGE.getPage() + "/");
 
             browser.getCurrentUrl().then(function(url) {
 
-                expect(url).toEqual(helpers.getMainPage());
+                expect(url).toEqual(helpers.FORM_PAGE.getPage());
             });
 
         });
@@ -45,17 +43,16 @@ describe('Route page', function() {
 
         it('should display that route is not found', function () {
 
-            var notExisitngRoutePage = helpers.getRouteDetailsPage() + "/666";
+            var notExistingRoutePage = helpers.ROUTE_DETAILS_PAGE.getPage() + "/666";
 
-            browser.get(notExisitngRoutePage);
+            browser.get(notExistingRoutePage);
 
             browser.getCurrentUrl().then(function(url) {
 
-                expect(url).toEqual(notExisitngRoutePage);
+                expect(url).toEqual(notExistingRoutePage);
             });
 
-            noRouteFound = element(by.css(
-                helpers.SELECTORS.ROUTE_PAGE.NO_ROUTE_FOUND));
+            noRouteFound = helpers.ROUTE_DETAILS_PAGE.getNoRouteFoundElement();
 
             expect(noRouteFound.isDisplayed()).toBeTruthy();
 
@@ -74,24 +71,25 @@ describe('Route page', function() {
 
         it ('should display route details', function () {
 
-            var number = 0,
-                maneuverList = element(by.css(helpers.SELECTORS.ROUTE_PAGE.ROUTE_MANEUVERS)),
-                listItemSelector = helpers.SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a';
+            var position = 0;
 
+            var url = helpers.SEARCH_RESULTS_PAGE.getPage() +
+                "?w0=" + encodeURIComponent(wayPoints[0]) +
+                "&w1=" + encodeURIComponent(wayPoints[1]) +
+                "&w2=" + encodeURIComponent(wayPoints[2]);
 
-            browser.get(helpers.getSearchPage() + "/?w0=" + fromPosition + "&w1=" + toPosition);
+            browser.get(url);
 
-            var firstRouteItem = element(by.css(listItemSelector));
+            var firstItem = helpers.SEARCH_RESULTS_PAGE.getFirstResult();
 
-            browser.wait(firstRouteItem.isDisplayed()).then(function () {
+            browser.wait(firstItem.isDisplayed()).then(function () {
 
-                firstRouteItem.click();
+                firstItem.click();
 
                 browser.getCurrentUrl().then(function (url) {
 
-                    expect(url).toEqual(helpers.getRouteDetailsPage() + "/" + number);
-
-                    expect(maneuverList.isDisplayed()).toBeTruthy();
+                    expect(url).toEqual(helpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
+                    expect(helpers.ROUTE_DETAILS_PAGE.getManeuvers().isDisplayed()).toBeTruthy();
                 });
             });
 
