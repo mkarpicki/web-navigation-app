@@ -55,6 +55,10 @@ formPage.getClearButton = function () {
     return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first();
 };
 
+formPage.getAddWayPointButton = function () {
+    return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first();
+};
+
 /****************************************************************************************/
 
 var searchResultsPage = {};

@@ -52,8 +52,7 @@ describe('Main page (form page)', function() {
 
             it('should redirect to search results page with middle way points', function () {
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
-
+                helpers.FORM_PAGE.getAddWayPointButton().click();
 
                 helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
                 suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
@@ -109,8 +108,7 @@ describe('Main page (form page)', function() {
 
             it('should provide clear functionality that rests form (incl. way points)', function () {
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
-
+                helpers.FORM_PAGE.getAddWayPointButton().click();
 
                 helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
                 suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
@@ -145,8 +143,7 @@ describe('Main page (form page)', function() {
 
     it('should allow to remove add way points', function () {
 
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first().click();
-
+        helpers.FORM_PAGE.getAddWayPointButton().click();
 
         helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
         suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
