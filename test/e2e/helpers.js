@@ -63,6 +63,10 @@ formPage.getAddWayPointButton = function () {
     return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first();
 };
 
+formPage.getRemoveWayPointButton = function () {
+    return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_REMOVE_WAY_POINT)).last();
+};
+
 /****************************************************************************************/
 
 var searchResultsPage = {};

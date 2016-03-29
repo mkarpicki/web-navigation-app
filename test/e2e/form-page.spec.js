@@ -165,7 +165,7 @@ describe('Main page (form page)', function() {
             expect(helpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
         });
 
-        element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_REMOVE_WAY_POINT)).last().click();
+        helpers.FORM_PAGE.getRemoveWayPointButton().click();
 
         browser.getCurrentUrl().then(function(url) {
 
