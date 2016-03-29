@@ -51,6 +51,10 @@ formPage.getCalculateRouteButton = function () {
     return element.all(by.css(SELECTORS.FORM_PAGE.BTN_GET_ROUTE)).first();
 };
 
+formPage.getClearButton = function () {
+    return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first();
+};
+
 /****************************************************************************************/
 
 var searchResultsPage = {};

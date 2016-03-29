@@ -98,7 +98,7 @@ describe('Main page (form page)', function() {
             expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual(wayPoints[0]);
             expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(wayPoints[3]);
 
-            element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first().click();
+            helpers.FORM_PAGE.getClearButton().click();
 
             expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual('');
             expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual('');
@@ -128,7 +128,7 @@ describe('Main page (form page)', function() {
                 expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(wayPoints[1]);
                 expect(helpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(wayPoints[3]);
 
-                element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first().click();
+                helpers.FORM_PAGE.getClearButton().click();
 
                 expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual('');
                 expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual('');
