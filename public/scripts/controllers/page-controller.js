@@ -14,6 +14,8 @@ angular.module('navigationApp.controllers').controller('PageController',
             longitude: 13.45264
         };
 
+        $scope.routes = null;
+
         $scope.gettingLocationError = false;
         $scope.ready = false;
 
@@ -156,6 +158,12 @@ angular.module('navigationApp.controllers').controller('PageController',
             });
 
         });
+
+        $scope.$watch(function () { return routingService.getResults(); }, function (routes) {
+
+            $scope.routes = routes;
+
+        }, true);
 
         $scope.pageReady = function () {
 

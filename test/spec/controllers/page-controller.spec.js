@@ -35,7 +35,8 @@ describe('PageController', function () {
         };
 
         routingService = {
-            clearResults: function () {}
+            clearResults: function () {},
+            getResults: function () {}
         };
 
         geoLocationService = {
@@ -337,6 +338,40 @@ describe('PageController', function () {
 
             });
 
+        });
+
+    });
+
+    describe('when routingService update routes', function () {
+
+        it('should update routes object in scope', function () {
+
+            var fakeRoutes = null;
+
+            routingService.getResults = function () {
+                return fakeRoutes;
+            };
+
+            $controller("PageController", {
+                $scope: $scope,
+                $location: $location,
+                events: events,
+                routingService: routingService,
+                stateService: stateService,
+                geoLocationService: geoLocationService,
+                geoCoderService: geoCoderService,
+                dataModelService: dataModelService
+            });
+
+            $scope.$apply();
+
+            expect($scope.routes).toBeNull();
+
+            fakeRoutes = [{}, {}];
+
+            $scope.$apply();
+            
+            expect($scope.routes.length).toEqual(2);
         });
 
     });
