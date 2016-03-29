@@ -126,14 +126,14 @@ describe('Main page (form page)', function() {
                 expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(wayPoints[1]);
                 expect(helpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(wayPoints[3]);
 
+                expect(helpers.FORM_PAGE.getWayPoints().count()).toEqual(3);
+
                 helpers.FORM_PAGE.getClearButton().click();
 
                 expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual('');
                 expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual('');
 
-                var thirdWayPoint = element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2));
-
-                expect(thirdWayPoint.isPresent()).toBeFalsy();
+                expect(helpers.FORM_PAGE.getWayPoints().count()).toEqual(2);
 
             });
 
@@ -173,9 +173,8 @@ describe('Main page (form page)', function() {
             expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
             expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
 
-            var thirdWayPoint = element(by.css(helpers.SELECTORS.FORM_PAGE.INPUT_WAY_POINT + 2));
+            expect(helpers.FORM_PAGE.getWayPoints().count()).toEqual(2);
 
-            expect(thirdWayPoint.isPresent()).toBeFalsy();
         });
 
     });

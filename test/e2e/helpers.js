@@ -1,6 +1,6 @@
 var SELECTORS = {
     FORM_PAGE: {
-        INPUT_WAY_POINT: '#search-field-',
+        INPUT_WAY_POINT: 'li input[type="text"]',
         BTN_ADD_WAY_POINT: 'button[data-ng-click*="addWayPoint();"]',
         BTN_REMOVE_WAY_POINT: 'button[data-ng-click="removeWayPoint($index);"]',
         BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]',
@@ -43,8 +43,12 @@ formPage.getSuggestionByPosition = function (position) {
     return element.all(by.css(SELECTORS.FORM_PAGE.BTN_SEARCH_SUGGESTION)).get(position);
 };
 
+formPage.getWayPoints = function () {
+    return element.all(by.css(SELECTORS.FORM_PAGE.INPUT_WAY_POINT));
+};
+
 formPage.getWayPointByPosition = function (position) {
-    return element.all(by.css(SELECTORS.FORM_PAGE.INPUT_WAY_POINT + position)).first();
+    return formPage.getWayPoints().get(position);
 };
 
 formPage.getCalculateRouteButton = function () {
