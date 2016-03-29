@@ -168,6 +168,32 @@ describe('SearchController', function () {
 
             });
 
+            describe('but routingService rejected promised (failed)', function () {
+
+                it('should set in scope noRouteFound value to true', function () {
+
+                    fakeRoutingServicePromise = {
+                        then: function (callback, failureCallback) { failureCallback(); }
+                    };
+
+                    fakeDeSerializedQuery.wayPoints = [1,2];
+
+                    $controller("SearchController", {
+                        $scope: $scope,
+                        $sce: $sce,
+                        routingService: routingService,
+                        colorThemesService: colorThemesService,
+                        stateService: stateService
+                    });
+
+                    $scope.$apply();
+
+                    expect($scope.noRouteFound).toEqual(true);
+
+                });
+
+            });
+
             describe('but no routes found', function () {
 
                 it('should set in scope noRouteFound value to true', function () {
