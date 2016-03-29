@@ -7,7 +7,6 @@ describe('FormController', function () {
         $controller,
 
         $location,
-        $timeout,
 
         routingService,
         stateService,
@@ -27,8 +26,6 @@ describe('FormController', function () {
         $location = {};
         $location.replace = function () {};
         $location.url = function () { return $location.replace; };
-
-        $timeout = function () {};
 
         routingService = {
             clearResults: function () {}
@@ -73,7 +70,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -108,7 +104,6 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,
@@ -135,7 +130,6 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,
@@ -167,7 +161,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -199,7 +192,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -224,7 +216,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -266,7 +257,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -294,7 +284,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -318,7 +307,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -346,7 +334,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -379,7 +366,6 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,
@@ -414,7 +400,6 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,
@@ -446,15 +431,9 @@ describe('FormController', function () {
 
                 stateService.serializeQuery = jasmine.createSpy('stateService.serializeQuery').and.returnValue(searchQuery);
 
-                $timeout = jasmine.createSpy('$timeout').and.callFake(function () {
-
-                    $timeout.calls.argsFor(0)[0]();
-                });
-
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,
@@ -470,11 +449,7 @@ describe('FormController', function () {
 
                 $scope.getRoute();
 
-                expect($timeout).toHaveBeenCalledWith(jasmine.any(Function), 500);
-                expect($location.url.calls.count()).toEqual(2);
-                expect($location.url).toHaveBeenCalledWith('/?' + searchQuery);
                 expect($location.url).toHaveBeenCalledWith('/search?' + searchQuery);
-                expect($location.replace).toHaveBeenCalled();
                 expect(stateService.serializeQuery).toHaveBeenCalled();
 
             });
@@ -490,7 +465,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -554,7 +528,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -608,7 +581,6 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,
@@ -670,7 +642,6 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,
@@ -730,7 +701,6 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
-                $timeout: $timeout,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService,
@@ -779,7 +749,6 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
-                    $timeout: $timeout,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService,

@@ -7,7 +7,6 @@ describe('SearchController', function () {
         $controller,
 
         $sce,
-        $location,
 
         routingService,
         colorThemesService,
@@ -20,15 +19,13 @@ describe('SearchController', function () {
 
     beforeEach(inject(function (_$rootScope_, _$sce_, _$controller_) {
 
-        //$location, $window, routingService, colorThemesService, stateService
+        // $window, routingService, colorThemesService, stateService
 
         $rootScope = _$rootScope_;
         $controller = _$controller_;
         $scope = $rootScope.$new();
 
         $sce = _$sce_;
-
-        $location = {};
 
         fakeRoutingServicePromise = {
             then: function (c) { c(); }
@@ -71,7 +68,6 @@ describe('SearchController', function () {
             $controller("SearchController", {
                 $scope: $scope,
                 $sce: $sce,
-                $location: $location,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
                 stateService: stateService
@@ -98,7 +94,6 @@ describe('SearchController', function () {
                 $controller("SearchController", {
                     $scope: $scope,
                     $sce: $sce,
-                    $location: $location,
                     routingService: routingService,
                     colorThemesService: colorThemesService,
                     stateService: stateService
@@ -141,7 +136,6 @@ describe('SearchController', function () {
                     $controller("SearchController", {
                         $scope: $scope,
                         $sce: $sce,
-                        $location: $location,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
                         stateService: stateService
@@ -163,7 +157,6 @@ describe('SearchController', function () {
                 $controller("SearchController", {
                     $scope: $scope,
                     $sce: $sce,
-                    $location: $location,
                     routingService: routingService,
                     colorThemesService: colorThemesService,
                     stateService: stateService
@@ -188,7 +181,6 @@ describe('SearchController', function () {
                     $controller("SearchController", {
                         $scope: $scope,
                         $sce: $sce,
-                        $location: $location,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
                         stateService: stateService
@@ -234,7 +226,6 @@ describe('SearchController', function () {
                     $controller("SearchController", {
                         $scope: $scope,
                         $sce: $sce,
-                        $location: $location,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
                         stateService: stateService
@@ -269,7 +260,6 @@ describe('SearchController', function () {
             $controller("SearchController", {
                 $scope: $scope,
                 $sce: $sce,
-                $location: $location,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
                 stateService: stateService
@@ -294,7 +284,6 @@ describe('SearchController', function () {
             $controller("SearchController", {
                 $scope: $scope,
                 $sce: $sce,
-                $location: $location,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
                 stateService: stateService

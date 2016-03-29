@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$rootScope", "$scope", '$location', '$timeout', 'routingService', 'stateService', 'searchService', 'dataModelService' , function($rootScope, $scope, $location, $timeout, routingService, stateService, searchService, dataModelService) {
+    ["$rootScope", "$scope", '$location', 'routingService', 'stateService', 'searchService', 'dataModelService' , function($rootScope, $scope, $location, routingService, stateService, searchService, dataModelService) {
 
         'use strict';
 
@@ -22,24 +22,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             $scope.wayPoints = enteredWayPoints;
 
-            var query = buildSearchQuery();
-
-            /**
-             * @todo
-             * remove me if url will be updated by changing of inputs
-             */
-            $location.url('/?' + query).replace();
-
-            /**
-             * @readme
-             * used timeout here to replace state with filled form
-             * and then go to search
-             * will consider different approach like keeping wayPoints in session storage and
-             * use it if no deep link to pre fill form, lets see
-             */
-            $timeout(function () {
-                $location.url('/search?' + query);
-            }, 500);
+            $location.url('/search?' + buildSearchQuery());
 
         };
 

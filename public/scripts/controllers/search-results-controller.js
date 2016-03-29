@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('SearchController',
-    ["$scope", '$sce', '$location', 'routingService', 'colorThemesService', 'stateService',
-        function($scope, $sce, $location, routingService, colorThemesService, stateService) {
+    ["$scope", '$sce', 'routingService', 'colorThemesService', 'stateService',
+        function($scope, $sce, routingService, colorThemesService, stateService) {
 
         'use strict';
 
