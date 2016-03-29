@@ -8,7 +8,6 @@ describe('SearchController', function () {
 
         $sce,
         $location,
-        $window,
 
         routingService,
         colorThemesService,
@@ -30,11 +29,6 @@ describe('SearchController', function () {
         $sce = _$sce_;
 
         $location = {};
-        $window = {
-            history: {
-                back: function () {}
-            }
-        };
 
         fakeRoutingServicePromise = {
             then: function (c) { c(); }
@@ -62,7 +56,8 @@ describe('SearchController', function () {
         stateService = {
             deserializeQuery: function () {
                 return fakeDeSerializedQuery;
-            }
+            },
+            back: function () {}
         };
 
     }));
@@ -77,7 +72,6 @@ describe('SearchController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $location: $location,
-                $window: $window,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
                 stateService: stateService
@@ -105,7 +99,6 @@ describe('SearchController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $location: $location,
-                    $window: $window,
                     routingService: routingService,
                     colorThemesService: colorThemesService,
                     stateService: stateService
@@ -149,7 +142,6 @@ describe('SearchController', function () {
                         $scope: $scope,
                         $sce: $sce,
                         $location: $location,
-                        $window: $window,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
                         stateService: stateService
@@ -172,7 +164,6 @@ describe('SearchController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $location: $location,
-                    $window: $window,
                     routingService: routingService,
                     colorThemesService: colorThemesService,
                     stateService: stateService
@@ -198,7 +189,6 @@ describe('SearchController', function () {
                         $scope: $scope,
                         $sce: $sce,
                         $location: $location,
-                        $window: $window,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
                         stateService: stateService
@@ -245,7 +235,6 @@ describe('SearchController', function () {
                         $scope: $scope,
                         $sce: $sce,
                         $location: $location,
-                        $window: $window,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
                         stateService: stateService
@@ -273,15 +262,14 @@ describe('SearchController', function () {
 
     describe('back', function () {
 
-        it ('should go back in history', function () {
+        it ('should call stateService.back', function () {
 
-            $window.history.back = jasmine.createSpy('$history.back');
+            stateService.back = jasmine.createSpy('stateService.back');
 
             $controller("SearchController", {
                 $scope: $scope,
                 $sce: $sce,
                 $location: $location,
-                $window: $window,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
                 stateService: stateService
@@ -291,7 +279,7 @@ describe('SearchController', function () {
 
             $scope.back();
 
-            expect($window.history.back).toHaveBeenCalled();
+            expect(stateService.back).toHaveBeenCalled();
 
         });
 
@@ -307,7 +295,6 @@ describe('SearchController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $location: $location,
-                $window: $window,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
                 stateService: stateService

@@ -64,6 +64,28 @@ describe('Route page', function() {
          */
         it ('should display "go to search" button', function () {
 
+            var notExistingRoutePage = helpers.ROUTE_DETAILS_PAGE.getPage() + "/666";
+
+            browser.get(helpers.FORM_PAGE.getPage());
+            browser.get(notExistingRoutePage);
+
+            browser.getCurrentUrl().then(function(url) {
+
+                expect(url).toEqual(notExistingRoutePage);
+            });
+
+            var getNoRouteFoundBackLink = helpers.ROUTE_DETAILS_PAGE.getNoRouteFoundBackLink();
+
+            browser.wait(getNoRouteFoundBackLink.isDisplayed()).then(function () {
+
+                getNoRouteFoundBackLink.click();
+
+                browser.getCurrentUrl().then(function (url) {
+
+                    expect(url).toEqual(helpers.FORM_PAGE.getPage());
+                });
+            });
+
         });
     });
 

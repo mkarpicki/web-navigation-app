@@ -15,6 +15,7 @@ var SELECTORS = {
     },
     ROUTE_PAGE: {
         NO_ROUTE_FOUND: 'p[data-ng-show="undefinedRoute"]',
+        NO_ROUTE_FOUND_BACK_LINK: 'p[data-ng-show="undefinedRoute"] a',
         ROUTE_MANEUVERS: 'ul[data-ng-hide="undefinedRoute"]'
     }
 };
@@ -109,6 +110,10 @@ routeDetailsPage.getPage = function () {
 
 routeDetailsPage.getNoRouteFoundElement =function () {
     return element(by.css(SELECTORS.ROUTE_PAGE.NO_ROUTE_FOUND));
+};
+
+routeDetailsPage.getNoRouteFoundBackLink = function () {
+    return element(by.css(SELECTORS.ROUTE_PAGE.NO_ROUTE_FOUND_BACK_LINK));
 };
 
 routeDetailsPage.getManeuvers = function () {

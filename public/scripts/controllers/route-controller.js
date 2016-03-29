@@ -32,6 +32,9 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 stateService.disableNavigationMode();
             };
 
+            $scope.back = function () {
+                stateService.back();
+            };
 
             var getRoute = function (index) {
 

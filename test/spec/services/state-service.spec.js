@@ -3,6 +3,7 @@ describe('stateService', function () {
     'use strict';
 
     var _$location_,
+        _$window_,
         _events_,
         _$rootScope_;
 
@@ -13,6 +14,16 @@ describe('stateService', function () {
         _$location_ = {};
 
         $provide.value('$location', _$location_);
+
+        _$window_ = {};
+
+        _$window_.history = {
+            back: function () {}
+        };
+
+
+        $provide.value('$window', _$window_);
+
 
         _events_ = {
             NAVIGATION_STATE_EVENT: 'NAVIGATION_STATE_EVENT',
@@ -31,6 +42,20 @@ describe('stateService', function () {
         $provide.value('$rootScope', _$rootScope_);
 
     }));
+
+    describe('back', function () {
+
+        it('should use back from history API', inject(function(stateService) {
+
+            _$window_.history.back = jasmine.createSpy('history.back');
+
+            stateService.back();
+
+            expect(_$window_.history.back).toHaveBeenCalled();
+
+        }));
+
+    });
 
     describe('enableNavigationMode', function (){
 

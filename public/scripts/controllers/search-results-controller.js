@@ -1,11 +1,11 @@
 angular.module('navigationApp.controllers').controller('SearchController',
-    ["$scope", '$sce', '$location', '$window', 'routingService', 'colorThemesService', 'stateService',
-        function($scope, $sce, $location, $window, routingService, colorThemesService, stateService) {
+    ["$scope", '$sce', '$location', 'routingService', 'colorThemesService', 'stateService',
+        function($scope, $sce, $location, routingService, colorThemesService, stateService) {
 
         'use strict';
 
         $scope.back = function () {
-            $window.history.back();
+            stateService.back();
         };
 
         $scope.trustedText = function (text) {

@@ -31,7 +31,8 @@ describe('RouteController', function () {
 
         stateService = {
             enableNavigationMode: function () {},
-            disableNavigationMode: function (){}
+            disableNavigationMode: function (){},
+            back: function () {}
         };
 
     }));
@@ -199,6 +200,30 @@ describe('RouteController', function () {
             var textWithHTML = $scope.trustedText(html);
 
             expect(textWithHTML.toString()).toEqual($sce.trustAsHtml(html).toString());
+
+        });
+
+    });
+
+    describe('back', function (){
+
+        it('should call stateService.back', function () {
+
+            stateService.back = jasmine.createSpy('stateService.back');
+
+            $controller("RouteController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService,
+                stateService: stateService
+            });
+
+            $scope.$apply();
+
+            $scope.back();
+
+            expect(stateService.back).toHaveBeenCalled();
 
         });
 
