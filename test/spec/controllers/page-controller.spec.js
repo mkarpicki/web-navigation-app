@@ -370,7 +370,7 @@ describe('PageController', function () {
             fakeRoutes = [{}, {}];
 
             $scope.$apply();
-            
+
             expect($scope.routes.length).toEqual(2);
         });
 

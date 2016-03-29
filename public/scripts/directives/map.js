@@ -112,23 +112,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             }
 
         }, true);
-
-        /**
-         * @todo - re think this (maybe no good idea to watch something that in theory will not change to often)
-         * @todo - move that to controller of directive (or even to controller that uses map and make attr to be used in directive)
-         */
-        //scope.$watch(function () { return routingService.getResults(); }, function (proposedRoutes) {
-        //
-        //    if (proposedRoutes) {
-        //
-        //        mapApiService.clear();
-        //
-        //        for (var i = 0, l = proposedRoutes.length; i < l; i++) {
-        //            mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].waypointsUsedForSearch, proposedRoutes[i].color);
-        //        }
-        //    }
-        //}, true);
-
+        
     };
 
     var scope = {
