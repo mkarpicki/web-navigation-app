@@ -8,6 +8,8 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 minimumNumberOfMetersToCheckRouteState = 5,
                 numberOfMetersFromWayPointToAssumeVisited = 30,
                 lastPosition = null,
+
+                areasToAvoidUsedForSearch = [],
                 wayPointsUsedForSearch = [];
 
             $scope.route = null;
@@ -70,18 +72,11 @@ angular.module('navigationApp.controllers').controller('RouteController',
                     //check if matched any wayPoint used for search to forget about it
                     wayPointsUsedForSearch = removeVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
 
-                    //check:
-                    //1. position updated enough to do next step (few meters)
-                    //2. check if position is on route
-
                     if (calculateDistanceFromNearestRoutePoint(currentPosition, $scope.route) > metersFromRouteToRecalculate) {
-                        console.log('not on route anymore!');
+                        //console.log('not on route anymore!');
                         //2a. if not recalculate route (same waypoints, areas etc) BUT ignore waypoints I passed already
                         //2b. calculate route to nearest point on original route?
                     }
-
-                    //mark visited waypoints to be ignored
-                    //$route.wayPointsUsedForSearch
 
                 //} else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
 
@@ -157,7 +152,10 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 } else {
                     //skip starting point and collect all important wayPoints
                     wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1,$scope.route.length);
+                    areasToAvoidUsedForSearch = $scope.route.areasToAvoidUsedForSearch;
                 }
+
+                //console.log($scope.route);
 
             };
 

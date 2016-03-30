@@ -22,7 +22,8 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             var areas = [],
                 corners,
-                c1, c2;
+                c1, c2,
+                boundingBox;
 
             for (var i = 0, len = areasToAvoid.length; i < len; i++) {
 
@@ -31,10 +32,14 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 c1 = corners[0].split(',');
                 c2 = corners[1].split(',');
 
-                areas.push({
+                boundingBox = {
                     topLeft: { latitude: c1[0], longitude: c1[1] },
                     bottomRight: { latitude: c2[0], longitude: c2[1] }
-                });
+                };
+
+                areas.push({
+                    boundingBox: boundingBox
+                })
             }
 
             return areas;
