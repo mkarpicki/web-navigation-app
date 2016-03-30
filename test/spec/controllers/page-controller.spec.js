@@ -165,6 +165,9 @@ describe('PageController', function () {
 
                 $scope.$apply();
 
+                //reset it as it is tru on construction
+                $scope.updateToPosition = false;
+
                 expect($scope.zoomLevel).toEqual(14);
                 expect($scope.updateToPosition).toEqual(false);
 
@@ -272,6 +275,7 @@ describe('PageController', function () {
 
                 $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
+                expect($scope.updateToPosition).toEqual(false);
                 expect($scope.currentPosition).toEqual({
                     latitude: fakeEventParams.param.coords.latitude,
                     longitude: fakeEventParams.param.coords.longitude
@@ -279,6 +283,50 @@ describe('PageController', function () {
                 expect($scope.gettingLocationError).toEqual(false);
 
             });
+
+            describe('when event fired next time', function (){
+
+                it('should not update updateToPosition flag anymore', function () {
+
+                    fakeEventParams.eventType = events.POSITION_EVENT_TYPES.CHANGE;
+                    fakeEventParams.param = {
+                        coords: {
+                            latitude: 'lat',
+                            longitude: 'lng'
+                        }
+                    };
+
+                    $controller("PageController", {
+                        $scope: $scope,
+                        $location: $location,
+                        events: events,
+                        routingService: routingService,
+                        stateService: stateService,
+                        geoLocationService: geoLocationService,
+                        geoCoderService: geoCoderService,
+                        dataModelService: dataModelService
+                    });
+
+                    $scope.$apply();
+
+                    $scope.gettingLocationError = true;
+
+                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                    expect($scope.updateToPosition).toEqual(false);
+                    expect($scope.currentPosition).toEqual({
+                        latitude: fakeEventParams.param.coords.latitude,
+                        longitude: fakeEventParams.param.coords.longitude
+                    });
+                    expect($scope.gettingLocationError).toEqual(false);
+
+
+                    $scope.updateToPosition = true;
+                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+                    expect($scope.updateToPosition).toEqual(true);
+
+                });
+            })
 
         });
 

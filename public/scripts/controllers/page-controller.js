@@ -5,10 +5,9 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var defaultZoomLevel = 14,
             navigationZoomLevel = 16,
-            firstPositionFound = false,
-            routeToFollow = null;
+            firstPositionFound = false;
 
-        // true by default to update map to position on load
+        //set by default true to center map on first found position
         $scope.updateToPosition = true;
         $scope.zoomLevel = defaultZoomLevel;
 
@@ -97,12 +96,15 @@ angular.module('navigationApp.controllers').controller('PageController',
                     longitude : geoPosition.coords.longitude
                 };
 
+                $scope.$apply();
+
+                //on first found position map was updated
+                //reset value to stop updating it
+                //it may be turned on again by NAVIGATION EVENT
                 if (!firstPositionFound) {
                     $scope.updateToPosition = false;
                     firstPositionFound = true;
                 }
-
-                $scope.$apply();
 
             } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
 
@@ -118,24 +120,11 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                 case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON:
 
-                    /**
-                     * @fixme - that should be in routeController !
-                     * @todo - save first route saved in scope (from service) as 'to follow'
-                     * @type {number}
-                     */
-                    routeToFollow = $scope.routes ? $scope.routes[0] : null;
-
                     $scope.zoomLevel = navigationZoomLevel;
                     $scope.updateToPosition = true;
                     break;
 
                 case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF:
-
-                    /**
-                     * @fixme - that should be in routeController !
-                     * @todo - think waht to do with routes when navigation stops - restore routeToFollow as only one?
-                     * @type {number}
-                     */
 
                     $scope.zoomLevel = defaultZoomLevel;
                     $scope.updateToPosition = false;
@@ -200,6 +189,8 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.pageReady = function () {
 
             $scope.ready = true;
+
+            //$scope.updateToPosition = true;
 
             geoLocationService.watchPosition();
         };
