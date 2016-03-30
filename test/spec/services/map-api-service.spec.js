@@ -653,6 +653,28 @@ describe('map-api-service', function () {
 
     });
 
+    describe('distance', function () {
+
+        it('should use create H.geo.Point objects from coordinates and use API to calculate distance', inject(function(mapApiService) {
+
+            var from = { latitude: 'fromLat', longitude: 'fromLng'},
+                to = { latitude: 'toLat', longitude: 'toLng'};
+
+            var fakePoint = {
+                distance: jasmine.createSpy('distance').and.returnValue(666)
+            };
+
+            H.geo.Point = jasmine.createSpy('H.geo.Point').and.returnValue(fakePoint);
+
+            expect(mapApiService.distance(from, to)).toEqual(666);
+
+            expect(H.geo.Point).toHaveBeenCalledWith(from.latitude, from.longitude);
+            expect(H.geo.Point).toHaveBeenCalledWith(to.latitude, to.longitude);
+
+        }));
+
+    });
+
     describe('getTapPosition', function () {
 
         it('should return position of last tapped coordinate', inject(function (mapApiService) {
