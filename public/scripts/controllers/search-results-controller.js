@@ -18,6 +18,28 @@ angular.module('navigationApp.controllers').controller('SearchController',
             $scope.notEnoughInformation = false;
         };
 
+        var prepareAreasToAvoid = function (areasToAvoid) {
+
+            var areas = [],
+                corners,
+                c1, c2;
+
+            for (var i = 0, len = areasToAvoid.length; i < len; i++) {
+
+                corners = areasToAvoid[i].split(';');
+
+                c1 = corners[0].split(',');
+                c2 = corners[1].split(',');
+
+                areas.push({
+                    topLeft: { latitude: c1[0], longitude: c1[1] },
+                    bottomRight: { latitude: c2[0], longitude: c2[1] }
+                });
+            }
+
+            return areas;
+        };
+
         var prepareWayPoints = function (wayPoints) {
 
             var points = [],
@@ -36,7 +58,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
             return points;
         };
 
-        var collectRoutes = function (routes, theme, wayPointsUsedForSearch) {
+        var collectRoutes = function (routes, theme, wayPointsUsedForSearch, areasToAvoidUsedForSearch) {
 
             var route;
 
@@ -46,6 +68,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
             }
 
             wayPointsUsedForSearch = prepareWayPoints(wayPointsUsedForSearch);
+            areasToAvoidUsedForSearch = prepareAreasToAvoid(areasToAvoidUsedForSearch);
 
             for (var i = 0, l = routes.length; i < l; i++) {
 
@@ -53,6 +76,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
                 route.color = colorThemesService.getColor(theme);
                 route.wayPointsUsedForSearch = wayPointsUsedForSearch;
+                route.areasToAvoidUsedForSearch = areasToAvoidUsedForSearch;
 
                 routingService.saveRoute(route);
             }
@@ -60,21 +84,21 @@ angular.module('navigationApp.controllers').controller('SearchController',
             $scope.routes = routingService.getResults();
         };
 
-        var collectRoutesWithTrafficDisabled = function (routes, wayPointsUsedForSearch) {
-            collectRoutes(routes, colorThemesService.NEGATIVE_THEME, wayPointsUsedForSearch);
+        var collectRoutesWithTrafficDisabled = function (routes, wayPointsUsedForSearch, areasToAvoidUsedForSearch) {
+            collectRoutes(routes, colorThemesService.NEGATIVE_THEME, wayPointsUsedForSearch, areasToAvoidUsedForSearch);
         };
 
-        var collectRoutesWithTrafficEnabled = function (routes, wayPointsUsedForSearch) {
-            collectRoutes(routes, colorThemesService.POSITIVE_THEME, wayPointsUsedForSearch);
+        var collectRoutesWithTrafficEnabled = function (routes, wayPointsUsedForSearch, areasToAvoidUsedForSearch) {
+            collectRoutes(routes, colorThemesService.POSITIVE_THEME, wayPointsUsedForSearch, areasToAvoidUsedForSearch);
         };
 
-        var collectRoutesBasedOnTraffic = function (ignoreTraffic, wayPointsUsedForSearch) {
+        var collectRoutesBasedOnTraffic = function (ignoreTraffic, wayPointsUsedForSearch, areasToAvoidUsedForSearch) {
             return function (routes) {
 
                 if (ignoreTraffic === true) {
-                    return collectRoutesWithTrafficDisabled(routes, wayPointsUsedForSearch);
+                    return collectRoutesWithTrafficDisabled(routes, wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                 } else {
-                    return collectRoutesWithTrafficEnabled(routes, wayPointsUsedForSearch);
+                    return collectRoutesWithTrafficEnabled(routes, wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                 }
             };
         };
@@ -106,8 +130,8 @@ angular.module('navigationApp.controllers').controller('SearchController',
             });
 
             if (wayPoints.length > 1) {
-                (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints), setNoRouteFoundState);
-                (routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(false, wayPoints), setNoRouteFoundState);
+                (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints, areasToAvoid), setNoRouteFoundState);
+                (routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(false, wayPoints, areasToAvoid), setNoRouteFoundState);
             } else {
                 $scope.notEnoughInformation = true;
             }
