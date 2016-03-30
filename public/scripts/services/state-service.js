@@ -217,6 +217,15 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         $window.history.back();
     };
 
+    var init = function () {
+        var objectsFromQuery = deserializeQuery();
+
+        setWayPoints(objectsFromQuery.wayPoints);
+        setAreasToAvoid(objectsFromQuery.areasToAvoid);
+    };
+
+    init();
+
     return {
         serializeQuery: serializeQuery,
         deserializeQuery: deserializeQuery,

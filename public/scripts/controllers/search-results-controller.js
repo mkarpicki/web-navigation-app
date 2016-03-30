@@ -101,6 +101,10 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 return (coordinate !== "" && coordinate !== null);
             });
 
+            areasToAvoid = areasToAvoid.filter(function (boundingBox) {
+                return (boundingBox !== "" && boundingBox !== null);
+            });
+
             if (wayPoints.length > 1) {
                 (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints), setNoRouteFoundState);
                 (routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(false, wayPoints), setNoRouteFoundState);

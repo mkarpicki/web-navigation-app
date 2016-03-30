@@ -128,15 +128,19 @@ angular.module('navigationApp.controllers').controller('FormController',
                 wayPoints = deSerializedQuery.wayPoints,
                 areasToAvoid = deSerializedQuery.areasToAvoid;
 
-            /**
-             * @todo - add filtering for proper ayPoints (as in getRoute)
-             */
-
             $scope.wayPoints = getClearWayPoints();
+
+            wayPoints = wayPoints.filter(function (wayPoint) {
+                return (wayPoint && wayPoint.coordinate !== "" && wayPoint.coordinate !== null);
+            });
 
             if (wayPoints.length > 0) {
                 $scope.wayPoints = wayPoints;
             }
+
+            areasToAvoid = areasToAvoid.filter(function (areaToAvoid) {
+                return (areaToAvoid && areaToAvoid.boundingBox !== "" && areaToAvoid.boundingBox !== null);
+            });
 
             if (areasToAvoid.length > 0) {
                 $scope.areasToAvoid = areasToAvoid;

@@ -11,7 +11,9 @@ describe('stateService', function () {
 
     beforeEach(module(function ($provide) {
 
-        _$location_ = {};
+        _$location_ = {
+            search: function () { return ''; }
+        };
 
         $provide.value('$location', _$location_);
 
