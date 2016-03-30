@@ -38,6 +38,12 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         };
 
+        var addDestinationPoint = function (point, text) {
+
+            stateService.addDestinationPoint(dataModelService.getWayPoint(text, [], point));
+
+        };
+
         var addWayPoint = function (point, text) {
 
             stateService.addWayPoint(dataModelService.getWayPoint(text, [], point));
@@ -136,7 +142,8 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                     case events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT:
 
-                        overwriteDestinationPoint(point, text);
+                        //overwriteDestinationPoint(point, text);
+                        addDestinationPoint(point, text);
                         break;
 
                     case events.MAP_EVENT_TYPES.ADD_WAY_POINT:
