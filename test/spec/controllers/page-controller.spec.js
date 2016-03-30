@@ -70,7 +70,8 @@ describe('PageController', function () {
             deserializeQuery: function () {
                 return fakeDeSerializedQuery;
             },
-            overwriteStartPoint: function () {}
+            overwriteStartPoint: function () {},
+            addDestinationPoint: function () {}
         };
 
         var fakeGeoCoderPromise = {
@@ -99,7 +100,8 @@ describe('PageController', function () {
                 OVERWRITE_START_POINT: 0,
                 ADD_WAY_POINT: 1,
                 OVERWRITE_DESTINATION_POINT: 2,
-                AVOID_AREA: 3
+                AVOID_AREA: 3,
+                ADD_DESTINATION_POINT: 4
             },
 
             POSITION_EVENT_TYPES: {
@@ -447,6 +449,7 @@ describe('PageController', function () {
 
             });
 
+
         });
 
         describe('when event type equal OVERWRITE_DESTINATION_POINT', function () {
@@ -473,6 +476,39 @@ describe('PageController', function () {
                 $scope.$emit(events.MAP_EVENT, fakeEventParams);
 
                 expect(stateService.overwriteDestinationPoint).toHaveBeenCalledWith({
+                    coordinates: fakeGeoParam.latitude + "," + fakeGeoParam.longitude,
+                    suggestions: [],
+                    text: 'some address'
+                });
+
+            });
+
+        });
+
+        describe('when event type equal ADD_DESTINATION_POINT', function () {
+
+            it('should call stateService.addDestinationPoint', function () {
+
+                stateService.addDestinationPoint = jasmine.createSpy('stateService.addDestinationPoint');
+
+                fakeEventParams.eventType = events.MAP_EVENT_TYPES.ADD_DESTINATION_POINT;
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService,
+                    geoCoderService: geoCoderService,
+                    dataModelService: dataModelService
+                });
+
+                $scope.$apply();
+
+                $scope.$emit(events.MAP_EVENT, fakeEventParams);
+
+                expect(stateService.addDestinationPoint).toHaveBeenCalledWith({
                     coordinates: fakeGeoParam.latitude + "," + fakeGeoParam.longitude,
                     suggestions: [],
                     text: 'some address'

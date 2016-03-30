@@ -39,7 +39,8 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
          */
         var overwrittenStartItem = node.getElementsByClassName('from')[0],
             newWayPointItem = node.getElementsByClassName('waypoint')[0],
-            overwrittenDestinationItem = node.getElementsByClassName('to')[0],
+            overwrittenDestinationItem,// = node.getElementsByClassName('to')[0],
+            newDestinationItem = node.getElementsByClassName('to')[0],
             avoidItem = node.getElementsByClassName('avoid')[0];
 
 
@@ -53,6 +54,11 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
         attachMenuAction(overwrittenDestinationItem, function () {
             emitEvent(scope, events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT, mapApiService.getTapPosition());
+        });
+
+
+        attachMenuAction(newDestinationItem, function () {
+            emitEvent(scope, events.MAP_EVENT_TYPES.ADD_DESTINATION_POINT, mapApiService.getTapPosition());
         });
 
         attachMenuAction(avoidItem, function () {

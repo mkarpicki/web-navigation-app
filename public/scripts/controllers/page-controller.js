@@ -4,9 +4,12 @@ angular.module('navigationApp.controllers').controller('PageController',
         'use strict';
 
         var defaultZoomLevel = 14,
-            navigationZoomLevel = 16;
+            navigationZoomLevel = 16,
+            firstPositionFound = false,
+            routeToFollow = null;
 
-        $scope.updateToPosition = false;
+        // true by default to update map to position on load
+        $scope.updateToPosition = true;
         $scope.zoomLevel = defaultZoomLevel;
 
         $rootScope.currentPosition = {
@@ -94,6 +97,11 @@ angular.module('navigationApp.controllers').controller('PageController',
                     longitude : geoPosition.coords.longitude
                 };
 
+                if (!firstPositionFound) {
+                    $scope.updateToPosition = false;
+                    firstPositionFound = true;
+                }
+
                 $scope.$apply();
 
             } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
@@ -110,11 +118,24 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                 case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON:
 
+                    /**
+                     * @fixme - that should be in routeController !
+                     * @todo - save first route saved in scope (from service) as 'to follow'
+                     * @type {number}
+                     */
+                    routeToFollow = $scope.routes ? $scope.routes[0] : null;
+
                     $scope.zoomLevel = navigationZoomLevel;
                     $scope.updateToPosition = true;
                     break;
 
                 case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF:
+
+                    /**
+                     * @fixme - that should be in routeController !
+                     * @todo - think waht to do with routes when navigation stops - restore routeToFollow as only one?
+                     * @type {number}
+                     */
 
                     $scope.zoomLevel = defaultZoomLevel;
                     $scope.updateToPosition = false;
@@ -142,7 +163,11 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                     case events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT:
 
-                        //overwriteDestinationPoint(point, text);
+                        overwriteDestinationPoint(point, text);
+                        break;
+
+                    case events.MAP_EVENT_TYPES.ADD_DESTINATION_POINT:
+
                         addDestinationPoint(point, text);
                         break;
 
@@ -175,8 +200,6 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.pageReady = function () {
 
             $scope.ready = true;
-
-            $scope.updateToPosition = true;
 
             geoLocationService.watchPosition();
         };
