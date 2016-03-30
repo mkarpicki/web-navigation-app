@@ -1,8 +1,14 @@
 angular.module('navigationApp.controllers').controller('RouteController',
-    ["$scope", '$sce', '$routeParams', "routingService", 'stateService',
-        function($scope, $sce, $routeParams, routingService, stateService) {
+    ['$scope', '$sce', '$routeParams', 'events', 'routingService', 'stateService', 'mapApiService',
+        function($scope, $sce, $routeParams, events, routingService, stateService, mapApiService) {
 
             'use strict';
+
+            var metersFromRouteToRecalculate = 10,
+                minimumNumberOfMetersToCheckRouteState = 5,
+                numberOfMetersFromWayPointToAssumeVisited = 30,
+                lastPosition = null,
+                wayPointsUsedForSearch = [];
 
             $scope.route = null;
             $scope.undefinedRoute = false;
@@ -36,6 +42,90 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 stateService.back();
             };
 
+            $scope.$on(events.POSITION_EVENT, function (event, params) {
+
+                if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
+
+                    var geoPosition = params.param;
+
+                    var currentPosition = {
+                        latitude : geoPosition.coords.latitude,
+                        longitude : geoPosition.coords.longitude
+                    };
+
+                    /**
+                     * @check real position and if float remove that conversion
+                     * @type {Number}
+                     */
+                    currentPosition.latitude = parseFloat(currentPosition.latitude);
+                    currentPosition.longitude = parseFloat(currentPosition.longitude);
+
+
+                    if (lastPosition && mapApiService.distance(currentPosition, lastPosition) <= minimumNumberOfMetersToCheckRouteState) {
+                        return;
+                    }
+
+                    lastPosition = currentPosition;
+
+                    //check if matched any wayPoint used for search to forget about it
+                    wayPointsUsedForSearch = removeVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
+
+                    //check:
+                    //1. position updated enough to do next step (few meters)
+                    //2. check if position is on route
+
+                    if (calculateDistanceFromNearestRoutePoint(currentPosition, $scope.route) > metersFromRouteToRecalculate) {
+                        console.log('not on route anymore!');
+                        //2a. if not recalculate route (same waypoints, areas etc) BUT ignore waypoints I passed already
+                        //2b. calculate route to nearest point on original route?
+                    }
+
+                    //mark visited waypoints to be ignored
+                    //$route.wayPointsUsedForSearch
+
+                //} else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
+
+                }
+
+
+            });
+
+            var removeVisitedWayPoints = function (currentPosition, wayPointsUsedForSearch) {
+
+                wayPointsUsedForSearch = wayPointsUsedForSearch.filter(function (wayPoint) {
+                    return (mapApiService.distance(currentPosition, wayPoint) > numberOfMetersFromWayPointToAssumeVisited);
+                });
+
+                return wayPointsUsedForSearch;
+            };
+
+            var calculateDistanceFromNearestRoutePoint = function (position, route) {
+
+                var nearestPoint = null;
+
+                for (var i = 0, len = route.shape.length; i < len; i++) {
+
+                    var item = route.shape[i],
+                        values = item.split(','),
+                        routePointPosition = {
+                            latitude: parseFloat(values[0]),
+                            longitude: parseFloat(values[1])
+                        };
+
+                    var distance = mapApiService.distance(position, routePointPosition);
+
+                    if (nearestPoint === null || nearestPoint > distance) {
+                        nearestPoint = distance;
+                    }
+
+                    if (nearestPoint <= metersFromRouteToRecalculate) {
+                        break;
+                    }
+                }
+
+                return nearestPoint;
+            };
+
             var getRoute = function (index) {
 
                 var nIndex = parseInt(index, 10);
@@ -64,6 +154,9 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                 if (!$scope.route) {
                     $scope.undefinedRoute = true;
+                } else {
+                    //skip starting point and collect all important wayPoints
+                    wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1,$scope.route.length);
                 }
 
             };

@@ -203,6 +203,14 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         map.setZoom(level);
     };
 
+    var distance = function (positionFrom, positionTo) {
+
+        var pointFrom = new H.geo.Point(positionFrom.latitude, positionFrom.longitude);
+        var pointTo = new H.geo.Point(positionTo.latitude, positionTo.longitude);
+
+        return pointFrom.distance(pointTo);
+    };
+
     return {
         init: init,
         initBubble: initBubble,
@@ -213,7 +221,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         getTapPosition: getTapPosition,
         removeBubble: removeBubble,
         updateCurrentPosition: updateCurrentPosition,
-        zoomLevel: zoomLevel
+        zoomLevel: zoomLevel,
+        distance: distance
     };
 
 }]);

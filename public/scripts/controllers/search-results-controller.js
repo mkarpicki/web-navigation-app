@@ -52,7 +52,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 route = routes[i];
 
                 route.color = colorThemesService.getColor(theme);
-                route.waypointsUsedForSearch = wayPointsUsedForSearch;
+                route.wayPointsUsedForSearch = wayPointsUsedForSearch;
 
                 routingService.saveRoute(route);
             }

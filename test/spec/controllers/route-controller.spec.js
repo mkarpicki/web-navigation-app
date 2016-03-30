@@ -10,7 +10,9 @@ describe('RouteController', function () {
         $routeParams,
 
         routingService,
-        stateService;
+        stateService,
+        mapApiService,
+        events;
 
     beforeEach(module('navigationApp.controllers'));
 
@@ -35,6 +37,14 @@ describe('RouteController', function () {
             back: function () {}
         };
 
+        events = {
+            POSITION_EVENT: 0
+        };
+
+        mapApiService = {
+            distance: function () {}
+        }
+
     }));
 
     describe('when index of existing routes provided', function () {
@@ -43,7 +53,10 @@ describe('RouteController', function () {
 
             it ('should save route to own scope', function () {
 
-                var routes = [1,2];
+                var routes = [
+                    { wayPointsUsedForSearch: []},
+                    { wayPointsUsedForSearch: []}
+                ];
 
                 $routeParams.index = 1;
 
@@ -55,7 +68,9 @@ describe('RouteController', function () {
                     $sce: $sce,
                     $routeParams: $routeParams,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    mapApiService: mapApiService,
+                    events: events
                 });
 
                 $scope.$apply();
@@ -73,7 +88,10 @@ describe('RouteController', function () {
 
             it ('should save route to own scope', function () {
 
-                var routes = [1,2];
+                var routes = [
+                    { wayPointsUsedForSearch: []},
+                    { wayPointsUsedForSearch: []}
+                ];
 
                 $routeParams.index = 666;
 
@@ -85,7 +103,9 @@ describe('RouteController', function () {
                     $sce: $sce,
                     $routeParams: $routeParams,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    mapApiService: mapApiService,
+                    events: events
                 });
 
                 $scope.$apply();
@@ -115,7 +135,9 @@ describe('RouteController', function () {
                 $sce: $sce,
                 $routeParams: $routeParams,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService,
+                events: events
             });
 
             $scope.$apply();
@@ -140,7 +162,9 @@ describe('RouteController', function () {
                 $sce: $sce,
                 $routeParams: $routeParams,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService,
+                events: events
             });
 
             $scope.$apply();
@@ -166,7 +190,9 @@ describe('RouteController', function () {
                 $sce: $sce,
                 $routeParams: $routeParams,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService,
+                events: events
             });
 
             $scope.$apply();
@@ -192,7 +218,9 @@ describe('RouteController', function () {
                 $sce: $sce,
                 $routeParams: $routeParams,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService,
+                events: events
             });
 
             $scope.$apply();
@@ -216,7 +244,9 @@ describe('RouteController', function () {
                 $sce: $sce,
                 $routeParams: $routeParams,
                 routingService: routingService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService,
+                events: events
             });
 
             $scope.$apply();
@@ -240,7 +270,9 @@ describe('RouteController', function () {
                     $sce: $sce,
                     $routeParams: $routeParams,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    mapApiService: mapApiService,
+                    events: events
                 });
 
                 $scope.$apply();
@@ -262,7 +294,9 @@ describe('RouteController', function () {
                     $sce: $sce,
                     $routeParams: $routeParams,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    mapApiService: mapApiService,
+                    events: events
                 });
 
                 $scope.$apply();
@@ -292,7 +326,9 @@ describe('RouteController', function () {
                     $sce: $sce,
                     $routeParams: $routeParams,
                     routingService: routingService,
-                    stateService: stateService
+                    stateService: stateService,
+                    mapApiService: mapApiService,
+                    events: events
                 });
 
                 $scope.$apply();

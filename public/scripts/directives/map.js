@@ -113,7 +113,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
                 mapApiService.clear();
 
                 for (var i = 0, l = proposedRoutes.length; i < l; i++) {
-                    mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].waypointsUsedForSearch, proposedRoutes[i].color);
+                    mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].wayPointsUsedForSearch, proposedRoutes[i].color);
                 }
             }
 
