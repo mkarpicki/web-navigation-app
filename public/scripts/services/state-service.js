@@ -152,6 +152,11 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         wayPointsStorage[0] = serializeWayPoint(point);
     };
 
+    var addDestinationPoint = function (point) {
+
+        wayPointsStorage.push(serializeWayPoint(point));
+    };
+
     var overwriteDestinationPoint = function (point) {
 
         point = serializeWayPoint(point);
@@ -237,6 +242,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         overwriteStartPoint: overwriteStartPoint,
         overwriteDestinationPoint: overwriteDestinationPoint,
         addWayPoint: addWayPoint,
+        addDestinationPoint: addDestinationPoint,
         addAreaToAvoid: addAreaToAvoid,
 
         isNavigationModeEnabled: isNavigationModeEnabled,

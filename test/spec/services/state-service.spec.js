@@ -99,7 +99,7 @@ describe('stateService', function () {
 
         }));
 
-    })
+    });
 
     describe('addAreaToAvoid', function () {
 
@@ -120,6 +120,39 @@ describe('stateService', function () {
 
             stateService.addAreaToAvoid(areas[0]);
             stateService.addAreaToAvoid(areas[1]);
+
+            expect(stateService.serializeQuery()).toEqual(expectedQuery);
+
+        }));
+
+    });
+
+    describe('addDestinationPoint', function (){
+
+        it('should add new point as last in state', inject(function (stateService) {
+
+            var wayPoint0 = {
+                text: 'waypoint0',
+                coordinates: '1,2'
+            };
+
+            var wayPoint1 = {
+                text: 'waypoint1',
+                coordinates: '3,4'
+            };
+
+            var wayPoint2 = {
+                text: 'waypoint2',
+                coordinates: '5,6'
+            };
+
+            var wayPoints = [wayPoint0, wayPoint1, wayPoint2];
+
+            var expectedQuery = "w0=waypoint0|1,2&w1=waypoint1|3,4&w2=waypoint2|5,6";
+
+            stateService.addDestinationPoint(wayPoints[0]);
+            stateService.addDestinationPoint(wayPoints[1]);
+            stateService.addDestinationPoint(wayPoints[2]);
 
             expect(stateService.serializeQuery()).toEqual(expectedQuery);
 
