@@ -46,6 +46,10 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             $scope.$on(events.POSITION_EVENT, function (event, params) {
 
+                if (!$scope.driveModeEnabled) {
+                    return;
+                }
+
                 if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
 
                     var geoPosition = params.param;
@@ -56,14 +60,13 @@ angular.module('navigationApp.controllers').controller('RouteController',
                     };
 
                     /**
-                     * @check real position and if float remove that conversion
-                     * @type {Number}
+                     * @todo check real position and if float remove that conversion
                      */
-                    currentPosition.latitude = parseFloat(currentPosition.latitude);
-                    currentPosition.longitude = parseFloat(currentPosition.longitude);
+                    //currentPosition.latitude = parseFloat(currentPosition.latitude);
+                    //currentPosition.longitude = parseFloat(currentPosition.longitude);
 
 
-                    if (lastPosition && mapApiService.distance(currentPosition, lastPosition) <= minimumNumberOfMetersToCheckRouteState) {
+                    if (positionNotChangedEnough(currentPosition, lastPosition)) {
                         return;
                     }
 
@@ -72,10 +75,33 @@ angular.module('navigationApp.controllers').controller('RouteController',
                     //check if matched any wayPoint used for search to forget about it
                     wayPointsUsedForSearch = removeVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
 
-                    if (calculateDistanceFromNearestRoutePoint(currentPosition, $scope.route) > metersFromRouteToRecalculate) {
-                        //console.log('not on route anymore!');
-                        //2a. if not recalculate route (same waypoints, areas etc) BUT ignore waypoints I passed already
-                        //2b. calculate route to nearest point on original route?
+                    if (notOnRouteAnymore(currentPosition, $scope.route)) {
+
+                        wayPointsUsedForSearch.unshift(currentPosition);
+
+                        var wayPointsToUse = prepareWayPointsToUseAsStrings(wayPointsUsedForSearch);
+                        var areasToUse = prepareAreasToUseAsStrings(areasToAvoidUsedForSearch);
+
+                        routingService.calculateWithTrafficEnabled(wayPointsToUse, areasToUse).then(function (routes) {
+
+                            if (routes && routes.length > 0) {
+
+                                var newRoute = routes[0];
+
+                                newRoute.color = $scope.route.color;
+                                newRoute.wayPointsUsedForSearch = wayPointsUsedForSearch;
+                                newRoute.areasToAvoidUsedForSearch = areasToAvoidUsedForSearch;
+
+                                routingService.clearResults();
+                                routingService.saveRoute(newRoute);
+                                $scope.route = newRoute;
+
+                                wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1, $scope.route.length);
+
+                            }
+
+                        });
+
                     }
 
                 //} else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
@@ -84,6 +110,30 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
 
             });
+
+            var prepareAreasToUseAsStrings = function (areasToUse) {
+                return areasToUse.map(function (area) {
+                    var boundingBox = area.boundingBox,
+                        topLeft = boundingBox.topLeft,
+                        bottomRight = boundingBox.bottomRight;
+
+                    return (topLeft.latitude + "," + topLeft.longitude + ";" + bottomRight.latitude + "," + bottomRight.longitude);
+                });
+            };
+
+            var prepareWayPointsToUseAsStrings = function (wayPointsToUse) {
+                return wayPointsToUse.map(function (wayPoint) {
+                    return (wayPoint.latitude + "," + wayPoint.longitude);
+                });
+            };
+
+            var positionNotChangedEnough = function (currentPosition, lastPosition) {
+                return (lastPosition && mapApiService.distance(currentPosition, lastPosition) <= minimumNumberOfMetersToCheckRouteState);
+            };
+
+            var notOnRouteAnymore = function (currentPosition, route) {
+                return (calculateDistanceFromNearestRoutePoint(currentPosition, route) > metersFromRouteToRecalculate);
+            };
 
             var removeVisitedWayPoints = function (currentPosition, wayPointsUsedForSearch) {
 
@@ -151,11 +201,9 @@ angular.module('navigationApp.controllers').controller('RouteController',
                     $scope.undefinedRoute = true;
                 } else {
                     //skip starting point and collect all important wayPoints
-                    wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1,$scope.route.length);
+                    wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1, $scope.route.length);
                     areasToAvoidUsedForSearch = $scope.route.areasToAvoidUsedForSearch;
                 }
-
-                //console.log($scope.route);
 
             };
 

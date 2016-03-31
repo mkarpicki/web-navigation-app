@@ -48,7 +48,7 @@ angular.module('navigationApp.services').factory('geoLocationService', ['$interv
                 }
             });
             count++;
-        }, 2000, steps.length - 1, false);
+        }, 1000, steps.length - 1, false);
     };
 
     return {
