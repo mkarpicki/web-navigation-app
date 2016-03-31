@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('SearchController',
-    ["$scope", '$sce', 'routingService', 'colorThemesService', 'stateService',
-        function($scope, $sce, routingService, colorThemesService, stateService) {
+    ["$scope", '$sce', 'routingService', 'colorThemesService', 'stateService', 'mapApiService',
+        function($scope, $sce, routingService, colorThemesService, stateService, mapApiService) {
 
         'use strict';
 
@@ -87,6 +87,8 @@ angular.module('navigationApp.controllers').controller('SearchController',
             }
 
             $scope.routes = routingService.getResults();
+
+            mapApiService.centerToRoute($scope.routes[0]);
         };
 
         var collectRoutesWithTrafficDisabled = function (routes, wayPointsUsedForSearch, areasToAvoidUsedForSearch) {

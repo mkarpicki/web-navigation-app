@@ -42,7 +42,8 @@ describe('RouteController', function () {
         };
 
         mapApiService = {
-            distance: function () {}
+            distance: function () {},
+            centerToRoute: function () {}
         }
 
     }));

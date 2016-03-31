@@ -193,16 +193,18 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                         $scope.route = route;
                         routingService.saveRoute(route);
+
+                        //skip starting point and collect all important wayPoints
+                        wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1, $scope.route.length);
+                        areasToAvoidUsedForSearch = $scope.route.areasToAvoidUsedForSearch;
+
+                        mapApiService.centerToRoute(route);
                         break;
                     }
                 }
 
                 if (!$scope.route) {
                     $scope.undefinedRoute = true;
-                } else {
-                    //skip starting point and collect all important wayPoints
-                    wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1, $scope.route.length);
-                    areasToAvoidUsedForSearch = $scope.route.areasToAvoidUsedForSearch;
                 }
 
             };

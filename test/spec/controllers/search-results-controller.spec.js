@@ -11,6 +11,7 @@ describe('SearchController', function () {
         routingService,
         colorThemesService,
         stateService,
+        mapApiService,
 
         fakeDeSerializedQuery,
         fakeRoutingServicePromise;
@@ -57,6 +58,10 @@ describe('SearchController', function () {
             back: function () {}
         };
 
+        mapApiService = {
+            centerToRoute: function () {}
+        };
+
     }));
 
     describe('when initialised', function () {
@@ -70,7 +75,8 @@ describe('SearchController', function () {
                 $sce: $sce,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService
             });
 
             $scope.$apply();
@@ -96,7 +102,8 @@ describe('SearchController', function () {
                     $sce: $sce,
                     routingService: routingService,
                     colorThemesService: colorThemesService,
-                    stateService: stateService
+                    stateService: stateService,
+                    mapApiService: mapApiService
                 });
 
                 $scope.$apply();
@@ -138,7 +145,8 @@ describe('SearchController', function () {
                         $sce: $sce,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
-                        stateService: stateService
+                        stateService: stateService,
+                        mapApiService: mapApiService
                     });
 
                     $scope.$apply();
@@ -159,7 +167,8 @@ describe('SearchController', function () {
                     $sce: $sce,
                     routingService: routingService,
                     colorThemesService: colorThemesService,
-                    stateService: stateService
+                    stateService: stateService,
+                    mapApiService: mapApiService
                 });
 
                 $scope.$apply();
@@ -183,7 +192,8 @@ describe('SearchController', function () {
                         $sce: $sce,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
-                        stateService: stateService
+                        stateService: stateService,
+                        mapApiService: mapApiService
                     });
 
                     $scope.$apply();
@@ -209,7 +219,8 @@ describe('SearchController', function () {
                         $sce: $sce,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
-                        stateService: stateService
+                        stateService: stateService,
+                        mapApiService: mapApiService
                     });
 
                     $scope.$apply();
@@ -254,7 +265,8 @@ describe('SearchController', function () {
                         $sce: $sce,
                         routingService: routingService,
                         colorThemesService: colorThemesService,
-                        stateService: stateService
+                        stateService: stateService,
+                        mapApiService: mapApiService
                     });
 
                     $scope.$apply();
@@ -288,7 +300,8 @@ describe('SearchController', function () {
                 $sce: $sce,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService
             });
 
             $scope.$apply();
@@ -312,7 +325,8 @@ describe('SearchController', function () {
                 $sce: $sce,
                 routingService: routingService,
                 colorThemesService: colorThemesService,
-                stateService: stateService
+                stateService: stateService,
+                mapApiService: mapApiService
             });
 
             $scope.$apply();

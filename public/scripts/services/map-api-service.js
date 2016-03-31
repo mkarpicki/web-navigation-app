@@ -153,12 +153,17 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     };
 
-    var drawRoute = function (route, wayPoints, color) {
+    var centerToRoute = function (route) {
+        var routeLine = getRouteLine(route, null);
+        // Set the map's viewport to make the whole route visible:
+        map.setViewBounds(routeLine.getBounds());
+    };
+
+    var getRouteLine = function (route, color) {
 
         var routeShape,
-            strip,
-            markers = [],
-            wayPoint;
+            strip;
+
 
         // Pick the route's shape:
         routeShape = route.shape;
@@ -174,8 +179,20 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
         // Create a polyline to display the route:
         var routeLine = new H.map.Polyline(strip, {
-            style: { strokeColor: color, lineWidth: 5 }
+            style: { strokeColor: color || 'blue', lineWidth: 5 }
         });
+
+        return routeLine;
+
+    };
+
+    var drawRoute = function (route, wayPoints, color) {
+
+        var markers = [],
+            wayPoint;
+
+        // Create a polyline to display the route:
+        var routeLine = getRouteLine(route, color);
 
         for (var i = 0, l = wayPoints.length; i < l; i++) {
 
@@ -192,9 +209,6 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         map.addObjects([routeLine]);
         map.addObjects(markers);
 
-
-        // Set the map's viewport to make the whole route visible:
-        map.setViewBounds(routeLine.getBounds());
 
     };
 
@@ -222,7 +236,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         removeBubble: removeBubble,
         updateCurrentPosition: updateCurrentPosition,
         zoomLevel: zoomLevel,
-        distance: distance
+        distance: distance,
+        centerToRoute: centerToRoute
     };
 
 }]);
