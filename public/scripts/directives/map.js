@@ -106,11 +106,20 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             }
         }, true);
 
-        scope.$watch(attrs.routes, function (proposedRoutes) {
+        scope.$watchGroup([attrs.routes, attrs.wayPoints, attrs.areasToAvoid], function (newValues) {
+
+            var proposedRoutes = newValues[0];
+
+            /**
+             * @todo
+             */
+            //add waypoints and areas here
+            //expose from service method to draw them and call here
+
+            mapApiService.clear();
+
 
             if (proposedRoutes) {
-
-                mapApiService.clear();
 
                 for (var i = 0, l = proposedRoutes.length; i < l; i++) {
                     mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].wayPointsUsedForSearch, proposedRoutes[i].color);
@@ -125,7 +134,9 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         currentPosition: '=currentPosition',
         zoomLevel: '=zoomLevel',
         updateToPosition: '=updateToPosition',
-        routes: '=routes'
+        routes: '=routes',
+        wayPoints: '=wayPoints',
+        areasToAvoid: '=areasToAvoid'
     };
 
     return {

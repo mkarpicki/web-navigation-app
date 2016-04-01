@@ -16,6 +16,9 @@ angular.module('navigationApp.controllers').controller('PageController',
             longitude: 13.45264
         };
 
+        $scope.wayPoints = null;
+        $scope.areasToAvoid = null;
+
         $scope.routes = null;
 
         $scope.gettingLocationError = false;
@@ -179,6 +182,13 @@ angular.module('navigationApp.controllers').controller('PageController',
             });
 
         });
+
+        $scope.$watch(function () { return stateService.getSearchCriteriaAsObjects(); }, function (searchCriteria) {
+
+            $scope.wayPoints = searchCriteria.wayPoints;
+            $scope.areasToAvoid = searchCriteria.areasToAvoid;
+
+        }, true);
 
         $scope.$watch(function () { return routingService.getResults(); }, function (routes) {
 

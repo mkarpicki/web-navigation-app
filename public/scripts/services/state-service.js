@@ -3,6 +3,7 @@
  * 1st. consider to remove dependency on $location.search as it is used partially now (only one way and second way I guess in controllers)
  * or make all dependencies inside service to cut them of from controllers level - then it gives possibilities to change where state is being kept
  * (url, session storage etc).
+ * @todo keep objects in state and make as string only when asking for query
  */
 angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', '$window', 'events', 'dataModelService', function ($rootScope, $interpolate, $location, $window, events, dataModelService) {
 
@@ -222,6 +223,63 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         $window.history.back();
     };
 
+    /**
+     * @todo dataModel should have that logic and be used here
+     * @param wayPoint
+     * @returns {{text: *, coordinates: {latitude: *, longitude: *}}}
+     */
+    var wayPointAsObject = function (wayPoint) {
+        var props = wayPoint.split('|'),
+            text = props[0],
+            coordinates = props[1].split(',');
+
+        return {
+            text: text,
+            coordinates: {
+                latitude: coordinates[0],
+                longitude: coordinates[1]
+            }
+        };
+    };
+
+    /**
+     * @todo dataModel should have that logic and be used here
+     * @param areaToAvoid
+     * @returns {{text: *, coordinates: {latitude: *, longitude: *}}}
+     */
+    var areaToAvoidAsObject = function (areaToAvoid) {
+        var props = areaToAvoid.split('|'),
+            text = props[0],
+            coordinates = props[1].split(';');
+
+        var topLeft = coordinates[0].split(','),
+            bottomRight = coordinates[1].split(',');
+
+        return {
+            text: text,
+            boundingBox: {
+                topLeft: { latitude: topLeft[0], longitude: topLeft[1] },
+                bottomRight: { latitude: bottomRight[0], longitude: bottomRight[1] }
+            }
+        };
+    };
+
+    var getSearchCriteriaAsObjects = function () {
+
+        var wayPoints = wayPointsStorage.map(function(wayPoint) {
+            return wayPointAsObject(wayPoint);
+        });
+
+        var areasToAvoid = areasToAvoidStorage.map(function (areaToAvoid) {
+            return areaToAvoidAsObject(areaToAvoid);
+        });
+
+        return {
+            wayPoints: wayPoints,
+            areasToAvoid: areasToAvoid
+        }
+    };
+
     var init = function () {
         var objectsFromQuery = deserializeQuery();
 
@@ -248,6 +306,8 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         isNavigationModeEnabled: isNavigationModeEnabled,
         enableNavigationMode: enableNavigationMode,
         disableNavigationMode: disableNavigationMode,
+
+        getSearchCriteriaAsObjects: getSearchCriteriaAsObjects,
 
         back: back
     };
