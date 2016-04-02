@@ -136,7 +136,7 @@ describe('Search page', function() {
 
         it ('should display that route was not found', function () {
 
-            browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "/?w0=" + "a" + "&w1=" + "b");
+            browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "a" + "&w1=" + "b");
 
             notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
             noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
@@ -160,7 +160,7 @@ describe('Search page', function() {
                 it('should move user to previous page', function () {
 
                     browser.get(helpers.FORM_PAGE.getPage());
-                    browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "/?w0=" + "a" + "&w1=" + "b");
+                    browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "a" + "&w1=" + "b");
 
                     notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
                     notEnoughInformationMessageBackLink.click();

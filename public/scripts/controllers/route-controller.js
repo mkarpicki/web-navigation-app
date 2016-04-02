@@ -59,9 +59,9 @@ angular.module('navigationApp.controllers').controller('RouteController',
                         longitude : geoPosition.coords.longitude
                     };
 
-                    /**
-                     * @todo check real position and if float remove that conversion
-                     */
+                    ///**
+                    // * @todo check real position and if float remove that conversion
+                    // */
                     //currentPosition.latitude = parseFloat(currentPosition.latitude);
                     //currentPosition.longitude = parseFloat(currentPosition.longitude);
 
@@ -79,8 +79,10 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                         wayPointsUsedForSearch.unshift(currentPosition);
 
-                        var wayPointsToUse = prepareWayPointsToUseAsStrings(wayPointsUsedForSearch);
-                        var areasToUse = prepareAreasToUseAsStrings(areasToAvoidUsedForSearch);
+                        //var wayPointsToUse = prepareWayPointsToUseAsStrings(wayPointsUsedForSearch);
+                        //var areasToUse = prepareAreasToUseAsStrings(areasToAvoidUsedForSearch);
+                        var wayPointsToUse = wayPointsUsedForSearch;
+                        var areasToUse = areasToAvoidUsedForSearch;
 
                         routingService.calculateWithTrafficEnabled(wayPointsToUse, areasToUse).then(function (routes) {
 
@@ -111,21 +113,21 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             });
 
-            var prepareAreasToUseAsStrings = function (areasToUse) {
-                return areasToUse.map(function (area) {
-                    var boundingBox = area.boundingBox,
-                        topLeft = boundingBox.topLeft,
-                        bottomRight = boundingBox.bottomRight;
-
-                    return (topLeft.latitude + "," + topLeft.longitude + ";" + bottomRight.latitude + "," + bottomRight.longitude);
-                });
-            };
-
-            var prepareWayPointsToUseAsStrings = function (wayPointsToUse) {
-                return wayPointsToUse.map(function (wayPoint) {
-                    return (wayPoint.latitude + "," + wayPoint.longitude);
-                });
-            };
+            //var prepareAreasToUseAsStrings = function (areasToUse) {
+            //    return areasToUse.map(function (area) {
+            //        var boundingBox = area.boundingBox,
+            //            topLeft = boundingBox.topLeft,
+            //            bottomRight = boundingBox.bottomRight;
+            //
+            //        return (topLeft.latitude + "," + topLeft.longitude + ";" + bottomRight.latitude + "," + bottomRight.longitude);
+            //    });
+            //};
+            //
+            //var prepareWayPointsToUseAsStrings = function (wayPointsToUse) {
+            //    return wayPointsToUse.map(function (wayPoint) {
+            //        return (wayPoint.latitude + "," + wayPoint.longitude);
+            //    });
+            //};
 
             var positionNotChangedEnough = function (currentPosition, lastPosition) {
                 return (lastPosition && mapApiService.distance(currentPosition, lastPosition) <= minimumNumberOfMetersToCheckRouteState);

@@ -13,7 +13,10 @@ angular.module('navigationApp.controllers').controller('FormController',
         $scope.getRoute = function () {
 
             var enteredWayPoints = $scope.wayPoints.filter(function (wayPoint) {
-                return (wayPoint && wayPoint.coordinates !== "" && wayPoint.coordinates !== null);
+                return (wayPoint &&
+                wayPoint.coordinates !== null &&
+                wayPoint.coordinates.latitude !== null &&
+                wayPoint.coordinates.longitude !== null);
             });
 
             if (enteredWayPoints.length < 2) {
@@ -27,7 +30,14 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         $scope.addWayPoint = function () {
-            $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, dataModelService.getWayPoint());
+            //$scope.wayPoints.splice($scope.wayPoints.length - 1, 0, dataModelService.getWayPoint());
+            $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, {
+                title: '',
+                coordinates: {
+                    latitude: null,
+                    longitude: null
+                }
+            });
         };
 
         $scope.removeWayPoint = function (index) {
@@ -68,7 +78,7 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         $scope.getSuggestions = function (){
 
-            var searchValue = $scope.wayPoints[activeFieldIndex].text;
+            var searchValue = $scope.wayPoints[activeFieldIndex].title;
 
             if (serviceHandler) {
                 serviceHandler.cancel();
@@ -95,10 +105,15 @@ angular.module('navigationApp.controllers').controller('FormController',
 
                 if (searchResults) {
 
-                    $scope.wayPoints[activeFieldIndex] = dataModelService.getWayPoint(searchResults[0].title, [], searchResults[0].position.join(','));
+                    $scope.wayPoints[activeFieldIndex] = {
+                        title: searchResults[0].title,
+                        coordinates: {
+                            latitude: searchResults[0].position[0],
+                            longitude: searchResults[0].position[1]
+                        }
+                    };
 
                     $location.url('/?' + buildSearchQuery());
-                    //$scope.unMarkActiveField();
                 }
 
             });
@@ -106,17 +121,30 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         var getClearWayPoints = function () {
-            return [dataModelService.getWayPoint(), dataModelService.getWayPoint()];
+            //return [dataModelService.getWayPoint(), dataModelService.getWayPoint()];
+            return [
+                {
+                    title: '',
+                    coordinates: {
+                        latitude: null,
+                        longitude: null
+                    }
+                },
+                {
+                    title: '',
+                    coordinates: {
+                        latitude: null,
+                        longitude: null
+                    }
+                }
+            ];
         };
 
         var buildSearchQuery = function () {
 
-            var allPoints = $scope.wayPoints;
-            var areasToAvoid = $scope.areasToAvoid;
-
             stateService.clear();
-            stateService.setWayPoints(allPoints);
-            stateService.setAreasToAvoid(areasToAvoid);
+            stateService.setWayPoints($scope.wayPoints);
+            stateService.setAreasToAvoid($scope.areasToAvoid);
 
             return stateService.serializeQuery();
 
@@ -131,15 +159,17 @@ angular.module('navigationApp.controllers').controller('FormController',
             $scope.wayPoints = getClearWayPoints();
 
             wayPoints = wayPoints.filter(function (wayPoint) {
-                return (wayPoint && wayPoint.coordinate !== "" && wayPoint.coordinate !== null);
+                return (wayPoint && wayPoint.coordinates!== null);
             });
 
-            if (wayPoints.length > 0) {
+            if (wayPoints.length > 1) {
                 $scope.wayPoints = wayPoints;
+            } else if (wayPoints.length === 1) {
+                $scope.wayPoints[0] = wayPoints[0];
             }
 
             areasToAvoid = areasToAvoid.filter(function (areaToAvoid) {
-                return (areaToAvoid && areaToAvoid.boundingBox !== "" && areaToAvoid.boundingBox !== null);
+                return (areaToAvoid && areaToAvoid.boundingBox !== null);
             });
 
             if (areasToAvoid.length > 0) {

@@ -106,9 +106,29 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             }
         }, true);
 
-        scope.$watchGroup([attrs.routes, attrs.wayPoints, attrs.areasToAvoid], function (newValues) {
+        //scope.$watchGroup([attrs.routes, attrs.wayPoints, attrs.areasToAvoid], function (newValues) {
+        //
+        //    var proposedRoutes = newValues[0];
+        //
+        //    /**
+        //     * @todo
+        //     */
+        //        //add waypoints and areas here
+        //        //expose from service method to draw them and call here
+        //
+        //    mapApiService.clear();
+        //
+        //
+        //    if (proposedRoutes) {
+        //
+        //        for (var i = 0, l = proposedRoutes.length; i < l; i++) {
+        //            mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].wayPointsUsedForSearch, proposedRoutes[i].color);
+        //        }
+        //    }
+        //
+        //}, true);
 
-            var proposedRoutes = newValues[0];
+        scope.$watch(attrs.routes, function (proposedRoutes) {
 
             /**
              * @todo

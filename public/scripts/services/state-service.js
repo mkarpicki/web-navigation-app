@@ -18,17 +18,31 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         navigationMode = false;
 
     var serializeWayPoint = function (point) {
-        return point.text + '|' + point.coordinates;
+        return point.title + '|' +
+            point.coordinates.latitude + ',' +
+            point.coordinates.longitude;
     };
 
     var serializeAreaToAvoid = function (areaToAvoid) {
-        return areaToAvoid.text + '|' + areaToAvoid.boundingBox;
+        return areaToAvoid.title + '|' +
+            areaToAvoid.boundingBox.topLeft.latitude + "," +
+            areaToAvoid.boundingBox.topLeft.longitude + ";" +
+            areaToAvoid.boundingBox.bottomRight.latitude + "," +
+            areaToAvoid.boundingBox.bottomRight.longitude;
     };
 
     var serializeQuery = function () {
 
-        var w = serializeWayPoints(wayPointsStorage),
-            a = serializeAreasToAvoid(areasToAvoidStorage);
+        var wayPoints = wayPointsStorage.map(function (wayPoint) {
+            return serializeWayPoint(wayPoint);
+        });
+
+        var areasToAvoid = areasToAvoidStorage.map(function (areaToAvoid) {
+            return serializeAreaToAvoid(areaToAvoid);
+        });
+
+        var w = serializeWayPoints(wayPoints),
+            a = serializeAreasToAvoid(areasToAvoid);
 
         return ( w + ((a !== '')? '&' + a : '') );
     };
@@ -50,14 +64,31 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var deserializeAreasToAvoid = function (search) {
+
         var areas = parseSearch(search, AvoidAreaVariable),
-            areaParsed;
+            props,
+            title,
+            coordinates,
+            topLeft,
+            bottomRight;
 
         for (var i = 0, l = areas.length; i < l; i++) {
 
-            areaParsed = areas[i].split('|');
+            props = areas[i].split('|');
+            title = props[0];
+            coordinates = props[1].split(';');
 
-            areas[i] = dataModelService.getBoundingBox(areaParsed[0], areaParsed[1]);
+            topLeft = coordinates[0].split(',');
+            bottomRight = coordinates[1].split(',');
+
+            areas[i] = {
+                title: title,
+                boundingBox: {
+                    topLeft: { latitude: topLeft[0], longitude: topLeft[1] },
+                    bottomRight: { latitude: bottomRight[0], longitude: bottomRight[1] }
+                }
+            };
+
         }
 
         return areas;
@@ -65,14 +96,28 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     var deserializeWayPoints = function (search) {
 
-        var wayPoints = parseSearch(search, WayPointVariable),
-            wayPointParsed;
+        var wayPointsFromSearch = parseSearch(search, WayPointVariable),
+            wayPoints = [],
+            wayPointParsed,
+            coordinates;
 
-        for (var i = 0, l = wayPoints.length; i < l; i++) {
+        for (var i = 0, l = wayPointsFromSearch.length; i < l; i++) {
 
-            wayPointParsed = wayPoints[i].split('|');
+            try {
+                wayPointParsed = wayPointsFromSearch[i].split('|');
+                coordinates = wayPointParsed[1].split(',');
 
-            wayPoints[i] = dataModelService.getWayPoint(wayPointParsed[0], [], wayPointParsed[1]);
+                //wayPoints[i] = dataModelService.getWayPoint(wayPointParsed[0], [], wayPointParsed[1]);
+                wayPoints.push({
+                    title: wayPointParsed[0],
+                    coordinates: {
+                        latitude: coordinates[0],
+                        longitude: coordinates[1]
+                    }
+                });
+            } catch (e) {
+                //ignore for now
+            }
         }
 
         return wayPoints;
@@ -126,20 +171,31 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         return items;
     };
 
+    var isAreaToAvoidValid = function (areaToAvoid) {
+        return true;
+    };
+
+    var isWayPointValid = function (wayPoint) {
+        return (wayPoint &&
+        wayPoint.coordinates &&
+        wayPoint.coordinates.latitude &&
+        wayPoint.coordinates.longitude);
+    };
+
     var setAreasToAvoid = function (areasToAvoid) {
 
-        for (var i = 0, l = areasToAvoid.length; i < l; i++) {
-            areasToAvoid[i] = serializeAreaToAvoid(areasToAvoid[i]);
-        }
+        areasToAvoid = areasToAvoid.filter(function (areaToAvoid) {
+            return isAreaToAvoidValid(areaToAvoid);
+        });
 
         areasToAvoidStorage = areasToAvoid;
     };
 
     var setWayPoints = function (wayPoints) {
 
-        for (var i = 0, l = wayPoints.length; i < l; i++) {
-            wayPoints[i] = serializeWayPoint(wayPoints[i]);
-        }
+        wayPoints = wayPoints.filter(function (wayPoint) {
+           return isWayPointValid(wayPoint);
+        });
 
         wayPointsStorage = wayPoints;
     };
@@ -150,17 +206,28 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var overwriteStartPoint = function (point) {
-        wayPointsStorage[0] = serializeWayPoint(point);
+
+        if (!isWayPointValid(point)) {
+            return;
+        }
+
+        wayPointsStorage[0] = point;
     };
 
     var addDestinationPoint = function (point) {
 
-        wayPointsStorage.push(serializeWayPoint(point));
+        if (!isWayPointValid(point)) {
+            return;
+        }
+
+        wayPointsStorage.push(point);
     };
 
     var overwriteDestinationPoint = function (point) {
 
-        point = serializeWayPoint(point);
+        if (!isWayPointValid(point)) {
+            return;
+        }
 
         if (wayPointsStorage.length < 3) {
 
@@ -176,7 +243,9 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     var addWayPoint = function (point) {
 
-        point = serializeWayPoint(point);
+        if (!isWayPointValid(point)) {
+            return;
+        }
 
         if (wayPointsStorage.length < 2) {
 
@@ -195,7 +264,9 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     var addAreaToAvoid = function (area) {
 
-        area = serializeAreaToAvoid(area);
+        if (!isAreaToAvoidValid(area)) {
+            return;
+        }
 
         areasToAvoidStorage.push(area);
     };
@@ -223,60 +294,11 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         $window.history.back();
     };
 
-    /**
-     * @todo dataModel should have that logic and be used here
-     * @param wayPoint
-     * @returns {{text: *, coordinates: {latitude: *, longitude: *}}}
-     */
-    var wayPointAsObject = function (wayPoint) {
-        var props = wayPoint.split('|'),
-            text = props[0],
-            coordinates = props[1].split(',');
+    var getSearchCriteria = function () {
 
         return {
-            text: text,
-            coordinates: {
-                latitude: coordinates[0],
-                longitude: coordinates[1]
-            }
-        };
-    };
-
-    /**
-     * @todo dataModel should have that logic and be used here
-     * @param areaToAvoid
-     * @returns {{text: *, coordinates: {latitude: *, longitude: *}}}
-     */
-    var areaToAvoidAsObject = function (areaToAvoid) {
-        var props = areaToAvoid.split('|'),
-            text = props[0],
-            coordinates = props[1].split(';');
-
-        var topLeft = coordinates[0].split(','),
-            bottomRight = coordinates[1].split(',');
-
-        return {
-            text: text,
-            boundingBox: {
-                topLeft: { latitude: topLeft[0], longitude: topLeft[1] },
-                bottomRight: { latitude: bottomRight[0], longitude: bottomRight[1] }
-            }
-        };
-    };
-
-    var getSearchCriteriaAsObjects = function () {
-
-        var wayPoints = wayPointsStorage.map(function(wayPoint) {
-            return wayPointAsObject(wayPoint);
-        });
-
-        var areasToAvoid = areasToAvoidStorage.map(function (areaToAvoid) {
-            return areaToAvoidAsObject(areaToAvoid);
-        });
-
-        return {
-            wayPoints: wayPoints,
-            areasToAvoid: areasToAvoid
+            wayPoints: wayPointsStorage,
+            areasToAvoid: areasToAvoidStorage
         }
     };
 
@@ -307,7 +329,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         enableNavigationMode: enableNavigationMode,
         disableNavigationMode: disableNavigationMode,
 
-        getSearchCriteriaAsObjects: getSearchCriteriaAsObjects,
+        getSearchCriteria: getSearchCriteria,
 
         back: back
     };

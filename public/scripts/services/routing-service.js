@@ -61,23 +61,31 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return routes;
     };
 
-    var calculate = function (waypoints, areasToAvoid, traffic) {
+    var calculate = function (wayPoints, areasToAvoid, traffic) {
 
         var deferred = $q.defer(),
             exp = $interpolate(URL);
 
-        //var calculateFailure = function () {
-        //    return deferred.resolve([]);
-        //};
+        wayPoints = wayPoints.map(function (wayPoint) {
+            return (wayPoint.coordinates.latitude + ',' + wayPoint.coordinates.longitude);
+        });
+
+        areasToAvoid = areasToAvoid.map(function (areaToAvoid) {
+            var boundingBox = areaToAvoid.boundingBox;
+            return (
+                boundingBox.topLeft.latitude + ',' + boundingBox.topLeft.longitude + ';' +
+                boundingBox.bottomRight.latitude + ',' + boundingBox.bottomRight.longitude
+            );
+        });
 
         var url = exp({
             appId: appId,
             appCode: appCode,
             traffic: traffic,
-            wayPoints: buildWayPointsQuery(waypoints),
+            wayPoints: buildWayPointsQuery(wayPoints),
             avoidAreas : buildAvoidAreasQuery(areasToAvoid),
             areasToAvoid: areasToAvoid,
-            alternatives: (waypoints.length > 2) ? 0 : 1
+            alternatives: (wayPoints.length > 2) ? 0 : 1
         });
 
         $http.get(url).then(function (httpResponse) {

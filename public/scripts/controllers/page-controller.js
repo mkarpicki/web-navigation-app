@@ -24,34 +24,56 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.gettingLocationError = false;
         $scope.ready = false;
 
-
         //var apply = function () {
         //    routingService.clearResults();
         //    $scope.$apply();
         //};
 
-
         var overwriteStartPoint = function (point, text) {
 
-            stateService.overwriteStartPoint(dataModelService.getWayPoint(text, [], point));
+            stateService.overwriteStartPoint({
+                title: text,
+                coordinates: {
+                    latitude: point.latitude,
+                    longitude: point.longitude
+                }
+            });
 
         };
 
         var overwriteDestinationPoint = function (point, text) {
 
-            stateService.overwriteDestinationPoint(dataModelService.getWayPoint(text, [], point));
+            stateService.overwriteDestinationPoint({
+                title: text,
+                coordinates: {
+                    latitude: point.latitude,
+                    longitude: point.longitude
+                }
+            });
 
         };
 
         var addDestinationPoint = function (point, text) {
 
-            stateService.addDestinationPoint(dataModelService.getWayPoint(text, [], point));
+            stateService.addDestinationPoint({
+                title: text,
+                coordinates: {
+                    latitude: point.latitude,
+                    longitude: point.longitude
+                }
+            });
 
         };
 
         var addWayPoint = function (point, text) {
 
-            stateService.addWayPoint(dataModelService.getWayPoint(text, [], point));
+            stateService.addWayPoint({
+                title: text,
+                coordinates: {
+                    latitude: point.latitude,
+                    longitude: point.longitude
+                }
+            });
 
         };
 
@@ -60,11 +82,13 @@ angular.module('navigationApp.controllers').controller('PageController',
             /**
              * @todo
              * think about usage of dataModelService here but then object with params should be passed and same for wayPoint instead of coordinates as string
-             * @type {{boundingBox: string, text: *}}
              */
             var item = {
-                boundingBox : geoParam.topLeft.latitude + "," + geoParam.topLeft.longitude + ";" + geoParam.bottomRight.latitude + "," + geoParam.bottomRight.longitude,
-                text: text
+                boundingBox: {
+                    topLeft: geoParam.topLeft,
+                    bottomRight: geoParam.bottomRight
+                },
+                title: text
             };
 
             stateService.addAreaToAvoid(item);
@@ -150,22 +174,22 @@ angular.module('navigationApp.controllers').controller('PageController',
 
                     case events.MAP_EVENT_TYPES.OVERWRITE_START_POINT:
 
-                        overwriteStartPoint(point, text);
+                        overwriteStartPoint(geoParam, text);
                         break;
 
                     case events.MAP_EVENT_TYPES.OVERWRITE_DESTINATION_POINT:
 
-                        overwriteDestinationPoint(point, text);
+                        overwriteDestinationPoint(geoParam, text);
                         break;
 
                     case events.MAP_EVENT_TYPES.ADD_DESTINATION_POINT:
 
-                        addDestinationPoint(point, text);
+                        addDestinationPoint(geoParam, text);
                         break;
 
                     case events.MAP_EVENT_TYPES.ADD_WAY_POINT:
 
-                        addWayPoint(point, text);
+                        addWayPoint(geoParam, text);
                         break;
 
                     case events.MAP_EVENT_TYPES.AVOID_AREA:
@@ -183,7 +207,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         });
 
-        $scope.$watch(function () { return stateService.getSearchCriteriaAsObjects(); }, function (searchCriteria) {
+        $scope.$watch(function () { return stateService.getSearchCriteria(); }, function (searchCriteria) {
 
             $scope.wayPoints = searchCriteria.wayPoints;
             $scope.areasToAvoid = searchCriteria.areasToAvoid;

@@ -15,7 +15,7 @@
                     data-ng-focus="markActiveField($index);"
                     data-ng-blug="unMarkActiveField();"
                     data-ng-keyup="getSuggestions();"
-                    data-ng-model="wayPoints[$index].text"
+                    data-ng-model="wayPoints[$index].title"
                     >
             <ul data-ng-if="isActiveField($index);" class="search-suggestions">
                 <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
@@ -40,7 +40,7 @@
     <ul>
         <li data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
             <span>{{$index}}.</span>
-            <span>{{areaToAvoid.text}}</span>
+            <span>{{areaToAvoid.title}}</span>
             <button data-ng-click="removeWayAreaToAvoid($index);" >-</button>
         </li>
     </ul>
