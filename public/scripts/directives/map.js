@@ -2,6 +2,15 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
     'use strict';
 
+    var scope = {
+        currentPosition: '=currentPosition',
+        zoomLevel: '=zoomLevel',
+        updateToPosition: '=updateToPosition',
+        routes: '=routes',
+        wayPoints: '=wayPoints',
+        areasToAvoid: '=areasToAvoid'
+    };
+
     /**
      * fire event with specific type.
      * position is optional - in case not delivered - taken current tapped position from mapService
@@ -75,6 +84,28 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         }
     };
 
+    var reDrawMap = function (routes, wayPoints, areasToAvoid) {
+
+        mapApiService.clear();
+
+
+        if (routes) {
+
+            for (var i = 0, l = routes.length; i < l; i++) {
+                mapApiService.drawRoute(routes[i], routes[i].wayPointsUsedForSearch, routes[i].color);
+            }
+        }
+
+        if (wayPoints) {
+            mapApiService.drawWayPoints(wayPoints);
+        }
+
+        if (areasToAvoid) {
+            mapApiService.drawAreasToAvoid(areasToAvoid);
+        }
+
+    };
+
     var link = function (scope, element, attrs, controller, transclude) {
 
         transclude(scope, function(nodes) {
@@ -106,60 +137,67 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
             }
         }, true);
 
-        //scope.$watchGroup([attrs.routes, attrs.wayPoints, attrs.areasToAvoid], function (newValues) {
+        //scope.$watchGroup([attrs.routes, attrs.wayPoints, attrs.areasToAvoid], function (newValues, oldValues) {
         //
-        //    var proposedRoutes = newValues[0];
+        //    //anything changed?
+        //    if (!newValues[0] && !newValues[1] && newValues[2]) {
+        //        return;
+        //    }
         //
-        //    /**
-        //     * @todo
-        //     */
-        //        //add waypoints and areas here
-        //        //expose from service method to draw them and call here
+        //    var routes = newValues[0] || oldValues[0],
+        //        wayPoints = newValues[1] || oldValues[1],
+        //        areasToAvoid = newValues[2] || oldValues[2];
+        //
+        //    console.log(' -------- watcher routes:');
+        //    console.log('new ' + newValues[0]);
+        //    console.log('old ' + oldValues[0]);
+        //
+        //    console.log(' -------- watcher wayPoints:');
+        //    console.log('new ' + newValues[1]);
+        //    console.log('old ' + oldValues[1]);
+        //
+        //    console.log(' -------- watcher areasToAvoid:');
+        //    console.log('new ' + newValues[2]);
+        //    console.log('old ' + oldValues[2]);
         //
         //    mapApiService.clear();
         //
         //
-        //    if (proposedRoutes) {
+        //    if (routes) {
         //
-        //        for (var i = 0, l = proposedRoutes.length; i < l; i++) {
-        //            mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].wayPointsUsedForSearch, proposedRoutes[i].color);
+        //        for (var i = 0, l = routes.length; i < l; i++) {
+        //            mapApiService.drawRoute(routes[i], routes[i].wayPointsUsedForSearch, routes[i].color);
         //        }
+        //    }
+        //
+        //    if (wayPoints) {
+        //        mapApiService.drawWayPoints(wayPoints);
+        //    }
+        //
+        //    if (areasToAvoid) {
+        //
         //    }
         //
         //}, true);
 
-        scope.$watch(attrs.routes, function (proposedRoutes) {
+        scope.$watch(attrs.wayPoints, function (wayPoints) {
 
-            /**
-             * @todo
-             */
-            //add waypoints and areas here
-            //expose from service method to draw them and call here
-
-            /**
-             * @todo - after clearing draw even if no new values (method up)
-             */
-            mapApiService.clear();
-
-
-            if (proposedRoutes) {
-
-                for (var i = 0, l = proposedRoutes.length; i < l; i++) {
-                    mapApiService.drawRoute(proposedRoutes[i], proposedRoutes[i].wayPointsUsedForSearch, proposedRoutes[i].color);
-                }
-            }
+            reDrawMap(scope.routes, wayPoints, scope.areasToAvoid);
 
         }, true);
-        
-    };
 
-    var scope = {
-        currentPosition: '=currentPosition',
-        zoomLevel: '=zoomLevel',
-        updateToPosition: '=updateToPosition',
-        routes: '=routes',
-        wayPoints: '=wayPoints',
-        areasToAvoid: '=areasToAvoid'
+        scope.$watch(attrs.areasToAvoid, function (areasToAvoid) {
+
+            reDrawMap(scope.routes, scope.wayPoints, areasToAvoid);
+
+        }, true);
+
+        scope.$watch(attrs.routes, function (routes) {
+
+            reDrawMap(routes, scope.wayPoints, scope.areasToAvoid);
+
+        }, true);
+
     };
 
     return {

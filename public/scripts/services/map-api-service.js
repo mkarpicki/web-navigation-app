@@ -186,13 +186,14 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     };
 
-    var drawRoute = function (route, wayPoints, color) {
+    var drawAreasToAvoid = function (areasToAvoid) {
+
+    };
+
+    var drawWayPoints = function (wayPoints) {
 
         var markers = [],
             wayPoint;
-
-        // Create a polyline to display the route:
-        var routeLine = getRouteLine(route, color);
 
         for (var i = 0, l = wayPoints.length; i < l; i++) {
 
@@ -204,11 +205,17 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             }));
         }
 
-        // Add the route polyline and the two markers to the map:
-        //map.addObjects([routeLine, startMarker, endMarker]);
-        map.addObjects([routeLine]);
         map.addObjects(markers);
 
+    };
+
+    var drawRoute = function (route, wayPoints, color) {
+
+        // Create a polyline to display the route:
+        var routeLine = getRouteLine(route, color);
+
+        // Add the route polyline and the two markers to the map:
+        map.addObjects([routeLine]);
 
     };
 
@@ -231,6 +238,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         center: center,
         calculateRectangle: calculateRectangle,
         drawRoute: drawRoute,
+        drawWayPoints: drawWayPoints,
+        drawAreasToAvoid: drawAreasToAvoid,
         clear: clear,
         getTapPosition: getTapPosition,
         removeBubble: removeBubble,
