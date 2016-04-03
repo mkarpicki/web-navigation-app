@@ -13,7 +13,6 @@ describe('PageController', function () {
         geoLocationService,
         events,
         geoCoderService,
-        dataModelService,
 
         fakeDeSerializedQuery,
         fakeSerializedQuery,
@@ -67,7 +66,7 @@ describe('PageController', function () {
             serializeQuery: function () {
                 return fakeSerializedQuery;
             },
-            deserializeQuery: function () {
+            getSearchCriteria: function () {
                 return fakeDeSerializedQuery;
             },
             overwriteStartPoint: function () {},
@@ -83,9 +82,7 @@ describe('PageController', function () {
         geoCoderService = {
             reverse: function () { return fakeGeoCoderPromise; }
         };
-        dataModelService = {
-            getWayPoint: function () {}
-        };
+
 
         /**
          * @todo - maybe load real events value instead o creating copied mock
@@ -128,8 +125,7 @@ describe('PageController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 geoLocationService: geoLocationService,
-                geoCoderService: geoCoderService,
-                dataModelService: dataModelService
+                geoCoderService: geoCoderService
             });
 
             $scope.$apply();
@@ -159,8 +155,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -193,8 +188,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -224,8 +218,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -265,8 +258,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -303,8 +295,7 @@ describe('PageController', function () {
                         routingService: routingService,
                         stateService: stateService,
                         geoLocationService: geoLocationService,
-                        geoCoderService: geoCoderService,
-                        dataModelService: dataModelService
+                        geoCoderService: geoCoderService
                     });
 
                     $scope.$apply();
@@ -344,8 +335,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -374,8 +364,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -409,8 +398,7 @@ describe('PageController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 geoLocationService: geoLocationService,
-                geoCoderService: geoCoderService,
-                dataModelService: dataModelService
+                geoCoderService: geoCoderService
             });
 
             $scope.$apply();
@@ -428,18 +416,6 @@ describe('PageController', function () {
 
     describe('when MAP_EVENT fired', function () {
 
-        beforeEach(function (){
-
-            dataModelService.getWayPoint = function (t,s,c) {
-                return {
-                    coordinates: c,
-                    suggestions: s,
-                    text: t
-                }
-            };
-
-        });
-
         it ('should change url to "/" and searchQuery', function () {
 
             $location.url = jasmine.createSpy('$location.url');
@@ -453,8 +429,7 @@ describe('PageController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 geoLocationService: geoLocationService,
-                geoCoderService: geoCoderService,
-                dataModelService: dataModelService
+                geoCoderService: geoCoderService
             });
 
             $scope.$apply();
@@ -481,8 +456,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -490,9 +464,11 @@ describe('PageController', function () {
                 $scope.$emit(events.MAP_EVENT, fakeEventParams);
 
                 expect(stateService.overwriteStartPoint).toHaveBeenCalledWith({
-                    coordinates: fakeGeoParam.latitude + "," + fakeGeoParam.longitude,
-                    suggestions: [],
-                    text: 'some address'
+                    coordinates: {
+                        latitude: fakeGeoParam.latitude,
+                        longitude: fakeGeoParam.longitude
+                    },
+                    title: 'some address'
                 });
 
             });
@@ -515,8 +491,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -524,9 +499,11 @@ describe('PageController', function () {
                 $scope.$emit(events.MAP_EVENT, fakeEventParams);
 
                 expect(stateService.overwriteDestinationPoint).toHaveBeenCalledWith({
-                    coordinates: fakeGeoParam.latitude + "," + fakeGeoParam.longitude,
-                    suggestions: [],
-                    text: 'some address'
+                    coordinates: {
+                        latitude: fakeGeoParam.latitude,
+                        longitude: fakeGeoParam.longitude
+                    },
+                    title: 'some address'
                 });
 
             });
@@ -548,8 +525,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -557,9 +533,11 @@ describe('PageController', function () {
                 $scope.$emit(events.MAP_EVENT, fakeEventParams);
 
                 expect(stateService.addDestinationPoint).toHaveBeenCalledWith({
-                    coordinates: fakeGeoParam.latitude + "," + fakeGeoParam.longitude,
-                    suggestions: [],
-                    text: 'some address'
+                    coordinates: {
+                        latitude: fakeGeoParam.latitude,
+                        longitude: fakeGeoParam.longitude
+                    },
+                    title: 'some address'
                 });
 
             });
@@ -581,8 +559,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -590,9 +567,11 @@ describe('PageController', function () {
                 $scope.$emit(events.MAP_EVENT, fakeEventParams);
 
                 expect(stateService.addWayPoint).toHaveBeenCalledWith({
-                    coordinates: fakeGeoParam.latitude + "," + fakeGeoParam.longitude,
-                    suggestions: [],
-                    text: 'some address'
+                    coordinates: {
+                        latitude: fakeGeoParam.latitude,
+                        longitude: fakeGeoParam.longitude
+                    },
+                    title: 'some address'
                 });
 
             });
@@ -614,8 +593,7 @@ describe('PageController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     geoLocationService: geoLocationService,
-                    geoCoderService: geoCoderService,
-                    dataModelService: dataModelService
+                    geoCoderService: geoCoderService
                 });
 
                 $scope.$apply();
@@ -631,14 +609,13 @@ describe('PageController', function () {
                     }
                 };
 
-                var boundingBox = fakeEventParams.geoParam.topLeft.latitude + "," + fakeEventParams.geoParam.topLeft.longitude + ";" +
                 fakeEventParams.geoParam.bottomRight.latitude + "," + fakeEventParams.geoParam.bottomRight.longitude;
 
                 $scope.$emit(events.MAP_EVENT, fakeEventParams);
 
                 expect(stateService.addAreaToAvoid).toHaveBeenCalledWith({
-                    boundingBox: boundingBox,
-                    text: 'some address'
+                    boundingBox: fakeEventParams.geoParam,
+                    title: 'some address'
                 });
 
             });
