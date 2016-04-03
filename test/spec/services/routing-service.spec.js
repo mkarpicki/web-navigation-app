@@ -11,6 +11,7 @@ describe('routingService', function () {
         config = {};
         config.APP_ID = 'someAppId';
         config.APP_CODE = 'someAppCode';
+
         $provide.value('config', config);
 
     }));
@@ -59,20 +60,30 @@ describe('routingService', function () {
 
     describe('calculateWithTrafficEnabled', function () {
 
-        var waypoints,
+        var wayPoints,
             areasToAvoid,
             URL;
 
         beforeEach(function (){
 
-            waypoints = [
-                '52.5,13.4',
-                '52.6,13.5'
+            wayPoints = [
+                { coordinates: { latitude: 52.5, longitude: 13.4} },
+                { coordinates: { latitude: 52.6, longitude: 13.5} }
             ];
 
             areasToAvoid = [
-                '52.5,13.4;52.6,13.5',
-                '52.7,13.6;52.8,13.7'
+                {
+                    boundingBox: {
+                        topLeft: { latitude: 52.5, longitude: 13.4 },
+                        bottomRight: {latitude: 52.6, longitude: 13.5 }
+                    }
+                },
+                {
+                    boundingBox: {
+                        topLeft: { latitude: 52.7, longitude: 13.6 },
+                        bottomRight: {latitude: 52.8, longitude: 13.7 }
+                    }
+                }
             ];
 
             URL = "https://route.api.here.com/routing/7.2/calculateroute.json?" +
@@ -99,9 +110,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                        areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                        areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                        areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -116,7 +140,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficEnabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 
@@ -134,9 +158,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -151,7 +188,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficEnabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 
@@ -168,9 +205,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -179,7 +229,7 @@ describe('routingService', function () {
                 $httpBackend.expectGET(url).respond(500, null);
 
 
-                routingService.calculateWithTrafficEnabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual([]);
                 });
 
@@ -195,9 +245,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -206,7 +269,7 @@ describe('routingService', function () {
                 $httpBackend.expectGET(url).respond(200, null);
 
 
-                routingService.calculateWithTrafficEnabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual([]);
                 });
 
@@ -226,7 +289,10 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
+
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
 
                 var avoidAreasQuery = "&avoidareas=";
 
@@ -243,7 +309,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficEnabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 
@@ -257,19 +323,33 @@ describe('routingService', function () {
 
             it ('should call API with enabled traffic and WITHOUT alternatives', inject(function (routingService, $httpBackend) {
 
-                waypoints = [
-                    '52.5,13.4',
-                    '52.6,13.5',
-                    '52.7,13.6'
+                wayPoints = [
+                    { coordinates: { latitude: 52.5, longitude: 13.4} },
+                    { coordinates: { latitude: 52.6, longitude: 13.5} },
+                    { coordinates: { latitude: 52.7, longitude: 13.6} }
                 ];
 
                 var returnedRoutes = [];
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1] + "&waypoint2=geo!" + waypoints[2];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
+                var strWayPoint2 = wayPoints[2].coordinates.latitude + "," + wayPoints[2].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1 + "&waypoint2=geo!" + strWayPoint2;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 0);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -284,7 +364,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficEnabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficEnabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 
@@ -298,20 +378,30 @@ describe('routingService', function () {
 
     describe('calculateWithTrafficDisabled', function () {
 
-        var waypoints,
+        var wayPoints,
             areasToAvoid,
             URL;
 
         beforeEach(function (){
 
-            waypoints = [
-                '52.5,13.4',
-                '52.6,13.5'
+            wayPoints = [
+                { coordinates: { latitude: 52.5, longitude: 13.4}},
+                { coordinates: { latitude: 52.6, longitude: 13.5}}
             ];
 
             areasToAvoid = [
-                '52.5,13.4;52.6,13.5',
-                '52.7,13.6;52.8,13.7'
+                {
+                    boundingBox: {
+                        topLeft: { latitude: 52.5, longitude: 13.4 },
+                        bottomRight: {latitude: 52.6, longitude: 13.5 }
+                    }
+                },
+                {
+                    boundingBox: {
+                        topLeft: { latitude: 52.7, longitude: 13.6 },
+                        bottomRight: {latitude: 52.8, longitude: 13.7 }
+                    }
+                }
             ];
 
             URL = "https://route.api.here.com/routing/7.2/calculateroute.json?" +
@@ -338,9 +428,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -355,7 +458,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficDisabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 
@@ -373,9 +476,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -390,7 +506,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficDisabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 
@@ -407,9 +523,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -418,7 +547,7 @@ describe('routingService', function () {
                 $httpBackend.expectGET(url).respond(500, null);
 
 
-                routingService.calculateWithTrafficDisabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual([]);
                 });
 
@@ -434,9 +563,22 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 1);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -445,7 +587,7 @@ describe('routingService', function () {
                 $httpBackend.expectGET(url).respond(200, null);
 
 
-                routingService.calculateWithTrafficDisabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual([]);
                 });
 
@@ -465,7 +607,10 @@ describe('routingService', function () {
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
+
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1;
 
                 var avoidAreasQuery = "&avoidareas=";
 
@@ -482,7 +627,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficDisabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 
@@ -496,19 +641,33 @@ describe('routingService', function () {
 
             it ('should call API with enabled traffic and WITHOUT alternatives', inject(function (routingService, $httpBackend) {
 
-                waypoints = [
-                    '52.5,13.4',
-                    '52.6,13.5',
-                    '52.7,13.6'
+                wayPoints = [
+                    { coordinates: { latitude: 52.5, longitude: 13.4 }},
+                    { coordinates: { latitude: 52.6, longitude: 13.5}},
+                    { coordinates: { latitude: 52.7, longitude: 13.6}}
                 ];
 
                 var returnedRoutes = [];
 
                 var url = URL;
 
-                var wayPointsQuery = "&waypoint0=geo!" + waypoints[0] + "&waypoint1=geo!" + waypoints[1] + "&waypoint2=geo!" + waypoints[2];
+                var strWayPoint0 = wayPoints[0].coordinates.latitude + "," + wayPoints[0].coordinates.longitude;
+                var strWayPoint1 = wayPoints[1].coordinates.latitude + "," + wayPoints[1].coordinates.longitude;
+                var strWayPoint2 = wayPoints[2].coordinates.latitude + "," + wayPoints[2].coordinates.longitude;
 
-                var avoidAreasQuery = "&avoidareas=" + areasToAvoid[0] + "!" + areasToAvoid[1];
+                var wayPointsQuery = "&waypoint0=geo!" + strWayPoint0 + "&waypoint1=geo!" + strWayPoint1 + "&waypoint2=geo!" + strWayPoint2;
+
+                var strAreasToAvoid0 = areasToAvoid[0].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[0].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[0].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[0].boundingBox.bottomRight.longitude;
+
+                var strAreasToAvoid1 = areasToAvoid[1].boundingBox.topLeft.latitude + ',' +
+                    areasToAvoid[1].boundingBox.topLeft.longitude + ';' +
+                    areasToAvoid[1].boundingBox.bottomRight.latitude + ',' +
+                    areasToAvoid[1].boundingBox.bottomRight.longitude;
+
+                var avoidAreasQuery = "&avoidareas=" + strAreasToAvoid0 + "!" + strAreasToAvoid1;
 
                 url = url.replace("{{alternatives}}", 0);
                 url = url.replace("{{wayPoints}}", wayPointsQuery);
@@ -523,7 +682,7 @@ describe('routingService', function () {
                 });
 
 
-                routingService.calculateWithTrafficDisabled(waypoints, areasToAvoid).then(function (routes) {
+                routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid).then(function (routes) {
                     expect(routes).toEqual(returnedRoutes);
                 });
 

@@ -22,7 +22,10 @@ describe('geoCoderService', function () {
 
             it ('should reject promise', inject(function(geoCoderService, $httpBackend) {
 
-                var coordinates = '52.10,13.2',
+                var coordinates = {
+                        latitude: '52.10',
+                        longitude: '13.2'
+                    },
                     radius = 5,
                     apiUrl,
                     response;
@@ -31,7 +34,7 @@ describe('geoCoderService', function () {
                 "app_id=" + config.APP_ID +
                 "&app_code=" + config.APP_CODE +
                 "&gen=9" +
-                "&prox=" + coordinates + "," + radius +
+                "&prox=" + coordinates.latitude + "," + coordinates.longitude + "," + radius +
                 "&maxresults=1" +
                 "&mode=retrieveAddresses";
 
@@ -61,7 +64,10 @@ describe('geoCoderService', function () {
 
                 it ('should resolve promise with empty result', inject(function(geoCoderService, $httpBackend) {
 
-                    var coordinates = '52.10,13.2',
+                    var coordinates = {
+                            latitude: '52.10',
+                            longitude: '13.2'
+                        },
                         radius = 5,
                         apiUrl,
                         response;
@@ -70,7 +76,7 @@ describe('geoCoderService', function () {
                     "app_id=" + config.APP_ID +
                     "&app_code=" + config.APP_CODE +
                     "&gen=9" +
-                    "&prox=" + coordinates + "," + radius +
+                    "&prox=" + coordinates.latitude + "," + coordinates.longitude + "," + radius +
                     "&maxresults=1" +
                     "&mode=retrieveAddresses";
 
@@ -195,7 +201,10 @@ describe('geoCoderService', function () {
 
                 it('sgould use default radius', inject(function(geoCoderService, $httpBackend) {
 
-                    var coordinates = '52.10,13.2',
+                    var coordinates = {
+                            latitude: '52.10',
+                            longitude: '13.2'
+                        },
                         radius = null,
                         apiUrl,
                         response;
@@ -204,7 +213,7 @@ describe('geoCoderService', function () {
                     "app_id=" + config.APP_ID +
                     "&app_code=" + config.APP_CODE +
                     "&gen=9" +
-                    "&prox=" + coordinates + "," + 200 +
+                    "&prox=" + coordinates.latitude + "," + coordinates.longitude + "," + 200 +
                     "&maxresults=1" +
                     "&mode=retrieveAddresses";
 
@@ -238,7 +247,10 @@ describe('geoCoderService', function () {
 
                 it ('should resolve promise with result', inject(function(geoCoderService, $httpBackend) {
 
-                    var coordinates = '52.10,13.2',
+                    var coordinates = {
+                            latitude: '52.10',
+                            longitude: '13.2'
+                        },
                         radius = 5,
                         apiUrl,
                         response;
@@ -247,7 +259,7 @@ describe('geoCoderService', function () {
                     "app_id=" + config.APP_ID +
                     "&app_code=" + config.APP_CODE +
                     "&gen=9" +
-                    "&prox=" + coordinates + "," + radius +
+                    "&prox=" + coordinates.latitude + "," + coordinates.longitude + "," + radius +
                     "&maxresults=1" +
                     "&mode=retrieveAddresses";
 

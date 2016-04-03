@@ -359,7 +359,7 @@ describe('map-api-service', function () {
 
     });
 
-    describe('zoomLevel', function () {
+    describe('setZoomLevel', function () {
 
         it('should call setZoom of map js library', inject(function(mapApiService) {
 
@@ -368,7 +368,7 @@ describe('map-api-service', function () {
             fakeMap.setZoom = jasmine.createSpy('H.Map.setZoom');
 
             mapApiService.init([]);
-            mapApiService.zoomLevel(level);
+            mapApiService.setZoomLevel(level);
 
             expect(fakeMap.setZoom).toHaveBeenCalledWith(level);
 
@@ -380,10 +380,6 @@ describe('map-api-service', function () {
 
         var position = { latitude: 'lat', longitude: 'lng'},
             distance = 'distance';
-
-        //beforeEach(function () {
-
-        //});
 
         it ('should create point', inject(function (mapApiService) {
 
@@ -436,39 +432,39 @@ describe('map-api-service', function () {
 
         });
 
-        it ('should add rectangle to map', inject(function (mapApiService) {
-
-            H.geo.Rect.fromPoints = jasmine.createSpy().and.returnValue(fakeGeoRect);
-
-            H.map.Rect = function (r, options) {
-
-                if (r !== fakeGeoRect) {
-                    throw 'NOT proper geo.Rect';
-                }
-
-                if (options.style.fillColor !== '#FFFFCC') {
-                    throw 'WRONG fillColor STYLE';
-                }
-
-                if (options.style.strokeColor !== '#e2e2e2') {
-                    throw 'WRONG strokeColor STYLE';
-                }
-
-                if (options.style.lineWidth !== 8) {
-                    throw 'WRONG lineWidth STYLE';
-                }
-
-                return fakeRect;
-            };
-
-            fakeMap.addObject = jasmine.createSpy('addObject');
-
-            mapApiService.init([]);
-            mapApiService.calculateRectangle(position, distance);
-
-            expect(fakeMap.addObject).toHaveBeenCalledWith(fakeRect);
-
-        }));
+        //it ('should add rectangle to map', inject(function (mapApiService) {
+        //
+        //    H.geo.Rect.fromPoints = jasmine.createSpy().and.returnValue(fakeGeoRect);
+        //
+        //    H.map.Rect = function (r, options) {
+        //
+        //        if (r !== fakeGeoRect) {
+        //            throw 'NOT proper geo.Rect';
+        //        }
+        //
+        //        if (options.style.fillColor !== '#FFFFCC') {
+        //            throw 'WRONG fillColor STYLE';
+        //        }
+        //
+        //        if (options.style.strokeColor !== '#e2e2e2') {
+        //            throw 'WRONG strokeColor STYLE';
+        //        }
+        //
+        //        if (options.style.lineWidth !== 8) {
+        //            throw 'WRONG lineWidth STYLE';
+        //        }
+        //
+        //        return fakeRect;
+        //    };
+        //
+        //    fakeMap.addObject = jasmine.createSpy('addObject');
+        //
+        //    mapApiService.init([]);
+        //    mapApiService.calculateRectangle(position, distance);
+        //
+        //    expect(fakeMap.addObject).toHaveBeenCalledWith(fakeRect);
+        //
+        //}));
 
         it ('should return rectangle bounding box', inject(function (mapApiService) {
 
@@ -492,8 +488,11 @@ describe('map-api-service', function () {
 
         beforeEach(function () {
 
+            color = 'blue';
+
             route = {
-                shape: ['1,2', '3,4']
+                shape: ['1,2', '3,4'],
+                color: color
             };
             waypoints = [{
                 latitude: 1,
@@ -502,7 +501,6 @@ describe('map-api-service', function () {
                 latitude: 3,
                 longitude: 4
             }];
-            color = 'blue';
 
         });
 
@@ -513,7 +511,7 @@ describe('map-api-service', function () {
             H.geo.Strip = jasmine.createSpy('H.geo.Strip').and.returnValue(fakeStrip);
 
             mapApiService.init([]);
-            mapApiService.drawRoute(route, waypoints, color);
+            mapApiService.drawRoutes([route]);
 
             expect(H.geo.Strip).toHaveBeenCalled();
 
@@ -521,35 +519,24 @@ describe('map-api-service', function () {
 
         it ('should add markers and route line to map', inject(function(mapApiService) {
 
-            var fakeMarkers = [];
-
             fakeRouteLine.getBounds = jasmine.createSpy('getBounds');
 
             fakeMap.addObjects = jasmine.createSpy('fakeMap.addObjects');
 
             H.map.Polyline = jasmine.createSpy('new H.map.Polyline').and.returnValue(fakeRouteLine);
 
-            H.map.Marker = function () {
-                var d = new Date();
-                fakeMarkers.push(d);
-
-                return d;
-            };
-
             H.geo.Strip = function () {
                 return fakeStrip;
             };
 
-
             mapApiService.init([]);
-            mapApiService.drawRoute(route, waypoints, color);
+            mapApiService.drawRoutes([route]);
 
             expect(H.map.Polyline).toHaveBeenCalledWith(fakeStrip, {
                 style: { strokeColor: color, lineWidth: 5 }
             });
 
             expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeRouteLine]);
-            expect(fakeMap.addObjects).toHaveBeenCalledWith(fakeMarkers);
 
         }));
 
