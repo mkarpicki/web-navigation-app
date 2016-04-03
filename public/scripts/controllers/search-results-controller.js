@@ -139,13 +139,14 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 //    return areaToAvoid.boundingBox;
                 //});
 
-            //wayPoints = wayPoints.filter(function (coordinate) {
-            //    return (coordinate !== null);
-            //});
-            //
-            //areasToAvoid = areasToAvoid.filter(function (boundingBox) {
-            //    return (boundingBox !== null);
-            //});
+            wayPoints = wayPoints.filter(function (wayPoints) {
+                var coordinates = wayPoints.coordinates;
+                return (coordinates && coordinates.latitude && coordinates.longitude);
+            });
+
+            areasToAvoid = areasToAvoid.filter(function (areaToAvoid) {
+                return (areaToAvoid.boundingBox);
+            });
 
             if (wayPoints.length > 1) {
                 (routingService.calculateWithTrafficDisabled(wayPoints, areasToAvoid)).then(collectRoutesBasedOnTraffic(true, wayPoints, areasToAvoid), setNoRouteFoundState);

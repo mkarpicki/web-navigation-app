@@ -153,14 +153,15 @@ angular.module('navigationApp.controllers').controller('FormController',
 
         var getReady = function(){
 
-            var deSerializedQuery = stateService.deserializeQuery(),
+            //var deSerializedQuery = stateService.deserializeQuery(),
+            var deSerializedQuery = stateService.getSearchCriteria(),
                 wayPoints = deSerializedQuery.wayPoints,
                 areasToAvoid = deSerializedQuery.areasToAvoid;
 
             $scope.wayPoints = getClearWayPoints();
 
             wayPoints = wayPoints.filter(function (wayPoint) {
-                return (wayPoint && wayPoint.coordinates!== null);
+                return (wayPoint && wayPoint.coordinates);
             });
 
             if (wayPoints.length > 1) {

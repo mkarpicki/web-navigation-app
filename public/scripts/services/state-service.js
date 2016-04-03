@@ -18,17 +18,28 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         navigationMode = false;
 
     var serializeWayPoint = function (point) {
-        return point.title + '|' +
-            point.coordinates.latitude + ',' +
-            point.coordinates.longitude;
+
+        var latitude = (point.coordinates.latitude) ? point.coordinates.latitude : '',
+            longitude = (point.coordinates.longitude) ? point.coordinates.longitude : '';
+
+        return point.title + '|' + latitude + ',' + longitude;
     };
 
     var serializeAreaToAvoid = function (areaToAvoid) {
+
+        var boundingBox = areaToAvoid.boundingBox,
+            topLeft = {
+                latitude: (boundingBox.topLeft.latitude) ? boundingBox.topLeft.latitude : '',
+                longitude: (boundingBox.topLeft.longitude) ? boundingBox.topLeft.longitude : ''
+            },
+            bottomRight = {
+                latitude: (boundingBox.bottomRight.latitude) ? boundingBox.bottomRight.latitude : '',
+                longitude: (boundingBox.bottomRight.longitude) ? boundingBox.bottomRight.longitude : ''
+            };
+
         return areaToAvoid.title + '|' +
-            areaToAvoid.boundingBox.topLeft.latitude + "," +
-            areaToAvoid.boundingBox.topLeft.longitude + ";" +
-            areaToAvoid.boundingBox.bottomRight.latitude + "," +
-            areaToAvoid.boundingBox.bottomRight.longitude;
+            topLeft.latitude + "," + topLeft.longitude + ";" +
+            bottomRight.latitude + "," + bottomRight.longitude;
     };
 
     var serializeQuery = function () {

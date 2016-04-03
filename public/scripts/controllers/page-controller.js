@@ -165,10 +165,9 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         $scope.$on(events.MAP_EVENT, function (event, params) {
 
-            var geoParam = params.geoParam,
-                point = geoParam.latitude + ',' + geoParam.longitude;
+            var geoParam = params.geoParam;
 
-            geoCoderService.reverse(point).then(function (text) {
+            geoCoderService.reverse(geoParam).then(function (text) {
 
                 switch (params.eventType) {
 

@@ -17,7 +17,7 @@ angular.module('navigationApp.services').factory('geoCoderService', ['$http', '$
         "&maxresults=1" +
         "&mode=retrieveAddresses";
 
-    var reverse = function (coordinate, radius) {
+    var reverse = function (coordinates, radius) {
 
         var deferred = $q.defer();
 
@@ -31,7 +31,7 @@ angular.module('navigationApp.services').factory('geoCoderService', ['$http', '$
             appId: appId,
             appCode: appCode,
             url: REVERSE_GEO_CODER_URL,
-            prox: coordinate,
+            prox: coordinates.latitude + ',' + coordinates.longitude,
             radius: radius
         });
 
