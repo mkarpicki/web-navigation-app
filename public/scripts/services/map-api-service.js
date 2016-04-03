@@ -196,7 +196,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
         for (var i = 0, l = wayPoints.length; i < l; i++) {
 
-            wayPoint = wayPoints[i];
+            wayPoint = wayPoints[i].coordinates;
 
             markers.push(new H.map.Marker({
                 lat: wayPoint.latitude,

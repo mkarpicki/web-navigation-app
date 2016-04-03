@@ -75,13 +75,13 @@ angular.module('navigationApp.controllers').controller('SearchController',
             //wayPointsUsedForSearch = prepareWayPoints(wayPointsUsedForSearch);
             //areasToAvoidUsedForSearch = prepareAreasToAvoid(areasToAvoidUsedForSearch);
 
-            /**
-             * @todo remove it and listen to markers separately
-             * @type {*|Array|!webdriver.promise.Promise}
-             */
-            wayPointsUsedForSearch = wayPointsUsedForSearch.map(function (wayPointUsedForSearch) {
-               return wayPointUsedForSearch.coordinates;
-            });
+            ///**
+            // * @todo remove it and listen to markers separately
+            // * @type {*|Array|!webdriver.promise.Promise}
+            // */
+            //wayPointsUsedForSearch = wayPointsUsedForSearch.map(function (wayPointUsedForSearch) {
+            //   return wayPointUsedForSearch.coordinates;
+            //});
 
             for (var i = 0, l = routes.length; i < l; i++) {
 

@@ -324,7 +324,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     return {
         serializeQuery: serializeQuery,
-        deserializeQuery: deserializeQuery,
+        //deserializeQuery: deserializeQuery,
 
         clear: clear,
         setWayPoints: setWayPoints,

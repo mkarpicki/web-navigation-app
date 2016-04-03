@@ -77,7 +77,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                     if (notOnRouteAnymore(currentPosition, $scope.route)) {
 
-                        wayPointsUsedForSearch.unshift(currentPosition);
+                        wayPointsUsedForSearch = addCurrentPositionAsNewStartPoint(wayPointsUsedForSearch, currentPosition);
 
                         //var wayPointsToUse = prepareWayPointsToUseAsStrings(wayPointsUsedForSearch);
                         //var areasToUse = prepareAreasToUseAsStrings(areasToAvoidUsedForSearch);
@@ -98,7 +98,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
                                 routingService.saveRoute(newRoute);
                                 $scope.route = newRoute;
 
-                                wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1, $scope.route.length);
+                                wayPointsUsedForSearch = getWayPointsWithoutStartPoint($scope.route);
 
                             }
 
@@ -129,6 +129,20 @@ angular.module('navigationApp.controllers').controller('RouteController',
             //    });
             //};
 
+            var addCurrentPositionAsNewStartPoint = function (wayPoints, currentPosition) {
+
+                wayPointsUsedForSearch.unshift({
+                    title: '',
+                    coordinates: currentPosition
+                });
+
+                return wayPointsUsedForSearch;
+            };
+
+            var getWayPointsWithoutStartPoint = function (route) {
+                return route.wayPointsUsedForSearch.slice(1, route.length);
+            };
+
             var positionNotChangedEnough = function (currentPosition, lastPosition) {
                 return (lastPosition && mapApiService.distance(currentPosition, lastPosition) <= minimumNumberOfMetersToCheckRouteState);
             };
@@ -140,7 +154,9 @@ angular.module('navigationApp.controllers').controller('RouteController',
             var removeVisitedWayPoints = function (currentPosition, wayPointsUsedForSearch) {
 
                 wayPointsUsedForSearch = wayPointsUsedForSearch.filter(function (wayPoint) {
-                    return (mapApiService.distance(currentPosition, wayPoint) > numberOfMetersFromWayPointToAssumeVisited);
+                    if (mapApiService.distance(currentPosition, wayPoint.coordinates) > numberOfMetersFromWayPointToAssumeVisited) {
+                        return wayPoint;
+                    }
                 });
 
                 return wayPointsUsedForSearch;
@@ -197,7 +213,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
                         routingService.saveRoute(route);
 
                         //skip starting point and collect all important wayPoints
-                        wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch.slice(1, $scope.route.length);
+                        wayPointsUsedForSearch = getWayPointsWithoutStartPoint($scope.route);
                         areasToAvoidUsedForSearch = $scope.route.areasToAvoidUsedForSearch;
 
                         mapApiService.centerToRoute(route);
