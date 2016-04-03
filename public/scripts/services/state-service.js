@@ -3,7 +3,6 @@
  * 1st. consider to remove dependency on $location.search as it is used partially now (only one way and second way I guess in controllers)
  * or make all dependencies inside service to cut them of from controllers level - then it gives possibilities to change where state is being kept
  * (url, session storage etc).
- * @todo keep objects in state and make as string only when asking for query
  */
 angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', '$window', 'events', function ($rootScope, $interpolate, $location, $window, events) {
 

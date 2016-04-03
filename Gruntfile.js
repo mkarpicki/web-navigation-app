@@ -75,7 +75,9 @@ module.exports = function(grunt) {
 
                 frameworks: ['jasmine'],
 
-                exclude: [],
+                exclude: [
+                    'public/scripts/services/**/*simulator.js'
+                ],
 
 
                 colors: true,
