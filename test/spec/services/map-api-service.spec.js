@@ -480,6 +480,66 @@ describe('map-api-service', function () {
 
     });
 
+    describe('drawWayPoints', function () {
+
+        describe('when wayPoints not delivered', function () {
+
+            it('should NOT draw markers on map', inject(function(mapApiService) {
+
+                H.map.Marker = jasmine.createSpy('H.map.Marker');
+
+                fakeMap.addObjects = jasmine.createSpy('fakeMap.addObjects');
+
+                mapApiService.init([]);
+                mapApiService.drawWayPoints([]);
+
+                expect(H.map.Marker).not.toHaveBeenCalled();
+
+                expect(fakeMap.addObjects).not.toHaveBeenCalledWith();
+
+                mapApiService.drawWayPoints(null);
+
+                expect(H.map.Marker).not.toHaveBeenCalled();
+
+                expect(fakeMap.addObjects).not.toHaveBeenCalledWith();
+
+            }));
+
+        });
+
+        describe('when wayPoints delivered', function () {
+
+            it('should draw markers on map', inject(function(mapApiService) {
+
+                var wayPoint = {
+                    coordinates: {
+                        latitude: 1,
+                        longitude: 2
+                    }
+                };
+
+                var fakeMarker = {};
+
+                H.map.Marker = jasmine.createSpy('H.map.Marker').and.returnValue(fakeMarker);
+
+                fakeMap.addObjects = jasmine.createSpy('fakeMap.addObjects');
+
+                mapApiService.init([]);
+                mapApiService.drawWayPoints([wayPoint]);
+
+                expect(H.map.Marker).toHaveBeenCalledWith({
+                    lat: wayPoint.coordinates.latitude,
+                    lng: wayPoint.coordinates.longitude
+                });
+
+                expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeMarker]);
+
+            }));
+
+        });
+
+    });
+
     describe('drawRoutes', function () {
 
         var route,

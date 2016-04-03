@@ -197,21 +197,24 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             point2,
             rectangle;
 
-        for (var i = 0, len = areasToAvoid.length; i < len; i++) {
+        if (areasToAvoid) {
 
-            topLeft = areasToAvoid[i].boundingBox.topLeft;
-            bottomRight = areasToAvoid[i].boundingBox.bottomRight;
+            for (var i = 0, len = areasToAvoid.length; i < len; i++) {
 
-            point1 = new H.geo.Point(topLeft.latitude, topLeft.longitude);
-            point2 = new H.geo.Point(bottomRight.latitude, bottomRight.longitude);
+                topLeft = areasToAvoid[i].boundingBox.topLeft;
+                bottomRight = areasToAvoid[i].boundingBox.bottomRight;
 
-            rectangle = H.geo.Rect.fromPoints(point1, point2);
+                point1 = new H.geo.Point(topLeft.latitude, topLeft.longitude);
+                point2 = new H.geo.Point(bottomRight.latitude, bottomRight.longitude);
 
-            map.addObject(
-                new H.map.Rect(rectangle, {
-                    style: areaToAvoidStyle
-                })
-            );
+                rectangle = H.geo.Rect.fromPoints(point1, point2);
+
+                map.addObject(
+                    new H.map.Rect(rectangle, {
+                        style: areaToAvoidStyle
+                    })
+                );
+            }
         }
     };
 
@@ -220,17 +223,21 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         var markers = [],
             wayPoint;
 
-        for (var i = 0, l = wayPoints.length; i < l; i++) {
+        if (wayPoints) {
 
-            wayPoint = wayPoints[i].coordinates;
+            for (var i = 0, l = wayPoints.length; i < l; i++) {
 
-            markers.push(new H.map.Marker({
-                lat: wayPoint.latitude,
-                lng: wayPoint.longitude
-            }));
+                wayPoint = wayPoints[i].coordinates;
+
+                markers.push(new H.map.Marker({
+                    lat: wayPoint.latitude,
+                    lng: wayPoint.longitude
+                }));
+            }
+
+            map.addObjects(markers);
+
         }
-
-        map.addObjects(markers);
 
     };
 
