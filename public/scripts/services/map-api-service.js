@@ -157,7 +157,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var centerToRoute = function (route) {
         var routeLine = getRouteLine(route, null);
-        // Set the map's viewport to make the whole route visible:
+        // Set the map's view port to make the whole route visible:
         map.setViewBounds(routeLine.getBounds());
     };
 
