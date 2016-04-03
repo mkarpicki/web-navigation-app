@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$rootScope", "$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', 'dataModelService', function($rootScope, $scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService, dataModelService) {
+    ["$rootScope", "$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', function($rootScope, $scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService) {
 
         'use strict';
 
@@ -79,10 +79,6 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         var addAreaToAvoid = function (geoParam, text) {
 
-            /**
-             * @todo
-             * think about usage of dataModelService here but then object with params should be passed and same for wayPoint instead of coordinates as string
-             */
             var item = {
                 boundingBox: {
                     topLeft: geoParam.topLeft,

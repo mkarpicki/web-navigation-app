@@ -5,7 +5,7 @@
  * (url, session storage etc).
  * @todo keep objects in state and make as string only when asking for query
  */
-angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', '$window', 'events', 'dataModelService', function ($rootScope, $interpolate, $location, $window, events, dataModelService) {
+angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', '$window', 'events', function ($rootScope, $interpolate, $location, $window, events) {
 
     'use strict';
 
@@ -118,7 +118,6 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
                 wayPointParsed = wayPointsFromSearch[i].split('|');
                 coordinates = wayPointParsed[1].split(',');
 
-                //wayPoints[i] = dataModelService.getWayPoint(wayPointParsed[0], [], wayPointParsed[1]);
                 wayPoints.push({
                     title: wayPointParsed[0],
                     coordinates: {

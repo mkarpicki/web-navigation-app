@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$rootScope", "$scope", '$location', 'routingService', 'stateService', 'searchService', 'dataModelService' , function($rootScope, $scope, $location, routingService, stateService, searchService, dataModelService) {
+    ["$rootScope", "$scope", '$location', 'routingService', 'stateService', 'searchService' , function($rootScope, $scope, $location, routingService, stateService, searchService) {
 
         'use strict';
 
@@ -31,7 +31,6 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         $scope.addWayPoint = function () {
-            //$scope.wayPoints.splice($scope.wayPoints.length - 1, 0, dataModelService.getWayPoint());
             $scope.wayPoints.splice($scope.wayPoints.length - 1, 0, {
                 title: '',
                 coordinates: {
@@ -122,7 +121,6 @@ angular.module('navigationApp.controllers').controller('FormController',
         };
 
         var getClearWayPoints = function () {
-            //return [dataModelService.getWayPoint(), dataModelService.getWayPoint()];
             return [
                 {
                     title: '',
