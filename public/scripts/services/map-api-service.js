@@ -1,3 +1,12 @@
+/**
+ * @readme (road closed sign)
+ * use svg as marker:
+ * https://developer.here.com/api-explorer/maps-js/markers/map-with-svg-graphic-markers
+ * https://developer.mozilla.org/en/docs/Web/SVG/Tutorial/Paths
+ *
+ * map circle object
+ * https://developer.here.com/javascript-apis/documentation/v3/maps/topics_api_nlp/h-map-circle.html
+ */
 angular.module('navigationApp.services').factory('mapApiService', ['$window', 'config', function ($window, config) {
 
     'use strict';
@@ -14,7 +23,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         currentPositionMarker;
 
     var areaToAvoidStyle = {
-        fillColor: '#FFFFCC',
+        //fillColor: '#FFFFCC',
         strokeColor: '#e2e2e2',
         lineWidth: 8
     };
