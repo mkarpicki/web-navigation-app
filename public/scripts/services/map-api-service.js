@@ -13,6 +13,12 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         tappedCoordinates,
         currentPositionMarker;
 
+    var areaToAvoidStyle = {
+        fillColor: '#FFFFCC',
+        strokeColor: '#e2e2e2',
+        lineWidth: 8
+    };
+
 
     //Step 1: initialize communication with the platform
     var platform = new H.service.Platform({
@@ -42,19 +48,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             point.walk(135, distance)
         );
 
-        map.addObject(
-            new H.map.Rect(rect, {
-                style: {
-                    fillColor: '#FFFFCC',
-                    strokeColor: '#e2e2e2',
-                    lineWidth: 8
-                }
-            })
-        );
-
         var topLeft = rect.getTopLeft(),
             bottomRight = rect.getBottomRight();
-
 
         topLeft = {
             latitude: topLeft.lat,
@@ -95,8 +90,6 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         map.addObject(currentPositionMarker);
 
     };
-
-
 
     var initBubble = function (bubbleElement) {
 
@@ -189,6 +182,28 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var drawAreasToAvoid = function (areasToAvoid) {
 
+        var topLeft,
+            bottomRight,
+            point1,
+            point2,
+            rectangle;
+
+        for (var i = 0, len = areasToAvoid.length; i < len; i++) {
+
+            topLeft = areasToAvoid[i].boundingBox.topLeft;
+            bottomRight = areasToAvoid[i].boundingBox.bottomRight;
+
+            point1 = new H.geo.Point(topLeft.latitude, topLeft.longitude);
+            point2 = new H.geo.Point(bottomRight.latitude, bottomRight.longitude);
+
+            rectangle = H.geo.Rect.fromPoints(point1, point2);
+
+            map.addObject(
+                new H.map.Rect(rectangle, {
+                    style: areaToAvoidStyle
+                })
+            );
+        }
     };
 
     var drawWayPoints = function (wayPoints) {
