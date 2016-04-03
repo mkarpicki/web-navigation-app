@@ -11,7 +11,6 @@ describe('FormController', function () {
         routingService,
         stateService,
         searchService,
-        dataModelService,
 
         fakeDeSerializedQuery;
 
@@ -41,7 +40,7 @@ describe('FormController', function () {
             setWayPoints: function () {},
             setAreasToAvoid: function () {},
             serializeQuery: function () {},
-            deserializeQuery: function () {
+            getSearchCriteria: function () {
                 return fakeDeSerializedQuery;
             }
         };
@@ -49,14 +48,6 @@ describe('FormController', function () {
         searchService = {
             getSuggestions: function () {},
             getResults: function () {}
-        };
-
-        dataModelService = {
-            getWayPoint: function () {},
-            //getWayPoint: function () {
-            //    return {coordinates: '2,3', text: 'some text', suggestions: []}
-            //},
-            getBoundingBox: function () {}
         };
 
     }));
@@ -72,8 +63,7 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
@@ -87,16 +77,20 @@ describe('FormController', function () {
             it('should set start point, destination point and way points in scope', function () {
 
                 var start = {
-                        text: 'start'
+                        title: 'start',
+                        coordinates: { latitude: 1, longitude: 2}
                     },
                     middle1 = {
-                        text: 'middle1'
+                        title: 'middle1',
+                        coordinates: { latitude: 3, longitude: 4}
                     },
                     middle2 = {
-                        text: 'middle2'
+                        title: 'middle2',
+                        coordinates: { latitude: 5, longitude: 6}
                     },
                     destination = {
-                        text: 'destination'
+                        title: 'destination',
+                        coordinates: { latitude: 7, longitude: 8}
                     };
 
                 fakeDeSerializedQuery.wayPoints = [start, middle1, middle2, destination];
@@ -106,8 +100,7 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
@@ -132,8 +125,7 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
@@ -163,21 +155,43 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
 
             $scope.wayPoints = [
-                dataModelService.getWayPoint('t', [], '1,2'),
-                dataModelService.getWayPoint('t', [], '1,2'),
-                dataModelService.getWayPoint('t', [], '1,2')
+                {
+                    title: 't1',
+                    coordinates: { latitude: 1, longitude: 2}
+                },
+                {
+                    title: 't2',
+                    coordinates: { latitude: 1, longitude: 2}
+                },
+                {
+                    title: 't3',
+                    coordinates: { latitude: 1, longitude: 2}
+                },
+                {
+                    title: 't4',
+                    coordinates: { latitude: 1, longitude: 2}
+                }
+
             ];
 
             $scope.clear();
 
-            expect($scope.wayPoints).toEqual([dataModelService.getWayPoint(), dataModelService.getWayPoint()]);
+            expect($scope.wayPoints).toEqual([
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                }
+            ]);
             expect(stateService.clear).toHaveBeenCalled();
 
         });
@@ -194,8 +208,7 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
@@ -218,32 +231,58 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
 
             expect($scope.wayPoints).toEqual([
-                dataModelService.getWayPoint(),
-                dataModelService.getWayPoint()
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                }
             ]);
 
             $scope.addWayPoint();
 
             expect($scope.wayPoints).toEqual([
-                dataModelService.getWayPoint(),
-                dataModelService.getWayPoint(),
-                dataModelService.getWayPoint()
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                }
             ]);
 
             $scope.addWayPoint();
 
             expect($scope.wayPoints).toEqual([
-                dataModelService.getWayPoint(),
-                dataModelService.getWayPoint(),
-                dataModelService.getWayPoint(),
-                dataModelService.getWayPoint()
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: null, longitude: null }
+                }
             ]);
 
         });
@@ -259,8 +298,7 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
@@ -286,8 +324,7 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
@@ -309,8 +346,7 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
@@ -336,8 +372,7 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
@@ -368,13 +403,18 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
 
-                $scope.wayPoints = [{ coordinates: null}, { coordinates: '2,3'}];
+                $scope.wayPoints = [
+                    null,
+                    {
+                        title: '',
+                        coordinates: { latitude: null, longitude: null }
+                    }
+                ];
 
                 $scope.getRoute();
 
@@ -402,13 +442,18 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
 
-                $scope.wayPoints = [{ coordinates: '2,3'}, { coordinates: null}];
+                $scope.wayPoints = [
+                    {
+                        title: '',
+                        coordinates: { latitude: null, longitude: null }
+                    },
+                    null
+                ];
 
                 $scope.getRoute();
 
@@ -436,15 +481,20 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
 
                 $scope.wayPoints = [
-                    { coordinates: '3,4', text: 'some w1'},
-                    { coordinates: '5,6', text: 'some w2'}
+                    {
+                        title: '',
+                        coordinates: { latitude: 52, longitude: 12 }
+                    },
+                    {
+                        title: '',
+                        coordinates: { latitude: 53, longitude: 13 }
+                    }
                 ];
 
                 $scope.getRoute();
@@ -467,8 +517,7 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
@@ -519,7 +568,13 @@ describe('FormController', function () {
                 promise: fakePromise
             };
 
-            var fakeWayPoint = {};
+            var fakeWayPoint = {
+                title: results[0].title,
+                coordinates: {
+                    latitude: results[0].position[0],
+                    longitude: results[0].position[1]
+                }
+            };
 
             searchService.getResults = function () {
                 return fakeSearchObj;
@@ -530,24 +585,25 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
 
             $scope.wayPoints = [
-                { coordinates: '1,2', text: 'some text 1'},
-                { coordinates: '3,4', text: 'some text 2'}
+                {
+                    title: '',
+                    coordinates: { latitude: 1, longitude: 2 }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: 3, longitude: 4 }
+                }
             ];
-
-            dataModelService.getWayPoint = jasmine.createSpy('dataModelService.getWayPoint').and.returnValue(fakeWayPoint);
 
             $scope.markActiveField(index);
 
             $scope.search();
-
-            expect(dataModelService.getWayPoint).toHaveBeenCalledWith(results[0].title, [], results[0].position.join(','));
 
             expect($scope.wayPoints[index]).toEqual(fakeWayPoint);
 
@@ -572,8 +628,6 @@ describe('FormController', function () {
                     promise: fakePromise
                 };
 
-                var fakeWayPoint = {};
-
                 searchService.getResults = function () {
                     return fakeSearchObj;
                 };
@@ -583,8 +637,7 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
@@ -594,13 +647,9 @@ describe('FormController', function () {
                     null
                 ];
 
-                dataModelService.getWayPoint = jasmine.createSpy('dataModelService.getWayPoint').and.returnValue(fakeWayPoint);
-
                 $scope.markActiveField(index);
 
                 $scope.search();
-
-                expect(dataModelService.getWayPoint).not.toHaveBeenCalled();
 
                 expect($scope.wayPoints[index]).toEqual(null);
 
@@ -633,8 +682,13 @@ describe('FormController', function () {
                     cancel: jasmine.createSpy()
                 };
 
-                var fakeWayPoint = {};
-
+                var fakeWayPoint = {
+                    title: results[0].title,
+                    coordinates: {
+                        latitude: results[0].position[0],
+                        longitude: results[0].position[1]
+                    }
+                };
                 searchService.getResults = function () {
                     return fakeSearchObj;
                 };
@@ -644,25 +698,26 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
 
                 $scope.wayPoints = [
-                    { coordinates: '1,2', text: 'some text 1'},
-                    { coordinates: '3,4', text: 'some text 2'}
+                    {
+                        title: '',
+                        coordinates: { latitude: 1, longitude: 2 }
+                    },
+                    {
+                        title: '',
+                        coordinates: { latitude: 3, longitude: 4 }
+                    }
                 ];
-
-                dataModelService.getWayPoint = jasmine.createSpy('dataModelService.getWayPoint').and.returnValue(fakeWayPoint);
 
                 $scope.markActiveField(index);
 
                 $scope.search();
                 $scope.search();
-
-                expect(dataModelService.getWayPoint).toHaveBeenCalledWith(results[0].title, [], results[0].position.join(','));
 
                 expect($scope.wayPoints[index]).toEqual(fakeWayPoint);
                 expect(fakeSearchObj.cancel).toHaveBeenCalled();
@@ -703,15 +758,20 @@ describe('FormController', function () {
                 $location: $location,
                 routingService: routingService,
                 stateService: stateService,
-                searchService: searchService,
-                dataModelService: dataModelService
+                searchService: searchService
             });
 
             $scope.$apply();
 
             $scope.wayPoints = [
-                { coordinates: '1,2', text: 'some text 1'},
-                { coordinates: '3,4', text: 'some text 2'}
+                {
+                    title: '',
+                    coordinates: { latitude: 1, longitude: 2 }
+                },
+                {
+                    title: '',
+                    coordinates: { latitude: 3, longitude: 4 }
+                }
             ];
 
             $scope.markActiveField(index);
@@ -751,15 +811,20 @@ describe('FormController', function () {
                     $location: $location,
                     routingService: routingService,
                     stateService: stateService,
-                    searchService: searchService,
-                    dataModelService: dataModelService
+                    searchService: searchService
                 });
 
                 $scope.$apply();
 
                 $scope.wayPoints = [
-                    { coordinates: '1,2', text: 'some text 1'},
-                    { coordinates: '3,4', text: 'some text 2'}
+                    {
+                        title: '',
+                        coordinates: { latitude: 1, longitude: 2 }
+                    },
+                    {
+                        title: '',
+                        coordinates: { latitude: 3, longitude: 4 }
+                    }
                 ];
 
                 $scope.markActiveField(index);
