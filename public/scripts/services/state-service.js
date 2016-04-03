@@ -265,7 +265,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         return {
             wayPoints: wayPointsStorage,
             areasToAvoid: areasToAvoidStorage
-        }
+        };
     };
 
     var init = function () {
