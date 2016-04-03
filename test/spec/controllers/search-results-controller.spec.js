@@ -52,7 +52,7 @@ describe('SearchController', function () {
         };
 
         stateService = {
-            deserializeQuery: function () {
+            getSearchCriteria: function () {
                 return fakeDeSerializedQuery;
             },
             back: function () {}
@@ -122,11 +122,35 @@ describe('SearchController', function () {
                 it ('should call routing service with both arrays', function () {
 
                     fakeDeSerializedQuery.wayPoints = [
-                        { coordinates: '1,2'},
-                        { coordinates: '4,5'}
+                        {
+                            title: '',
+                            coordinates: {
+                                latitude: 1,
+                                longitude: 2
+                            }
+                        },
+                        {
+                            title: '',
+                            coordinates: {
+                                latitude: 3,
+                                longitude: 4
+                            }
+                        }
                     ];
                     fakeDeSerializedQuery.areasToAvoid = [
-                        { boundingBox: 'a,b'}
+                        {
+                            title: '',
+                            boundingBox: {
+                                topLeft: {
+                                    latitude: 1,
+                                    longitude: 2
+                                },
+                                bottomRight: {
+                                    latitude: 1,
+                                    longitude: 2
+                                }
+                            }
+                        }
                     ];
 
                     var fakePromise = {
@@ -151,8 +175,8 @@ describe('SearchController', function () {
 
                     $scope.$apply();
 
-                    expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalledWith(['1,2', '4,5'], ['a,b']);
-                    expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(['1,2', '4,5'], ['a,b']);
+                    expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalledWith(fakeDeSerializedQuery.wayPoints, fakeDeSerializedQuery.areasToAvoid);
+                    expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(fakeDeSerializedQuery.wayPoints, fakeDeSerializedQuery.areasToAvoid);
 
                 });
 
@@ -160,7 +184,22 @@ describe('SearchController', function () {
 
             it('should set in scope notEnoughInformation value to false', function () {
 
-                fakeDeSerializedQuery.wayPoints = [1,2];
+                fakeDeSerializedQuery.wayPoints = [
+                    {
+                        title: '',
+                        coordinates: {
+                            latitude: 1,
+                            longitude: 2
+                        }
+                    },
+                    {
+                        title: '',
+                        coordinates: {
+                            latitude: 3,
+                            longitude: 4
+                        }
+                    }
+                ];
 
                 $controller("SearchController", {
                     $scope: $scope,
@@ -185,7 +224,22 @@ describe('SearchController', function () {
                         then: function (callback, failureCallback) { failureCallback(); }
                     };
 
-                    fakeDeSerializedQuery.wayPoints = [1,2];
+                    fakeDeSerializedQuery.wayPoints = [
+                        {
+                            title: '',
+                            coordinates: {
+                                latitude: 1,
+                                longitude: 2
+                            }
+                        },
+                        {
+                            title: '',
+                            coordinates: {
+                                latitude: 3,
+                                longitude: 4
+                            }
+                        }
+                    ];
 
                     $controller("SearchController", {
                         $scope: $scope,
@@ -212,7 +266,22 @@ describe('SearchController', function () {
                         then: function (callback) { callback([]); }
                     };
 
-                    fakeDeSerializedQuery.wayPoints = [1,2];
+                    fakeDeSerializedQuery.wayPoints = [
+                        {
+                            title: '',
+                            coordinates: {
+                                latitude: 1,
+                                longitude: 2
+                            }
+                        },
+                        {
+                            title: '',
+                            coordinates: {
+                                latitude: 3,
+                                longitude: 4
+                            }
+                        }
+                    ];
 
                     $controller("SearchController", {
                         $scope: $scope,
@@ -237,13 +306,20 @@ describe('SearchController', function () {
 
                     var wayPoints = [
                         {
-                            coordinates: '52.1,13.1',
-                            test: 'some-address-1'
+                            title: '',
+                            coordinates: {
+                                latitude: 1,
+                                longitude: 2
+                            }
                         },
                         {
-                            coordinates: '52.2,13.2',
-                            test: 'some-address-2'
-                        }];
+                            title: '',
+                            coordinates: {
+                                latitude: 3,
+                                longitude: 4
+                            }
+                        }
+                    ];
 
                     var routes = [1,2];
 
