@@ -128,7 +128,8 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             routingService.clearResults();
 
-            var deSerializedQuery = stateService.deserializeQuery(),
+            //var deSerializedQuery = stateService.deserializeQuery(),
+            var deSerializedQuery = stateService.getSearchCriteria(),
                 wayPoints = deSerializedQuery.wayPoints,
                 areasToAvoid = deSerializedQuery.areasToAvoid;
 
