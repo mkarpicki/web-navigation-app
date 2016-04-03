@@ -159,10 +159,11 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         map.setViewBounds(routeLine.getBounds());
     };
 
-    var getRouteLine = function (route, color) {
+    var getRouteLine = function (route) {
 
         var routeShape,
-            strip;
+            strip,
+            color =  route.color || 'blue';
 
 
         // Pick the route's shape:
@@ -179,7 +180,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
         // Create a polyline to display the route:
         var routeLine = new H.map.Polyline(strip, {
-            style: { strokeColor: color || 'blue', lineWidth: 5 }
+            style: { strokeColor: color, lineWidth: 5 }
         });
 
         return routeLine;
@@ -209,18 +210,27 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     };
 
-    var drawRoute = function (route, wayPoints, color) {
+    var drawRoutes = function (routes) {
+
+        if (routes) {
+
+            for (var i = 0, l = routes.length; i < l; i++) {
+                drawRoute(routes[i]);
+            }
+        }
+    };
+
+    var drawRoute = function (route) {
 
         // Create a polyline to display the route:
-        var routeLine = getRouteLine(route, color);
+        var routeLine = getRouteLine(route);
 
         // Add the route polyline and the two markers to the map:
         map.addObjects([routeLine]);
 
     };
 
-    var zoomLevel = function (level) {
-
+    var setZoomLevel = function (level) {
         map.setZoom(level);
     };
 
@@ -237,14 +247,14 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         initBubble: initBubble,
         center: center,
         calculateRectangle: calculateRectangle,
-        drawRoute: drawRoute,
+        drawRoutes: drawRoutes,
         drawWayPoints: drawWayPoints,
         drawAreasToAvoid: drawAreasToAvoid,
         clear: clear,
         getTapPosition: getTapPosition,
         removeBubble: removeBubble,
         updateCurrentPosition: updateCurrentPosition,
-        zoomLevel: zoomLevel,
+        setZoomLevel: setZoomLevel,
         distance: distance,
         centerToRoute: centerToRoute
     };

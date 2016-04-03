@@ -88,12 +88,8 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
         mapApiService.clear();
 
-
         if (routes) {
-
-            for (var i = 0, l = routes.length; i < l; i++) {
-                mapApiService.drawRoute(routes[i], routes[i].wayPointsUsedForSearch, routes[i].color);
-            }
+            mapApiService.drawRoutes(routes);
         }
 
         if (wayPoints) {
@@ -119,7 +115,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         scope.$watch(attrs.zoomLevel, function (zoomLevel) {
 
             if (zoomLevel) {
-                mapApiService.zoomLevel(zoomLevel);
+                mapApiService.setZoomLevel(zoomLevel);
             }
         });
 
