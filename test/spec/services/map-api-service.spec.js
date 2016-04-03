@@ -480,7 +480,7 @@ describe('map-api-service', function () {
 
     });
 
-    describe('drawRoute', function () {
+    describe('drawRoutes', function () {
 
         var route,
             waypoints,
@@ -517,7 +517,7 @@ describe('map-api-service', function () {
 
         }));
 
-        it ('should add markers and route line to map', inject(function(mapApiService) {
+        it ('should add routes line to map', inject(function(mapApiService) {
 
             fakeRouteLine.getBounds = jasmine.createSpy('getBounds');
 
@@ -540,7 +540,63 @@ describe('map-api-service', function () {
 
         }));
 
+        describe('when routes not passed', function () {
+
+            it ('should NOT add routes line to map', inject(function(mapApiService) {
+
+                fakeRouteLine.getBounds = jasmine.createSpy('getBounds');
+
+                fakeMap.addObjects = jasmine.createSpy('fakeMap.addObjects');
+
+                H.map.Polyline = jasmine.createSpy('new H.map.Polyline').and.returnValue(fakeRouteLine);
+
+                H.geo.Strip = function () {
+                    return fakeStrip;
+                };
+
+                mapApiService.init([]);
+                mapApiService.drawRoutes([]);
+
+                expect(H.map.Polyline).not.toHaveBeenCalled();
+
+                expect(fakeMap.addObjects).not.toHaveBeenCalledWith();
+
+                mapApiService.drawRoutes(null);
+
+                expect(H.map.Polyline).not.toHaveBeenCalled();
+
+                expect(fakeMap.addObjects).not.toHaveBeenCalledWith();
+
+            }));
+
+        });
+
+        describe('when route does not have color specified', function (){
+
+            it ('should add routes line to map with predefined blue color', inject(function(mapApiService) {
+
+                fakeRouteLine.getBounds = jasmine.createSpy('getBounds');
+
+                H.map.Polyline = jasmine.createSpy('new H.map.Polyline').and.returnValue(fakeRouteLine);
+
+                H.geo.Strip = function () {
+                    return fakeStrip;
+                };
+
+                route.color = null;
+
+                mapApiService.init([]);
+                mapApiService.drawRoutes([route]);
+
+                expect(H.map.Polyline).toHaveBeenCalledWith(fakeStrip, {
+                    style: { strokeColor: 'blue', lineWidth: 5 }
+                });
+
+            }));
+        });
+
     });
+
 
     describe('centerToRoute', function () {
 
