@@ -18,51 +18,6 @@ angular.module('navigationApp.controllers').controller('SearchController',
             $scope.notEnoughInformation = false;
         };
 
-        var prepareAreasToAvoid = function (areasToAvoid) {
-
-            var areas = [],
-                corners,
-                c1, c2,
-                boundingBox;
-
-            for (var i = 0, len = areasToAvoid.length; i < len; i++) {
-
-                corners = areasToAvoid[i].split(';');
-
-                c1 = corners[0].split(',');
-                c2 = corners[1].split(',');
-
-                boundingBox = {
-                    topLeft: { latitude: c1[0], longitude: c1[1] },
-                    bottomRight: { latitude: c2[0], longitude: c2[1] }
-                };
-
-                areas.push({
-                    boundingBox: boundingBox
-                })
-            }
-
-            return areas;
-        };
-
-        var prepareWayPoints = function (wayPoints) {
-
-            var points = [],
-                p;
-
-            for (var i = 0, l = wayPoints.length; i < l; i++) {
-
-                p = wayPoints[i].split(',');
-
-                points.push({
-                    latitude : p[0],
-                    longitude : p[1]
-                });
-            }
-
-            return points;
-        };
-
         var collectRoutes = function (routes, theme, wayPointsUsedForSearch, areasToAvoidUsedForSearch) {
 
             var route;
@@ -71,17 +26,6 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 $scope.noRouteFound = true;
                 return;
             }
-
-            //wayPointsUsedForSearch = prepareWayPoints(wayPointsUsedForSearch);
-            //areasToAvoidUsedForSearch = prepareAreasToAvoid(areasToAvoidUsedForSearch);
-
-            ///**
-            // * @todo remove it and listen to markers separately
-            // * @type {*|Array|!webdriver.promise.Promise}
-            // */
-            //wayPointsUsedForSearch = wayPointsUsedForSearch.map(function (wayPointUsedForSearch) {
-            //   return wayPointUsedForSearch.coordinates;
-            //});
 
             for (var i = 0, l = routes.length; i < l; i++) {
 
@@ -128,17 +72,9 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             routingService.clearResults();
 
-            //var deSerializedQuery = stateService.deserializeQuery(),
             var deSerializedQuery = stateService.getSearchCriteria(),
                 wayPoints = deSerializedQuery.wayPoints,
                 areasToAvoid = deSerializedQuery.areasToAvoid;
-
-                //wayPoints = deSerializedQuery.wayPoints.map(function (wayPoint) {
-                //    return wayPoint.coordinates;
-                //}),
-                //areasToAvoid = deSerializedQuery.areasToAvoid.map(function (areaToAvoid) {
-                //    return areaToAvoid.boundingBox;
-                //});
 
             wayPoints = wayPoints.filter(function (wayPoints) {
                 var coordinates = wayPoints.coordinates;

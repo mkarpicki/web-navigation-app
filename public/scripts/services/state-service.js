@@ -181,32 +181,11 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         return items;
     };
 
-    //var isAreaToAvoidValid = function (areaToAvoid) {
-    //    return true;
-    //};
-
-    //var isWayPointValid = function (wayPoint) {
-    //    return (wayPoint &&
-    //    wayPoint.coordinates &&
-    //    wayPoint.coordinates.latitude &&
-    //    wayPoint.coordinates.longitude);
-    //};
-
     var setAreasToAvoid = function (areasToAvoid) {
-        //
-        //areasToAvoid = areasToAvoid.filter(function (areaToAvoid) {
-        //    return isAreaToAvoidValid(areaToAvoid);
-        //});
-
         areasToAvoidStorage = areasToAvoid;
     };
 
     var setWayPoints = function (wayPoints) {
-
-        //wayPoints = wayPoints.filter(function (wayPoint) {
-        //   return isWayPointValid(wayPoint);
-        //});
-
         wayPointsStorage = wayPoints;
     };
 
@@ -216,28 +195,14 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var overwriteStartPoint = function (point) {
-
-        //if (!isWayPointValid(point)) {
-        //    return;
-        //}
-
         wayPointsStorage[0] = point;
     };
 
     var addDestinationPoint = function (point) {
-
-        //if (!isWayPointValid(point)) {
-        //    return;
-        //}
-
         wayPointsStorage.push(point);
     };
 
     var overwriteDestinationPoint = function (point) {
-
-        //if (!isWayPointValid(point)) {
-        //    return;
-        //}
 
         if (wayPointsStorage.length < 3) {
 
@@ -252,10 +217,6 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var addWayPoint = function (point) {
-        //
-        //if (!isWayPointValid(point)) {
-        //    return;
-        //}
 
         if (wayPointsStorage.length < 2) {
 
@@ -273,11 +234,6 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
     };
 
     var addAreaToAvoid = function (area) {
-
-        //if (!isAreaToAvoidValid(area)) {
-        //    return;
-        //}
-
         areasToAvoidStorage.push(area);
     };
 
@@ -323,12 +279,11 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     return {
         serializeQuery: serializeQuery,
-        //deserializeQuery: deserializeQuery,
 
         clear: clear,
+
         setWayPoints: setWayPoints,
         setAreasToAvoid: setAreasToAvoid,
-
         overwriteStartPoint: overwriteStartPoint,
         overwriteDestinationPoint: overwriteDestinationPoint,
         addWayPoint: addWayPoint,

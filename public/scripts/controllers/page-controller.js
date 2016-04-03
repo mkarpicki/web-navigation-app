@@ -24,11 +24,6 @@ angular.module('navigationApp.controllers').controller('PageController',
         $scope.gettingLocationError = false;
         $scope.ready = false;
 
-        //var apply = function () {
-        //    routingService.clearResults();
-        //    $scope.$apply();
-        //};
-
         var overwriteStartPoint = function (point, text) {
 
             stateService.overwriteStartPoint({

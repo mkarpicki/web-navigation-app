@@ -79,12 +79,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                         wayPointsUsedForSearch = addCurrentPositionAsNewStartPoint(wayPointsUsedForSearch, currentPosition);
 
-                        //var wayPointsToUse = prepareWayPointsToUseAsStrings(wayPointsUsedForSearch);
-                        //var areasToUse = prepareAreasToUseAsStrings(areasToAvoidUsedForSearch);
-                        var wayPointsToUse = wayPointsUsedForSearch;
-                        var areasToUse = areasToAvoidUsedForSearch;
-
-                        routingService.calculateWithTrafficEnabled(wayPointsToUse, areasToUse).then(function (routes) {
+                        routingService.calculateWithTrafficEnabled(wayPointsUsedForSearch, areasToAvoidUsedForSearch).then(function (routes) {
 
                             if (routes && routes.length > 0) {
 
@@ -112,22 +107,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
 
             });
-
-            //var prepareAreasToUseAsStrings = function (areasToUse) {
-            //    return areasToUse.map(function (area) {
-            //        var boundingBox = area.boundingBox,
-            //            topLeft = boundingBox.topLeft,
-            //            bottomRight = boundingBox.bottomRight;
-            //
-            //        return (topLeft.latitude + "," + topLeft.longitude + ";" + bottomRight.latitude + "," + bottomRight.longitude);
-            //    });
-            //};
-            //
-            //var prepareWayPointsToUseAsStrings = function (wayPointsToUse) {
-            //    return wayPointsToUse.map(function (wayPoint) {
-            //        return (wayPoint.latitude + "," + wayPoint.longitude);
-            //    });
-            //};
 
             var addCurrentPositionAsNewStartPoint = function (wayPoints, currentPosition) {
 

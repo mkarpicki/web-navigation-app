@@ -144,18 +144,6 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
         //        wayPoints = newValues[1] || oldValues[1],
         //        areasToAvoid = newValues[2] || oldValues[2];
         //
-        //    console.log(' -------- watcher routes:');
-        //    console.log('new ' + newValues[0]);
-        //    console.log('old ' + oldValues[0]);
-        //
-        //    console.log(' -------- watcher wayPoints:');
-        //    console.log('new ' + newValues[1]);
-        //    console.log('old ' + oldValues[1]);
-        //
-        //    console.log(' -------- watcher areasToAvoid:');
-        //    console.log('new ' + newValues[2]);
-        //    console.log('old ' + oldValues[2]);
-        //
         //    mapApiService.clear();
         //
         //
