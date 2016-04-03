@@ -542,6 +542,37 @@ describe('map-api-service', function () {
 
     });
 
+    describe('centerToRoute', function () {
+
+        it('should create routeLine and call API setViewBounds with getBounds of route line', inject(function (mapApiService) {
+
+            var bounds = {};
+
+
+            var fakePolyline = {
+                getBounds: jasmine.createSpy('getBounds').and.returnValue(bounds)
+            };
+
+            H.map.Polyline = function () {
+                return fakePolyline;
+            };
+
+            fakeMap.setViewBounds = jasmine.createSpy('fakeMap.setViewBounds');
+
+            var fakeRoute = {
+                shape: []
+            };
+
+            mapApiService.init([]);
+            mapApiService.centerToRoute(fakeRoute);
+
+            expect(fakePolyline.getBounds).toHaveBeenCalled();
+            expect(fakeMap.setViewBounds).toHaveBeenCalledWith(bounds);
+
+        }));
+
+    });
+
     describe('clear', function () {
 
         it ('should remove objects from map', inject(function (mapApiService) {
