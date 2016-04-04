@@ -195,7 +195,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             bottomRight,
             point1,
             point2,
-            rectangle;
+            rectangle,
+            areas = [];
 
         if (areasToAvoid) {
 
@@ -209,12 +210,12 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
                 rectangle = H.geo.Rect.fromPoints(point1, point2);
 
-                map.addObject(
-                    new H.map.Rect(rectangle, {
-                        style: areaToAvoidStyle
-                    })
-                );
+                areas.push(new H.map.Rect(rectangle, {
+                    style: areaToAvoidStyle
+                }));
             }
+
+            map.addObjects(areas)
         }
     };
 
@@ -236,7 +237,6 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             }
 
             map.addObjects(markers);
-
         }
 
     };
