@@ -480,6 +480,67 @@ describe('map-api-service', function () {
 
     });
 
+    describe('drawAreasToAvoid', function () {
+
+        describe('when areas not delivered', function () {
+
+            it('should not add any rectangle to map', inject(function(mapApiService) {
+
+            }));
+
+        });
+
+        describe('when areas delivered', function () {
+
+            it('should add any rectangle to map', inject(function(mapApiService) {
+
+                var fakeArea = {
+                    boundingBox: {
+                        topLeft: {
+                            latitude: 1,
+                            longitude: 2
+                        },
+                        bottomRight: {
+                            latitude: 3,
+                            longitude: 4
+                        }
+                    }
+                };
+
+                var fakeRect = {};
+                var fakePoint = {};
+                var fakeRectangleObj = {};
+
+                H.geo.Point = jasmine.createSpy('H.geo.Point').and.returnValue(fakePoint);
+
+                H.geo.Rect.fromPoints = jasmine.createSpy('H.geo.Rect.fromPoints').and.returnValue(fakeRect);
+
+                H.map.Rect = jasmine.createSpy('H.map.Rect').and.returnValue(fakeRectangleObj);
+
+                fakeMap.addObject = jasmine.createSpy('fakeMap.addObject');
+
+                mapApiService.init([]);
+                mapApiService.drawAreasToAvoid([fakeArea]);
+
+                expect(H.geo.Point).toHaveBeenCalledWith(fakeArea.boundingBox.topLeft.latitude, fakeArea.boundingBox.topLeft.longitude);
+                expect(H.geo.Point).toHaveBeenCalledWith(fakeArea.boundingBox.bottomRight.latitude, fakeArea.boundingBox.bottomRight.longitude);
+
+                expect(H.geo.Rect.fromPoints).toHaveBeenCalledWith(fakePoint, fakePoint);
+
+                expect(H.map.Rect).toHaveBeenCalledWith(fakeRect,{
+                    style: {
+                        strokeColor: '#e2e2e2',
+                        lineWidth: 8
+                    }
+                });
+
+                expect(fakeMap.addObject).toHaveBeenCalledWith(fakeRectangleObj);
+            }));
+
+        });
+
+    });
+
     describe('drawWayPoints', function () {
 
         describe('when wayPoints not delivered', function () {
