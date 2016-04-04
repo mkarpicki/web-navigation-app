@@ -657,7 +657,46 @@ describe('stateService', function () {
 
     });
 
-    describe('when deserializeQuery', function () {
+    describe('serializeQuery', function () {
+
+        describe('when added wayPoints or areas to avoid have missing coordinates', function () {
+
+            it ('should use empty strings instead', inject(function (stateService) {
+
+                var w0 = {
+                    title: 'start',
+                    coordinates: {
+                        latitude: null,
+                        longitude: null
+                    }
+                };
+
+                var area0 = {
+                    title: 'avoid-me',
+                    boundingBox: {
+                        topLeft: {},
+                        bottomRight: {
+                            latitude: null,
+                            longitude: null
+                        }
+                    }
+                };
+
+                stateService.addWayPoint(w0);
+
+                stateService.addAreaToAvoid(area0);
+
+                var serializedQuery = stateService.serializeQuery();
+
+                expect(serializedQuery).toEqual('w0=start|,&a0=avoid-me|,;,');
+
+            }));
+
+        });
+
+    });
+
+    describe('deserializeQuery', function () {
 
         describe('and query does not contain none :areas & wayPoints', function () {
 
