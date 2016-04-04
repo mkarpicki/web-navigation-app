@@ -544,6 +544,54 @@ describe('stateService', function () {
 
     });
 
+    describe('getSearchCriteria', function () {
+
+        it('should return object with added wayPoints and areas to avoid', inject(function(stateService) {
+
+            var start = {
+                title: 'start',
+                coordinates: {
+                    latitude: 1,
+                    longitude: 2
+                }
+            };
+
+            var destination = {
+                title: 'destination',
+                coordinates: {
+                    latitude: 3,
+                    longitude: 4
+                }
+            };
+
+            var area = {
+                title: 'area-0',
+                boundingBox: {
+                    topLeft: {
+                        latitude: 1,
+                        longitude: 2
+                    },
+                    bottomRight: {
+                        latitude: 3,
+                        longitude: 4
+                    }
+                }
+            };
+
+            stateService.addWayPoint(start);
+            stateService.addWayPoint(destination);
+
+            stateService.addAreaToAvoid(area);
+
+            var criteria = stateService.getSearchCriteria();
+
+            expect(criteria.wayPoints).toEqual([start, destination]);
+            expect(criteria.areasToAvoid).toEqual([area]);
+
+        }));
+
+    });
+
     describe('serializeQuery', function () {
 
         it ('should build query from all added objects', inject(function (stateService) {
@@ -606,6 +654,50 @@ describe('stateService', function () {
             expect(stateService.serializeQuery()).toEqual(expectedQuery);
 
         }));
+
+    });
+
+    describe('when deserializeQuery', function () {
+
+        describe('and query does not contain none :areas & wayPoints', function () {
+
+        });
+
+        describe('and query contains wayPoints and areas to avoid', function () {
+
+            it('should parse query and prepare object with wayPoints and areas To avoid', inject(function (stateService) {
+
+                _$location_.search = jasmine.createSpy('$location.search()').and.returnValue({
+                    w0: "10249 Berlin, Deutschland|52.52281559009635,13.442309142765453",
+                    a0: "Landsberger Allee, 10407 Berlin, Deutschland|52.52,13.21735955507;52.525421716745996,13.449030286597603"
+                });
+
+                var objectFromQuery = stateService.deserializeQuery();
+
+                expect(objectFromQuery.wayPoints).toEqual([{
+                    title: '10249 Berlin, Deutschland',
+                    coordinates: {
+                        latitude: '52.52281559009635',
+                        longitude: '13.442309142765453'
+                    }
+                }]);
+
+                expect(objectFromQuery.areasToAvoid).toEqual([{
+                    title: 'Landsberger Allee, 10407 Berlin, Deutschland',
+                    boundingBox: {
+                        topLeft: {
+                            latitude: '52.52',
+                            longitude: '13.21735955507'
+                        },
+                        bottomRight: {
+                            latitude: '52.525421716745996',
+                            longitude: '13.449030286597603'
+                        }
+                    }
+                }]);
+
+            }));
+        });
 
     });
 
