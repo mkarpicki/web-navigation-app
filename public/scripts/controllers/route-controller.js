@@ -15,6 +15,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
             $scope.route = null;
             $scope.undefinedRoute = false;
             $scope.driveModeEnabled = false;
+            $scope.recalculating = false;
 
             $scope.getManeuver = function () {
                 var maneuver = [];
@@ -79,7 +80,11 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                         wayPointsUsedForSearch = addCurrentPositionAsNewStartPoint(wayPointsUsedForSearch, currentPosition);
 
+                        $scope.recalculating = true;
+
                         routingService.calculateWithTrafficEnabled(wayPointsUsedForSearch, areasToAvoidUsedForSearch).then(function (routes) {
+
+                            $scope.recalculating = false;
 
                             if (routes && routes.length > 0) {
 
@@ -97,6 +102,8 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                             }
 
+                        }, function () {
+                            $scope.recalculating = false;
                         });
 
                     }
@@ -119,7 +126,8 @@ angular.module('navigationApp.controllers').controller('RouteController',
             };
 
             var getWayPointsWithoutStartPoint = function (route) {
-                return route.wayPointsUsedForSearch.slice(1, route.length);
+                //return route.wayPointsUsedForSearch.slice(1, route.length);
+                return route.wayPointsUsedForSearch.slice(1, route.wayPointsUsedForSearch.length);
             };
 
             var positionNotChangedEnough = function (currentPosition, lastPosition) {
