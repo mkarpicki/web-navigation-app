@@ -8,7 +8,9 @@ var http = require('http'),
     //cookieParser    = require("cookie-parser"),
     //cookieSession   = require("cookie-session"),
     //bodyParser      = require('body-parser'),
-    express = require('express');
+    express = require('express'),
+
+    defaultPort = 3000;
 
 var routes = require('./routes.js');
 
@@ -18,7 +20,7 @@ var app = express();
 //app.engine('html', 'ejs');
 //app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || defaultPort);
 
 //web-navigation-app/backend/node/src
 var rootFolder = "."
@@ -42,7 +44,7 @@ app.use('/', routes);
 
 //module.exports = app;
 
-var server = app.listen(3000, 'localhost', function () {
+var server = app.listen(defaultPort, 'localhost', function () {
 
     var host = server.address().address;
     var port = server.address().port;

@@ -15,7 +15,10 @@ module.exports = function(grunt) {
                     }
                 }
             },
-            ignore: ['test/**/*.js', 'test-results/**/*.js']
+            ignore: [
+                'test/**/*.js',
+                'test-results/**/*.js'
+            ]
         },
 
         jshint: {
@@ -25,6 +28,10 @@ module.exports = function(grunt) {
                     '!public/scripts/vendor/**/*.js'
                 ]
             }
+        },
+
+        clean: {
+            build: ["test-results"]
         },
 
 
@@ -141,10 +148,12 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('tests:frontend', [
+        'clean:build',
         'karma:unit'
     ]);
 
     grunt.registerTask('tests:e2e', [
+        'clean:build',
         'protractor'
     ]);
 
@@ -165,6 +174,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-karma');
 
     //grunt.loadNpmTasks('grunt-shell');
