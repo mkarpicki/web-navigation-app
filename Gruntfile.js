@@ -153,7 +153,6 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('tests:e2e', [
-        'clean:build',
         'protractor'
     ]);
 
