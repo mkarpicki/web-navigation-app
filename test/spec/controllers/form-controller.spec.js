@@ -74,41 +74,79 @@ describe('FormController', function () {
 
         describe('and way points kept in stateService', function () {
 
-            it('should set start point, destination point and way points in scope', function () {
+            describe('and only one wayPoint stored', function () {
 
-                var start = {
-                        title: 'start',
-                        coordinates: { latitude: 1, longitude: 2}
-                    },
-                    middle1 = {
-                        title: 'middle1',
-                        coordinates: { latitude: 3, longitude: 4}
-                    },
-                    middle2 = {
-                        title: 'middle2',
-                        coordinates: { latitude: 5, longitude: 6}
-                    },
-                    destination = {
-                        title: 'destination',
-                        coordinates: { latitude: 7, longitude: 8}
-                    };
+                it('should set start point and leave destination point empty', function () {
 
-                fakeDeSerializedQuery.wayPoints = [start, middle1, middle2, destination];
+                    var start = {
+                            title: 'start',
+                            coordinates: { latitude: 1, longitude: 2}
+                        };
 
-                $controller("FormController", {
-                    $scope: $scope,
-                    $location: $location,
-                    routingService: routingService,
-                    stateService: stateService,
-                    searchService: searchService
+                    fakeDeSerializedQuery.wayPoints = [start];
+
+                    $controller("FormController", {
+                        $scope: $scope,
+                        $location: $location,
+                        routingService: routingService,
+                        stateService: stateService,
+                        searchService: searchService
+                    });
+
+                    $scope.$apply();
+
+                    expect($scope.wayPoints[0]).toEqual(start);
+                    expect($scope.wayPoints[1]).toEqual({
+                        title: '',
+                        coordinates: {
+                            latitude: null,
+                            longitude: null
+                        }
+                    });
+
                 });
 
-                $scope.$apply();
+            });
 
-                expect($scope.wayPoints[0]).toEqual(start);
-                expect($scope.wayPoints[1]).toEqual(middle1);
-                expect($scope.wayPoints[2]).toEqual(middle2);
-                expect($scope.wayPoints[3]).toEqual(destination);
+            describe('and many wayPoints stored in stateService', function () {
+
+                it('should set start point, destination point and way points in scope', function () {
+
+                    var start = {
+                            title: 'start',
+                            coordinates: { latitude: 1, longitude: 2}
+                        },
+                        middle1 = {
+                            title: 'middle1',
+                            coordinates: { latitude: 3, longitude: 4}
+                        },
+                        middle2 = {
+                            title: 'middle2',
+                            coordinates: { latitude: 5, longitude: 6}
+                        },
+                        destination = {
+                            title: 'destination',
+                            coordinates: { latitude: 7, longitude: 8}
+                        };
+
+                    fakeDeSerializedQuery.wayPoints = [start, middle1, middle2, destination];
+
+                    $controller("FormController", {
+                        $scope: $scope,
+                        $location: $location,
+                        routingService: routingService,
+                        stateService: stateService,
+                        searchService: searchService
+                    });
+
+                    $scope.$apply();
+
+                    expect($scope.wayPoints[0]).toEqual(start);
+                    expect($scope.wayPoints[1]).toEqual(middle1);
+                    expect($scope.wayPoints[2]).toEqual(middle2);
+                    expect($scope.wayPoints[3]).toEqual(destination);
+
+                });
 
             });
 
