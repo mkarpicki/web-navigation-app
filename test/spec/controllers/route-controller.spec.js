@@ -33,6 +33,14 @@ describe('RouteController', function () {
         };
 
         stateService = {
+            getSearchCriteria: function () {
+                return {
+                    wayPoints: [],
+                    areasToAvoid: []
+                };
+            },
+            setWayPoints: function () {},
+            setAreasToAvoid: function () {},
             enableNavigationMode: function () {},
             disableNavigationMode: function (){},
             back: function () {}
@@ -60,8 +68,8 @@ describe('RouteController', function () {
             it ('should save route to own scope', function () {
 
                 var routes = [
-                    { wayPointsUsedForSearch: []},
-                    { wayPointsUsedForSearch: []}
+                    {},
+                    {}
                 ];
 
                 $routeParams.index = 1;
@@ -95,8 +103,8 @@ describe('RouteController', function () {
             it ('should save route to own scope', function () {
 
                 var routes = [
-                    { wayPointsUsedForSearch: []},
-                    { wayPointsUsedForSearch: []}
+                    {},
+                    {}
                 ];
 
                 $routeParams.index = 666;
@@ -375,14 +383,19 @@ describe('RouteController', function () {
             ];
             areasToAvoidUsedForSearch = [];
 
+            stateService.getSearchCriteria = function () {
+                return {
+                    wayPoints: wayPointsUsedForSearch,
+                    areasToAvoid: areasToAvoidUsedForSearch
+                };
+            };
+
             defaultRoute = {
                 shape: [
                     '52,13',
                     '52.1,13,1'
                 ],
-                color: 'blue',
-                wayPointsUsedForSearch: wayPointsUsedForSearch,
-                areasToAvoidUsedForSearch: areasToAvoidUsedForSearch
+                color: 'blue'
             };
 
             fakeEventParams.eventType = events.POSITION_EVENT_TYPES.CHANGE;
@@ -495,9 +508,7 @@ describe('RouteController', function () {
                             }
                         };
 
-                        newRoute = {
-                            wayPointsUsedForSearch: wayPointsUsedForSearch
-                        };
+                        newRoute = {};
 
                         $controller("RouteController", {
                             $scope: $scope,
@@ -515,16 +526,14 @@ describe('RouteController', function () {
 
                         $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
-                        wayPointsUsedForSearch = wayPointsUsedForSearch.slice(1, wayPointsUsedForSearch.length);
-                        //wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch;
-                        wayPointsUsedForSearch.unshift({
+                        wayPointsUsedForSearch[0] = {
                             title: '',
                             coordinates: {
                                 latitude: fakeEventParams.param.coords.latitude,
                                 longitude: fakeEventParams.param.coords.longitude
                             }
-                        });
-                        
+                        };
+
                         routingService.clearResults = jasmine.createSpy('routingService.clearResults');
                         routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
                         routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
@@ -546,10 +555,6 @@ describe('RouteController', function () {
                             return 100;
                         };
 
-                    });
-
-                    describe('and location is still on route', function () {
-                       //
                     });
 
                     describe('and location is not on route anymore', function () {
@@ -576,9 +581,7 @@ describe('RouteController', function () {
                                         }
                                     };
 
-                                    newRoute = {
-                                        wayPointsUsedForSearch: wayPointsUsedForSearch
-                                    };
+                                    newRoute = {};
 
                                     $controller("RouteController", {
                                         $scope: $scope,
@@ -598,15 +601,13 @@ describe('RouteController', function () {
 
                                     $scope.driveModeEnabled = driveModeEnabled;
 
-                                    wayPointsUsedForSearch = wayPointsUsedForSearch.slice(1, wayPointsUsedForSearch.length);
-                                    //wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch;
-                                    wayPointsUsedForSearch.unshift({
+                                    wayPointsUsedForSearch[0] = {
                                         title: '',
                                         coordinates: {
                                             latitude: fakeEventParams.param.coords.latitude,
                                             longitude: fakeEventParams.param.coords.longitude
                                         }
-                                    });
+                                    };
 
                                     $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
@@ -630,9 +631,7 @@ describe('RouteController', function () {
                                         }
                                     };
 
-                                    newRoute = {
-                                        wayPointsUsedForSearch: wayPointsUsedForSearch
-                                    };
+                                    newRoute = {};
 
                                     $controller("RouteController", {
                                         $scope: $scope,
@@ -652,15 +651,13 @@ describe('RouteController', function () {
 
                                     $scope.driveModeEnabled = driveModeEnabled;
 
-                                    wayPointsUsedForSearch = wayPointsUsedForSearch.slice(1, wayPointsUsedForSearch.length);
-                                    //wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch;
-                                    wayPointsUsedForSearch.unshift({
+                                    wayPointsUsedForSearch[0] = {
                                         title: '',
                                         coordinates: {
                                             latitude: fakeEventParams.param.coords.latitude,
                                             longitude: fakeEventParams.param.coords.longitude
                                         }
-                                    });
+                                    };
 
                                     $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
@@ -680,9 +677,7 @@ describe('RouteController', function () {
 
                                     it('should clear routes in routingService, save new route in it and update route in scope', function () {
 
-                                        newRoute = {
-                                            wayPointsUsedForSearch: wayPointsUsedForSearch
-                                        };
+                                        newRoute = {};
 
                                         $controller("RouteController", {
                                             $scope: $scope,
@@ -696,35 +691,31 @@ describe('RouteController', function () {
 
                                         $scope.$apply();
 
+                                        stateService.setWayPoints = jasmine.createSpy('routingService.setWayPoints');
                                         routingService.clearResults = jasmine.createSpy('routingService.clearResults');
                                         routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
                                         routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
 
                                         $scope.driveModeEnabled = driveModeEnabled;
 
-                                        wayPointsUsedForSearch = wayPointsUsedForSearch.slice(1, wayPointsUsedForSearch.length);
-                                        //wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch;
-                                        wayPointsUsedForSearch.unshift({
+                                        wayPointsUsedForSearch[0] = {
                                             title: '',
                                             coordinates: {
                                                 latitude: fakeEventParams.param.coords.latitude,
                                                 longitude: fakeEventParams.param.coords.longitude
                                             }
-                                        });
+                                        };
 
                                         $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
                                         expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                         expect(routingService.clearResults).toHaveBeenCalled();
                                         expect(routingService.saveRoute).toHaveBeenCalledWith(newRoute);
+                                        expect(stateService.setWayPoints).toHaveBeenCalledWith(wayPointsUsedForSearch);
                                         expect($scope.route).toEqual(newRoute);
                                         expect($scope.recalculating).toEqual(false);
 
                                     });
-                                });
-
-                                describe('and visited wayPoints on route', function () {
-                                    //
                                 });
 
                             });
@@ -741,9 +732,7 @@ describe('RouteController', function () {
                                     }
                                 };
 
-                                newRoute = {
-                                    wayPointsUsedForSearch: wayPointsUsedForSearch
-                                };
+                                newRoute = {};
 
                                 $controller("RouteController", {
                                     $scope: $scope,
@@ -763,15 +752,13 @@ describe('RouteController', function () {
 
                                 $scope.driveModeEnabled = driveModeEnabled;
 
-                                wayPointsUsedForSearch = wayPointsUsedForSearch.slice(1, wayPointsUsedForSearch.length);
-                                //wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch;
-                                wayPointsUsedForSearch.unshift({
+                                wayPointsUsedForSearch[0] = {
                                     title: '',
                                     coordinates: {
                                         latitude: fakeEventParams.param.coords.latitude,
                                         longitude: fakeEventParams.param.coords.longitude
                                     }
-                                });
+                                };
 
                                 $scope.recalculating = true;
 
@@ -786,7 +773,6 @@ describe('RouteController', function () {
                             });
 
                         });
-
 
                     });
 

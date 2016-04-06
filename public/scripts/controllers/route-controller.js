@@ -110,8 +110,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
                                 routingService.saveRoute(newRoute);
                                 $scope.route = newRoute;
 
-                                wayPointsUsedForSearch = getWayPointsWithoutStartPoint(wayPointsUsedForSearch);
-
+                                wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsUsedForSearch));
                             }
 
                         }, function () {
