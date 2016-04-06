@@ -1,3 +1,16 @@
+/**
+ * @todo
+ * Think what to do when navigation ends on destination point:
+ * - stateService empty?
+ * - stateService remembered on load and restore on back?
+ *
+ * When stop navigation and click back
+ * - restore?
+ *
+ * When click back when navigation
+ * - ask to stop ?
+ * -if yes then restore?
+ */
 angular.module('navigationApp.controllers').controller('RouteController',
     ['$scope', '$sce', '$routeParams', 'events', 'routingService', 'stateService', 'mapApiService',
         function($scope, $sce, $routeParams, events, routingService, stateService, mapApiService) {
@@ -91,14 +104,13 @@ angular.module('navigationApp.controllers').controller('RouteController',
                                 var newRoute = routes[0];
 
                                 newRoute.color = $scope.route.color;
-                                newRoute.wayPointsUsedForSearch = wayPointsUsedForSearch;
-                                newRoute.areasToAvoidUsedForSearch = areasToAvoidUsedForSearch;
+                                stateService.setWayPoints(wayPointsUsedForSearch);
 
                                 routingService.clearResults();
                                 routingService.saveRoute(newRoute);
                                 $scope.route = newRoute;
 
-                                wayPointsUsedForSearch = getWayPointsWithoutStartPoint($scope.route);
+                                wayPointsUsedForSearch = getWayPointsWithoutStartPoint(wayPointsUsedForSearch);
 
                             }
 
@@ -125,9 +137,9 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 return wayPointsUsedForSearch;
             };
 
-            var getWayPointsWithoutStartPoint = function (route) {
-                //return route.wayPointsUsedForSearch.slice(1, route.length);
-                return route.wayPointsUsedForSearch.slice(1, route.wayPointsUsedForSearch.length);
+            var getWayPointsWithoutStartPoint = function (wayPoints) {
+                wayPoints.shift();
+                return wayPoints;
             };
 
             var positionNotChangedEnough = function (currentPosition, lastPosition) {
@@ -199,9 +211,11 @@ angular.module('navigationApp.controllers').controller('RouteController',
                         $scope.route = route;
                         routingService.saveRoute(route);
 
+                        var searchCriteria = stateService.getSearchCriteria();
+
                         //skip starting point and collect all important wayPoints
-                        wayPointsUsedForSearch = getWayPointsWithoutStartPoint($scope.route);
-                        areasToAvoidUsedForSearch = $scope.route.areasToAvoidUsedForSearch;
+                        wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(searchCriteria.wayPoints));
+                        areasToAvoidUsedForSearch = searchCriteria.areasToAvoid;
 
                         mapApiService.centerToRoute(route);
                         break;

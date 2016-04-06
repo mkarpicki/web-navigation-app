@@ -1,3 +1,7 @@
+/**
+ * @todo
+ * - add back button
+ */
 angular.module('navigationApp.controllers').controller('SearchController',
     ["$scope", '$sce', 'routingService', 'colorThemesService', 'stateService', 'mapApiService',
         function($scope, $sce, routingService, colorThemesService, stateService, mapApiService) {
@@ -30,10 +34,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
             for (var i = 0, l = routes.length; i < l; i++) {
 
                 route = routes[i];
-
                 route.color = colorThemesService.getColor(theme);
-                route.wayPointsUsedForSearch = wayPointsUsedForSearch;
-                route.areasToAvoidUsedForSearch = areasToAvoidUsedForSearch;
 
                 routingService.saveRoute(route);
             }

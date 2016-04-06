@@ -1,3 +1,10 @@
+/**
+ * @todo
+ * - if position found show checkbox to use as 'from'
+ * - when checkbox marked reverse geocode and fill first waypoint
+ * - observe position and if changed enough update again
+ * - on each update update $location and state
+ */
 angular.module('navigationApp.controllers').controller('FormController',
     ["$rootScope", "$scope", '$location', 'routingService', 'stateService', 'searchService' , function($rootScope, $scope, $location, routingService, stateService, searchService) {
 
