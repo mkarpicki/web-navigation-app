@@ -484,7 +484,58 @@ describe('RouteController', function () {
             describe('and event type is POSITION_EVENT_TYPES.CHANGE', function () {
 
                 describe('and location (position) not changed enough', function () {
-                   //
+
+                    it('should not update routingService and it should keep old route in scope', function () {
+
+                        mapApiService.distance = jasmine.createSpy('mapApiService.distance').and.returnValue(0);
+
+                        fakePromise = {
+                            then: function (success, failure) {
+                                success(null);
+                            }
+                        };
+
+                        newRoute = {
+                            wayPointsUsedForSearch: wayPointsUsedForSearch
+                        };
+
+                        $controller("RouteController", {
+                            $scope: $scope,
+                            $sce: $sce,
+                            $routeParams: $routeParams,
+                            routingService: routingService,
+                            stateService: stateService,
+                            mapApiService: mapApiService,
+                            events: events
+                        });
+
+                        $scope.$apply();
+
+                        $scope.driveModeEnabled = driveModeEnabled;
+
+                        $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                        wayPointsUsedForSearch = wayPointsUsedForSearch.slice(1, wayPointsUsedForSearch.length);
+                        //wayPointsUsedForSearch = $scope.route.wayPointsUsedForSearch;
+                        wayPointsUsedForSearch.unshift({
+                            title: '',
+                            coordinates: {
+                                latitude: fakeEventParams.param.coords.latitude,
+                                longitude: fakeEventParams.param.coords.longitude
+                            }
+                        });
+                        
+                        routingService.clearResults = jasmine.createSpy('routingService.clearResults');
+                        routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
+                        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+
+                        $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                        expect(routingService.calculateWithTrafficEnabled).not.toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+
+                    });
+
                 });
 
                 describe('and location (position) changed enough to react', function () {
