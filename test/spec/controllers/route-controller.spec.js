@@ -551,7 +551,7 @@ describe('RouteController', function () {
 
                     beforeEach(function () {
 
-                        mapApiService.distance = function () {
+                        mapApiService.distance = function (a, b) {
                             return 100;
                         };
 
@@ -691,7 +691,6 @@ describe('RouteController', function () {
 
                                         $scope.$apply();
 
-                                        stateService.setWayPoints = jasmine.createSpy('routingService.setWayPoints');
                                         routingService.clearResults = jasmine.createSpy('routingService.clearResults');
                                         routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
                                         routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
@@ -711,7 +710,6 @@ describe('RouteController', function () {
                                         expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                         expect(routingService.clearResults).toHaveBeenCalled();
                                         expect(routingService.saveRoute).toHaveBeenCalledWith(newRoute);
-                                        expect(stateService.setWayPoints).toHaveBeenCalledWith(wayPointsUsedForSearch);
                                         expect($scope.route).toEqual(newRoute);
                                         expect($scope.recalculating).toEqual(false);
 
