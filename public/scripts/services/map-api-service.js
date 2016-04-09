@@ -215,7 +215,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
                 }));
             }
 
-            map.addObjects(areas)
+            map.addObjects(areas);
         }
     };
 
