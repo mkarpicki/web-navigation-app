@@ -1,4 +1,4 @@
-angular.module('navigationApp.directives').directive('map', ['mapApiService', 'routingService', 'stateService', 'events', function(mapApiService, routingService, stateService, events) {
+angular.module('navigationApp.directives').directive('map', ['mapApiService', 'events', function(mapApiService, events) {
 
     'use strict';
 
