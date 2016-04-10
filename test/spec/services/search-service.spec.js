@@ -14,6 +14,9 @@ describe('searchService', function () {
         config = {};
         config.APP_ID = 'someAppId';
         config.APP_CODE = 'someAppCode';
+
+        config.NUMBER_OF_SEARCH_SUGGESTIONS = 100;
+
         $provide.value('config', config);
 
         SEARCH_SUGGESTIONS_URL = "https://places.api.here.com/places/v1/suggest";
@@ -23,7 +26,8 @@ describe('searchService', function () {
         "app_id={{appId}}" +
         "&app_code={{appCode}}" +
         "&at={{at}}" +
-        "&q={{q}}";
+        "&q={{q}}" +
+        "&size={{size}}";
 
     }));
 
@@ -42,7 +46,8 @@ describe('searchService', function () {
                         "?app_id=" + config.APP_ID +
                         "&app_code=" + config.APP_CODE +
                         "&at=" + at.latitude + "," + at.longitude +
-                        "&q=" + q;
+                        "&q=" + q +
+                        "&size=" + config.NUMBER_OF_SEARCH_SUGGESTIONS;
 
                 var status = null;
 
@@ -76,7 +81,8 @@ describe('searchService', function () {
                             "?app_id=" + config.APP_ID +
                             "&app_code=" + config.APP_CODE +
                             "&at=0,0" +
-                            "&q=" + q,
+                            "&q=" + q +
+                            "&size=" + config.NUMBER_OF_SEARCH_SUGGESTIONS,
 
                         expectedSuggestions = ['p1', 'p2'];
 
@@ -106,7 +112,8 @@ describe('searchService', function () {
                         "?app_id=" + config.APP_ID +
                         "&app_code=" + config.APP_CODE +
                         "&at=" + at.latitude + "," + at.longitude +
-                        "&q=" + q,
+                        "&q=" + q  +
+                        "&size=" + config.NUMBER_OF_SEARCH_SUGGESTIONS,
 
                     expectedSuggestions = ['p1', 'p2'];
 
@@ -188,7 +195,8 @@ describe('searchService', function () {
                         "?app_id=" + config.APP_ID +
                         "&app_code=" + config.APP_CODE +
                         "&at=" + at.latitude + "," + at.longitude +
-                        "&q=" + q;
+                        "&q=" + q  +
+                        "&size=" + 1;
 
                 var status = null;
 
@@ -222,7 +230,8 @@ describe('searchService', function () {
                             "?app_id=" + config.APP_ID +
                             "&app_code=" + config.APP_CODE +
                             "&at=0,0" +
-                            "&q=" + q,
+                            "&q=" + q +
+                            "&size=" + 1,
 
                         expectedResults = ['res1', 'res2'];
 
@@ -257,7 +266,8 @@ describe('searchService', function () {
                         "?app_id=" + config.APP_ID +
                         "&app_code=" + config.APP_CODE +
                         "&at=" + at.latitude + "," + at.longitude +
-                        "&q=" + q,
+                        "&q=" + q +
+                        "&size=" + 1,
 
                     expectedResults = ['res1', 'res2'];
 

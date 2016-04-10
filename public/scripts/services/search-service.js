@@ -5,6 +5,7 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
     var appId = config.APP_ID,
         appCode = config.APP_CODE;
 
+    var numberOfSuggestions = config.NUMBER_OF_SEARCH_SUGGESTIONS;
 
     var SEARCH_SUGGESTIONS_URL = "https://places.api.here.com/places/v1/suggest",
         SEARCH_URL = "https://places.api.here.com/places/v1/discover/search";
@@ -13,9 +14,10 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
         "app_id={{appId}}" +
         "&app_code={{appCode}}" +
         "&at={{at}}" +
-        "&q={{q}}";
+        "&q={{q}}" +
+        "&size={{size}}";
 
-    var get = function (apiUrl, q, at, field) {
+    var get = function (apiUrl, q, at, size, field) {
 
         if (!at) {
             at = '0,0';
@@ -32,7 +34,8 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
             appCode: appCode,
             url: apiUrl,
             at: at,
-            q: q
+            q: q,
+            size: size
         });
 
         var cancel = function () {
@@ -60,11 +63,11 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
     };
 
     var getSuggestions = function (q, at) {
-        return get(SEARCH_SUGGESTIONS_URL, q, at, 'suggestions');
+        return get(SEARCH_SUGGESTIONS_URL, q, at, numberOfSuggestions, 'suggestions');
     };
 
     var getResults = function (q, at) {
-        return get(SEARCH_URL, q, at, 'results.items');
+        return get(SEARCH_URL, q, at, 1, 'results.items');
     };
 
     return {
