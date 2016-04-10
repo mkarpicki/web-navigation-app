@@ -1170,6 +1170,36 @@ describe('FormController', function () {
 
                         it('should resolve last position', function () {
 
+                            var distance = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT + 1;
+
+                            var fakePromise = {
+                                then: function (a) {
+                                    a('some text');
+                                }
+                            };
+
+                            geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse').and.returnValue(fakePromise);
+                            mapApiService.distance = jasmine.createSpy('mapApiService.distance').and.returnValue(distance);
+
+                            $controller("FormController", {
+                                $scope: $scope,
+                                $location: $location,
+                                config: config,
+                                events: events,
+                                mapApiService: mapApiService,
+                                geoCoderService: geoCoderService,
+                                routingService: routingService,
+                                stateService: stateService,
+                                searchService: searchService
+                            });
+
+                            $scope.$apply();
+
+                            $scope.useCurrentPosition = true;
+
+                            $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                            expect(geoCoderService.reverse).toHaveBeenCalled();
                         });
 
                     });
@@ -1219,7 +1249,7 @@ describe('FormController', function () {
 
                             beforeEach(function () {
 
-                                distance = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT + 1
+                                distance = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT + 1;
 
                             });
 
