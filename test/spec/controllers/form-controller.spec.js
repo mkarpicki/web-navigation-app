@@ -978,7 +978,350 @@ describe('FormController', function () {
                 expect($scope.wayPoints[index].suggestions).toEqual(suggestions);
             });
 
-        })
+        });
+
+        describe('useCurrentPositionAsStartPoint', function () {
+
+            describe('when useCurrentPosition set to FALSE', function (){
+
+                it('should not resolve last position', function () {
+
+                    geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse');
+
+                    $controller("FormController", {
+                        $scope: $scope,
+                        $location: $location,
+                        config: config,
+                        events: events,
+                        mapApiService: mapApiService,
+                        geoCoderService: geoCoderService,
+                        routingService: routingService,
+                        stateService: stateService,
+                        searchService: searchService
+                    });
+
+                    $scope.$apply();
+
+                    $scope.useCurrentPosition = false;
+
+                    $scope.useCurrentPositionAsStartPoint();
+
+                    expect(geoCoderService.reverse).not.toHaveBeenCalled();
+
+                });
+
+            });
+
+            describe('when useCurrentPosition set to TRUE', function (){
+
+                describe('but no location found so far', function () {
+
+                    it('should NOT resolve last position', function () {
+
+                        geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse');
+
+                        $controller("FormController", {
+                            $scope: $scope,
+                            $location: $location,
+                            config: config,
+                            events: events,
+                            mapApiService: mapApiService,
+                            geoCoderService: geoCoderService,
+                            routingService: routingService,
+                            stateService: stateService,
+                            searchService: searchService
+                        });
+
+                        $scope.$apply();
+
+                        $scope.useCurrentPosition = true;
+
+                        $scope.useCurrentPositionAsStartPoint();
+
+                        expect(geoCoderService.reverse).not.toHaveBeenCalled();
+
+                    });
+
+                });
+
+            });
+
+        });
+
+        describe('when POSITION_EVENT fired', function (){
+
+            var fakeEventParams = {};
+
+            beforeEach(function () {
+
+                fakeEventParams.param = {
+                    coords: {
+                        latitude: 10,
+                        longitude: 20
+                    }
+                };
+
+            });
+
+            describe('and event_type is not defined', function () {
+
+                it('should not change state of currentPositionAvailable and should not reverse position', function (){
+
+                    geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse');
+
+                    $controller("FormController", {
+                        $scope: $scope,
+                        $location: $location,
+                        config: config,
+                        events: events,
+                        mapApiService: mapApiService,
+                        geoCoderService: geoCoderService,
+                        routingService: routingService,
+                        stateService: stateService,
+                        searchService: searchService
+                    });
+
+                    $scope.$apply();
+
+                    $scope.currentPositionAvailable = true;
+
+                    fakeEventParams.eventType = events.POSITION_EVENT_TYPES['not-known'];
+
+                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                    expect($scope.currentPositionAvailable).toEqual(true);
+                    expect(geoCoderService.reverse).not.toHaveBeenCalled();
+
+                });
+
+            });
+
+            describe('and event_type is ERROR', function () {
+
+                it('should set currentPositionAvailable to FALSE', function () {
+
+                    $controller("FormController", {
+                        $scope: $scope,
+                        $location: $location,
+                        config: config,
+                        events: events,
+                        mapApiService: mapApiService,
+                        geoCoderService: geoCoderService,
+                        routingService: routingService,
+                        stateService: stateService,
+                        searchService: searchService
+                    });
+
+                    $scope.$apply();
+
+                    $scope.currentPositionAvailable = true;
+
+                    fakeEventParams.eventType = events.POSITION_EVENT_TYPES.ERROR;
+
+                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                    expect($scope.currentPositionAvailable).toEqual(false);
+
+                });
+
+            });
+
+            describe('and event_type is CHANGE', function () {
+
+                beforeEach(function (){
+
+                    fakeEventParams.eventType = events.POSITION_EVENT_TYPES.CHANGE;
+
+                });
+
+                describe('and useCurrentPosition set to FALSE', function () {
+
+                    it('should not resolve last position', function () {
+
+                        geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse');
+
+                        $controller("FormController", {
+                            $scope: $scope,
+                            $location: $location,
+                            config: config,
+                            events: events,
+                            mapApiService: mapApiService,
+                            geoCoderService: geoCoderService,
+                            routingService: routingService,
+                            stateService: stateService,
+                            searchService: searchService
+                        });
+
+                        $scope.$apply();
+
+                        $scope.useCurrentPosition = false;
+
+                        $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                        expect(geoCoderService.reverse).not.toHaveBeenCalled();
+
+                    });
+
+                });
+
+                describe('and useCurrentPosition set to TRUE', function () {
+
+                    describe('and no position found before', function () {
+
+                        it('should resolve last position', function () {
+
+                        });
+
+                    });
+
+                    describe('and position found before', function () {
+
+                        describe('and new position not changed enough from last position', function () {
+
+                            it('should NOT resolve last position', function () {
+
+                                var distance = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT - 1;
+
+                                geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse');
+                                mapApiService.distance = jasmine.createSpy('mapApiService.distance').and.returnValue(distance);
+
+                                $controller("FormController", {
+                                    $scope: $scope,
+                                    $location: $location,
+                                    config: config,
+                                    events: events,
+                                    mapApiService: mapApiService,
+                                    geoCoderService: geoCoderService,
+                                    routingService: routingService,
+                                    stateService: stateService,
+                                    searchService: searchService
+                                });
+
+                                $scope.$apply();
+
+                                $scope.useCurrentPosition = false;
+
+                                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                $scope.useCurrentPosition = true;
+
+                                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                expect(geoCoderService.reverse).not.toHaveBeenCalled();
+
+                            });
+
+                        });
+
+                        describe('and new position changed enough from last position', function () {
+
+                            var distance;
+
+                            beforeEach(function () {
+
+                                distance = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT + 1
+
+                            });
+
+                            describe('and reverse geocoder did not deliver name of position', function (){
+
+                                it('should not update first waypoint', function () {
+
+                                    var fakePromise = {
+                                        then: function (a) {
+                                            a(null);
+                                        }
+                                    };
+
+                                    geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse').and.returnValue(fakePromise);
+                                    mapApiService.distance = jasmine.createSpy('mapApiService.distance').and.returnValue(distance);
+
+                                    $controller("FormController", {
+                                        $scope: $scope,
+                                        $location: $location,
+                                        config: config,
+                                        events: events,
+                                        mapApiService: mapApiService,
+                                        geoCoderService: geoCoderService,
+                                        routingService: routingService,
+                                        stateService: stateService,
+                                        searchService: searchService
+                                    });
+
+                                    $scope.$apply();
+
+                                    $scope.useCurrentPosition = false;
+
+                                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                    $scope.useCurrentPosition = true;
+
+                                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                    expect(geoCoderService.reverse).toHaveBeenCalled();
+
+                                });
+
+                            });
+
+                            describe('and reverse geocoder delivered name of position', function (){
+
+                                it('should update first waypoint', function () {
+
+                                    var fakePromise = {
+                                        then: function (a) {
+                                            a('some text');
+                                        }
+                                    };
+
+                                    geoCoderService.reverse = jasmine.createSpy('geoCoderService.reverse').and.returnValue(fakePromise);
+                                    mapApiService.distance = jasmine.createSpy('mapApiService.distance').and.returnValue(distance);
+
+                                    $controller("FormController", {
+                                        $scope: $scope,
+                                        $location: $location,
+                                        config: config,
+                                        events: events,
+                                        mapApiService: mapApiService,
+                                        geoCoderService: geoCoderService,
+                                        routingService: routingService,
+                                        stateService: stateService,
+                                        searchService: searchService
+                                    });
+
+                                    $scope.$apply();
+
+                                    $scope.useCurrentPosition = false;
+
+                                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                    $scope.useCurrentPosition = true;
+
+                                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                    expect(geoCoderService.reverse).toHaveBeenCalled();
+
+                                    expect($scope.wayPoints[0]).toEqual({
+                                        title: 'some text',
+                                        coordinates: {
+                                            latitude: fakeEventParams.param.coords.latitude,
+                                            longitude: fakeEventParams.param.coords.longitude
+                                        }
+                                    })
+
+                                });
+
+                            });
+
+                        });
+
+                    });
+
+                });
+
+            });
+
+        });
 
     });
 

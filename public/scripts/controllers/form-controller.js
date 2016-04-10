@@ -171,7 +171,9 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             geoCoderService.reverse(position).then(function (text) {
 
-                console.log(text);
+                if (!text) {
+                    return;
+                }
 
                 $scope.wayPoints[0] = {
                     title: text,
