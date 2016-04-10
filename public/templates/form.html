@@ -31,13 +31,14 @@
                 </li>
             </ul>
 
-            <input
-                    id="waypoint-{{$index}}"
-                    type="hidden"
-                    data-ng-model="wayPoints[$index].coordinates"
-                    >
             <button data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
                     data-ng-click="removeWayPoint($index);" >-</button>
+
+            <button data-ng-if="$index < (wayPoints.length - 1)"
+                    data-ng-click="moveWayPointDown($index);" >down</button>
+
+            <button data-ng-if="$index > 0"
+                    data-ng-click="moveWayPointUp($index);" >up</button>
         </li>
     </ul>
 

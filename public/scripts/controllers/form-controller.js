@@ -58,6 +58,20 @@ angular.module('navigationApp.controllers').controller('FormController',
             $location.url('/?' + buildSearchQuery());
         };
 
+        $scope.moveWayPointDown = function (index) {
+            //var wayPoint = $scope.wayPoints[index];
+            //$scope.wayPoints[index] = $scope.wayPoints[index + 1];
+            //$scope.wayPoints[index + 1] = wayPoint;
+            moveWayPoint(index, 1);
+        };
+
+        $scope.moveWayPointUp = function (index) {
+            //var wayPoint = $scope.wayPoints[index];
+            //$scope.wayPoints[index] = $scope.wayPoints[index - 1];
+            //$scope.wayPoints[index - 1] = wayPoint;
+            moveWayPoint(index, -1);
+        };
+
         $scope.clear = function () {
 
             $scope.wayPoints = getClearWayPoints();
@@ -162,6 +176,15 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             $scope.$apply();
         });
+
+        var moveWayPoint = function (index, position) {
+
+            var wayPoint = $scope.wayPoints[index];
+            $scope.wayPoints[index] = $scope.wayPoints[index + position];
+            $scope.wayPoints[index + position] = wayPoint;
+
+            $location.url('/?' + buildSearchQuery());
+        };
 
         var setStartPointFromPosition = function (position) {
 
