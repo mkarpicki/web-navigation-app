@@ -4,17 +4,17 @@
  * and then stop navigation mode
  */
 angular.module('navigationApp.controllers').controller('RouteController',
-    ['$scope', '$sce', '$routeParams', 'events', 'routingService', 'stateService', 'mapApiService',
-        function($scope, $sce, $routeParams, events, routingService, stateService, mapApiService) {
+    ['$scope', '$sce', '$routeParams', 'config', 'events', 'routingService', 'stateService', 'mapApiService',
+        function($scope, $sce, $routeParams, config, events, routingService, stateService, mapApiService) {
 
             'use strict';
 
             var visitedWayPoints = [],
                 searchCriteria = null,
 
-                metersFromRouteToRecalculate = 10,
-                minimumNumberOfMetersToCheckRouteState = 5,
-                numberOfMetersFromWayPointToAssumeVisited = 30,
+                metersFromRouteToRecalculate = config.NUMBER_OF_METERS_FROM_ROUTE_TO_RECALCULATE,
+                minimumNumberOfMetersToCheckRouteState = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT,
+                numberOfMetersFromWayPointToAssumeVisited = config.NUMBER_OF_METERS_FROM_WAY_POINT_TO_MARK_AS_VISITED,
                 lastPosition = null,
 
                 areasToAvoidUsedForSearch = [],
@@ -79,44 +79,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
                         return;
                     }
 
-                    lastPosition = currentPosition;
-
-                    var justVisitedWayPoints = findJustVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
-
-                    if (justVisitedWayPoints.length > 0) {
-                        visitedWayPoints = collectVisitedWayPoints(visitedWayPoints, justVisitedWayPoints);
-                    }
-
-                    if (notOnRouteAnymore(currentPosition, $scope.route)) {
-
-                        var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
-
-                        wayPointsToSearch = addCurrentPositionAsNewStartPoint(wayPointsToSearch, currentPosition);
-
-                        $scope.recalculating = true;
-
-                        routingService.calculateWithTrafficEnabled(wayPointsToSearch, areasToAvoidUsedForSearch).then(function (routes) {
-
-                            $scope.recalculating = false;
-
-                            if (routes && routes.length > 0) {
-
-                                var newRoute = routes[0];
-
-                                newRoute.color = $scope.route.color;
-
-                                routingService.clearResults();
-                                routingService.saveRoute(newRoute);
-                                $scope.route = newRoute;
-
-                                wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
-                            }
-
-                        }, function () {
-                            $scope.recalculating = false;
-                        });
-
-                    }
+                    trackRouteProgress(currentPosition);
 
                 //} else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
 
@@ -124,6 +87,49 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
 
             });
+
+            var trackRouteProgress = function (currentPosition) {
+
+                lastPosition = currentPosition;
+
+                var justVisitedWayPoints = findJustVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
+
+                if (justVisitedWayPoints.length > 0) {
+                    visitedWayPoints = collectVisitedWayPoints(visitedWayPoints, justVisitedWayPoints);
+                }
+
+                if (notOnRouteAnymore(currentPosition, $scope.route)) {
+
+                    var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
+
+                    wayPointsToSearch = addCurrentPositionAsNewStartPoint(wayPointsToSearch, currentPosition);
+
+                    $scope.recalculating = true;
+
+                    routingService.calculateWithTrafficEnabled(wayPointsToSearch, areasToAvoidUsedForSearch).then(function (routes) {
+
+                        $scope.recalculating = false;
+
+                        if (routes && routes.length > 0) {
+
+                            var newRoute = routes[0];
+
+                            newRoute.color = $scope.route.color;
+
+                            routingService.clearResults();
+                            routingService.saveRoute(newRoute);
+                            $scope.route = newRoute;
+
+                            wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
+                        }
+
+                    }, function () {
+                        $scope.recalculating = false;
+                    });
+
+                }
+
+            };
 
             var getOnlyNotVisitedWayPoints = function (allWayPoints, visitedWayPoints) {
 

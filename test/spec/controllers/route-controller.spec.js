@@ -12,7 +12,8 @@ describe('RouteController', function () {
         routingService,
         stateService,
         mapApiService,
-        events;
+        events,
+        config;
 
     beforeEach(module('navigationApp.controllers'));
 
@@ -44,6 +45,12 @@ describe('RouteController', function () {
             enableNavigationMode: function () {},
             disableNavigationMode: function (){},
             back: function () {}
+        };
+
+        config = {
+            NUMBER_OF_METERS_FROM_WAY_POINT_TO_MARK_AS_VISITED: 10,
+            NUMBER_OF_METERS_FROM_ROUTE_TO_RECALCULATE: 10,
+            NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT: 5
         };
 
         events = {
@@ -84,6 +91,7 @@ describe('RouteController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    config: config,
                     events: events
                 });
 
@@ -119,6 +127,7 @@ describe('RouteController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    config: config,
                     events: events
                 });
 
@@ -151,6 +160,7 @@ describe('RouteController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                config: config,
                 events: events
             });
 
@@ -178,6 +188,7 @@ describe('RouteController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                config: config,
                 events: events
             });
 
@@ -206,6 +217,7 @@ describe('RouteController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                config: config,
                 events: events
             });
 
@@ -234,6 +246,7 @@ describe('RouteController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                config: config,
                 events: events
             });
 
@@ -260,6 +273,7 @@ describe('RouteController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                config: config,
                 events: events
             });
 
@@ -286,6 +300,7 @@ describe('RouteController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    config: config,
                     events: events
                 });
 
@@ -310,6 +325,7 @@ describe('RouteController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    config: config,
                     events: events
                 });
 
@@ -342,6 +358,7 @@ describe('RouteController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    config: config,
                     events: events
                 });
 
@@ -420,6 +437,12 @@ describe('RouteController', function () {
 
                 driveModeEnabled = false;
 
+                fakePromise = {
+                    then: function (success, failure) {
+                        success(null);
+                    }
+                };
+
                 $controller("RouteController", {
                     $scope: $scope,
                     $sce: $sce,
@@ -427,15 +450,16 @@ describe('RouteController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    config: config,
                     events: events
                 });
 
                 $scope.$apply();
 
-                mapApiService.distance = jasmine.createSpy('mapApiService.distance');
+                mapApiService.distance = jasmine.createSpy('mapApiService.distance').and.returnValue(100);
                 routingService.clearResults = jasmine.createSpy('routingService.clearResults');
                 routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
-                routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled');
+                routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
 
                 $scope.driveModeEnabled = driveModeEnabled;
 
@@ -471,6 +495,7 @@ describe('RouteController', function () {
                         routingService: routingService,
                         stateService: stateService,
                         mapApiService: mapApiService,
+                        config: config,
                         events: events
                     });
 
@@ -517,6 +542,7 @@ describe('RouteController', function () {
                             routingService: routingService,
                             stateService: stateService,
                             mapApiService: mapApiService,
+                            config: config,
                             events: events
                         });
 
@@ -590,6 +616,7 @@ describe('RouteController', function () {
                                         routingService: routingService,
                                         stateService: stateService,
                                         mapApiService: mapApiService,
+                                        config: config,
                                         events: events
                                     });
 
@@ -640,6 +667,7 @@ describe('RouteController', function () {
                                         routingService: routingService,
                                         stateService: stateService,
                                         mapApiService: mapApiService,
+                                        config: config,
                                         events: events
                                     });
 
@@ -686,6 +714,7 @@ describe('RouteController', function () {
                                             routingService: routingService,
                                             stateService: stateService,
                                             mapApiService: mapApiService,
+                                            config: config,
                                             events: events
                                         });
 
@@ -788,6 +817,7 @@ describe('RouteController', function () {
                                             routingService: routingService,
                                             stateService: stateService,
                                             mapApiService: mapApiService,
+                                            config: config,
                                             events: events
                                         });
 
@@ -848,6 +878,7 @@ describe('RouteController', function () {
                                     routingService: routingService,
                                     stateService: stateService,
                                     mapApiService: mapApiService,
+                                    config: config,
                                     events: events
                                 });
 
