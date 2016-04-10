@@ -8,9 +8,13 @@ describe('FormController', function () {
 
         $location,
 
+        config,
+        events,
         routingService,
         stateService,
         searchService,
+        mapApiService,
+        geoCoderService,
 
         fakeDeSerializedQuery;
 
@@ -35,6 +39,18 @@ describe('FormController', function () {
             areasToAvoid: []
         };
 
+        config = {
+            NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT: 10
+        };
+
+        events = {
+            POSITION_EVENT: 0,
+            POSITION_EVENT_TYPES: {
+                CHANGE: 0,
+                ERROR: 1
+            }
+        };
+
         stateService = {
             clear: function () {},
             setWayPoints: function () {},
@@ -50,6 +66,14 @@ describe('FormController', function () {
             getResults: function () {}
         };
 
+        mapApiService = {
+            distance: function () {}
+        };
+
+        geoCoderService = {
+            distance: function () {}
+        };
+
     }));
 
     describe('when initialized', function () {
@@ -61,6 +85,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -88,6 +116,10 @@ describe('FormController', function () {
                     $controller("FormController", {
                         $scope: $scope,
                         $location: $location,
+                        config: config,
+                        events: events,
+                        mapApiService: mapApiService,
+                        geoCoderService: geoCoderService,
                         routingService: routingService,
                         stateService: stateService,
                         searchService: searchService
@@ -134,6 +166,10 @@ describe('FormController', function () {
                     $controller("FormController", {
                         $scope: $scope,
                         $location: $location,
+                        config: config,
+                        events: events,
+                        mapApiService: mapApiService,
+                        geoCoderService: geoCoderService,
                         routingService: routingService,
                         stateService: stateService,
                         searchService: searchService
@@ -161,6 +197,10 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
+                    config: config,
+                    events: events,
+                    mapApiService: mapApiService,
+                    geoCoderService: geoCoderService,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
@@ -191,6 +231,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -244,6 +288,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -267,6 +315,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -334,6 +386,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -360,6 +416,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -382,6 +442,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -408,6 +472,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -439,6 +507,10 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
+                    config: config,
+                    events: events,
+                    mapApiService: mapApiService,
+                    geoCoderService: geoCoderService,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
@@ -478,6 +550,10 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
+                    config: config,
+                    events: events,
+                    mapApiService: mapApiService,
+                    geoCoderService: geoCoderService,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
@@ -517,6 +593,10 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
+                    config: config,
+                    events: events,
+                    mapApiService: mapApiService,
+                    geoCoderService: geoCoderService,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
@@ -553,6 +633,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -621,6 +705,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -673,6 +761,10 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
+                    config: config,
+                    events: events,
+                    mapApiService: mapApiService,
+                    geoCoderService: geoCoderService,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
@@ -734,6 +826,10 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
+                    config: config,
+                    events: events,
+                    mapApiService: mapApiService,
+                    geoCoderService: geoCoderService,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
@@ -794,6 +890,10 @@ describe('FormController', function () {
             $controller("FormController", {
                 $scope: $scope,
                 $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
                 routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
@@ -847,6 +947,10 @@ describe('FormController', function () {
                 $controller("FormController", {
                     $scope: $scope,
                     $location: $location,
+                    config: config,
+                    events: events,
+                    mapApiService: mapApiService,
+                    geoCoderService: geoCoderService,
                     routingService: routingService,
                     stateService: stateService,
                     searchService: searchService

@@ -1,21 +1,25 @@
 /**
- * @todo
- * - if position found show checkbox to use as 'from'
- * - when checkbox marked reverse geocode and fill first waypoint
- * - observe position and if changed enough update again
- * - on each update update $location and state
+ * @fixme
+ * consider updating state when location found start point
+ * if so then keep in state if use or not use location
  */
 angular.module('navigationApp.controllers').controller('FormController',
-    ["$rootScope", "$scope", '$location', 'routingService', 'stateService', 'searchService' , function($rootScope, $scope, $location, routingService, stateService, searchService) {
+    ['$rootScope', '$scope', '$location', 'config', 'events', 'routingService', 'stateService', 'searchService', 'mapApiService', 'geoCoderService',
+        function($rootScope, $scope, $location, config, events, routingService, stateService, searchService, mapApiService, geoCoderService) {
 
         'use strict';
 
         var serviceHandler,
-            activeFieldIndex = null;
+            activeFieldIndex = null,
+
+            lastFoundPosition = null;
 
         $scope.wayPoints = [];
         $scope.areasToAvoid = [];
         $scope.geoLocation = null;
+
+        $scope.useCurrentPosition = false;
+        $scope.currentPositionAvailable = false;
 
         $scope.getRoute = function () {
 
@@ -87,7 +91,7 @@ angular.module('navigationApp.controllers').controller('FormController',
                 serviceHandler.cancel();
             }
 
-            serviceHandler = searchService.getSuggestions(searchValue, $rootScope.currentPosition);
+            serviceHandler = searchService.getSuggestions(searchValue, lastFoundPosition);
 
             serviceHandler.promise.then(function (suggestions) {
 
@@ -102,7 +106,7 @@ angular.module('navigationApp.controllers').controller('FormController',
                 serviceHandler.cancel();
             }
 
-            serviceHandler = searchService.getResults(searchValue, $rootScope.currentPosition);
+            serviceHandler = searchService.getResults(searchValue, lastFoundPosition);
 
             serviceHandler.promise.then(function (searchResults) {
 
@@ -121,6 +125,67 @@ angular.module('navigationApp.controllers').controller('FormController',
 
             });
 
+        };
+
+        $scope.useCurrentPositionAsStartPoint = function () {
+
+            if (!$scope.useCurrentPosition) {
+                return;
+            }
+
+            setStartPointFromPosition(lastFoundPosition);
+        };
+
+        $scope.$on(events.POSITION_EVENT, function (event, params) {
+
+            if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
+
+                $scope.currentPositionAvailable = true;
+
+                var geoPosition = params.param;
+
+                var currentPosition = {
+                    latitude : geoPosition.coords.latitude,
+                    longitude : geoPosition.coords.longitude
+                };
+
+                lastFoundPosition = currentPosition;
+
+                if ($scope.useCurrentPosition && positionChangedEnough(currentPosition, lastFoundPosition)) {
+                    setStartPointFromPosition(lastFoundPosition);
+                }
+
+            } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
+
+                $scope.currentPositionAvailable = false;
+            }
+
+            $scope.$apply();
+        });
+
+        var setStartPointFromPosition = function (position) {
+
+            if (!position) {
+                return;
+            }
+
+            geoCoderService.reverse(position).then(function (text) {
+
+                console.log(text);
+
+                $scope.wayPoints[0] = {
+                    title: text,
+                    coordinates: {
+                        latitude: position.latitude,
+                        longitude: position.longitude
+                    }
+                };
+            });
+
+        };
+
+        var positionChangedEnough = function (currentPosition, lastPosition) {
+            return (lastPosition && mapApiService.distance(currentPosition, lastPosition) > config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT);
         };
 
         var getClearWayPoints = function () {

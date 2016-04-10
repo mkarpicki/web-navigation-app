@@ -1,6 +1,17 @@
 <form>
 
     <!--<span>geo: {{geoLocation}}</span>-->
+    <label for="current-position-as-start-point">Use current position as start point</label>
+    <input
+            type="checkbox"
+            id="current-position-as-start-point"
+            name="current-position-as-start-point"
+            data-ng-disabled="!currentPositionAvailable"
+            data-ng-model="useCurrentPosition"
+            data-ng-change="useCurrentPositionAsStartPoint();">
+
+    {{useCurrentPosition}}
+    {{currentPositionAvailable}}
 
     <ul>
         <li data-ng-repeat="wayPoint in wayPoints track by $index">
