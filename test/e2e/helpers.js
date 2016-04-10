@@ -3,6 +3,8 @@ var SELECTORS = {
         INPUT_WAY_POINT: 'li input[type="text"]',
         BTN_ADD_WAY_POINT: 'button[data-ng-click*="addWayPoint();"]',
         BTN_REMOVE_WAY_POINT: 'button[data-ng-click="removeWayPoint($index);"]',
+        BTN_MOVE_WAY_POINT_UP: 'button[data-ng-click="moveWayPointUp($index);"]',
+        BTN_MOVE_WAY_POINT_DOWN: 'button[data-ng-click="moveWayPointDown($index);"]',
         BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]',
         BTN_SEARCH_SUGGESTION: 'ul.search-suggestions button',
         BTN_CLEAR: 'button[data-ng-click="clear();"]'
@@ -53,15 +55,23 @@ formPage.getCalculateRouteButton = function () {
 };
 
 formPage.getClearButton = function () {
-    return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_CLEAR)).first();
+    return element.all(by.css(SELECTORS.FORM_PAGE.BTN_CLEAR)).first();
 };
 
 formPage.getAddWayPointButton = function () {
-    return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first();
+    return element.all(by.css(SELECTORS.FORM_PAGE.BTN_ADD_WAY_POINT)).first();
 };
 
 formPage.getRemoveWayPointButton = function () {
-    return element.all(by.css(helpers.SELECTORS.FORM_PAGE.BTN_REMOVE_WAY_POINT)).last();
+    return element.all(by.css(SELECTORS.FORM_PAGE.BTN_REMOVE_WAY_POINT)).last();
+};
+
+formPage.getMoveDownWayPointButtonByPosition = function (position) {
+    return element.all(by.css(SELECTORS.FORM_PAGE.BTN_MOVE_WAY_POINT_DOWN)).get(position)
+};
+
+formPage.getMoveUpWayPointButtonByPosition = function (position) {
+    return element.all(by.css(SELECTORS.FORM_PAGE.BTN_MOVE_WAY_POINT_UP)).get(position)
 };
 
 /****************************************************************************************/

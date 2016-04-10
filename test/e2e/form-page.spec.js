@@ -141,6 +141,70 @@ describe('Main page (form page)', function() {
 
     });
 
+    it('should allow shuffle way points', function () {
+
+        wayPoints[0] = "Warsaw";
+        wayPoints[1] = "Poznan";
+        wayPoints[2] = "Szczecin";
+        wayPoints[3] = "Berlin";
+
+        helpers.FORM_PAGE.getAddWayPointButton().click();
+
+        helpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
+
+        helpers.FORM_PAGE.getWayPointByPosition(1).sendKeys(wayPoints[1]);
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
+
+        helpers.FORM_PAGE.getWayPointByPosition(2).sendKeys(wayPoints[3]);
+        suggestion = helpers.FORM_PAGE.getSuggestionByPosition(0);
+        suggestion.click();
+
+        browser.getCurrentUrl().then(function(url) {
+
+            expect(helpers.doesUrlContains(url, helpers.FORM_PAGE.getPage())).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[1]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
+        });
+        //.getAttribute('value')).toEqual(text)
+
+        var searchValue0 = helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value'),
+            searchValue1 = helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value'),
+            searchValue2 = helpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value');
+
+        helpers.FORM_PAGE.getMoveDownWayPointButtonByPosition(0).click();
+
+        browser.getCurrentUrl().then(function(url) {
+
+            expect(helpers.doesUrlContains(url, helpers.FORM_PAGE.getPage())).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[1]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
+        });
+
+        expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual(searchValue1);
+        expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(searchValue0);
+        expect(helpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(searchValue2);
+
+        helpers.FORM_PAGE.getMoveUpWayPointButtonByPosition(1).click();
+
+        browser.getCurrentUrl().then(function(url) {
+
+            expect(helpers.doesUrlContains(url, helpers.FORM_PAGE.getPage())).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[1]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
+            expect(helpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
+        });
+
+        expect(helpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value')).toEqual(searchValue1);
+        expect(helpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(searchValue2);
+        expect(helpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(searchValue0);
+
+    });
+
     it('should allow to remove add way points', function () {
 
         helpers.FORM_PAGE.getAddWayPointButton().click();
