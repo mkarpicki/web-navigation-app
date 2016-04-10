@@ -865,6 +865,133 @@ describe('FormController', function () {
 
     });
 
+    describe('moveWayPointDown', function () {
+
+        it('should replace pointed wayPoint with next one and update $location', function () {
+
+            $location.url = jasmine.createSpy('$location.url');
+            stateService.clear = jasmine.createSpy('stateService.clear');
+            stateService.setWayPoints = jasmine.createSpy('stateService.setWayPoints');
+            stateService.setAreasToAvoid = jasmine.createSpy('stateService.setAreasToAvoid');
+
+            $controller("FormController", {
+                $scope: $scope,
+                $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
+                routingService: routingService,
+                stateService: stateService,
+                searchService: searchService
+            });
+
+            $scope.$apply();
+
+            $scope.wayPoints = [
+                {
+                    title: 't1',
+                    coordinates: { latitude: 1, longitude: 1 }
+                },
+                {
+                    title: 't2',
+                    coordinates: { latitude: 2, longitude: 2 }
+                },
+                {
+                    title: 't3',
+                    coordinates: { latitude: 3, longitude: 3 }
+                }
+            ];
+
+            $scope.moveWayPointDown(0);
+
+            expect($scope.wayPoints).toEqual([
+                {
+                    title: 't2',
+                    coordinates: { latitude: 2, longitude: 2 }
+                },
+                {
+                    title: 't1',
+                    coordinates: { latitude: 1, longitude: 1 }
+                },
+                {
+                    title: 't3',
+                    coordinates: { latitude: 3, longitude: 3 }
+                }
+            ]);
+
+            expect(stateService.clear).toHaveBeenCalled();
+            expect(stateService.setWayPoints).toHaveBeenCalledWith($scope.wayPoints);
+            expect(stateService.setAreasToAvoid).toHaveBeenCalledWith($scope.areasToAvoid);
+            expect($location.url).toHaveBeenCalledWith('/?' + stateService.serializeQuery());
+
+        });
+    });
+
+    describe('moveWayPointUp', function () {
+
+        it('should replace pointed wayPoint with previous one and update $location', function () {
+
+            $location.url = jasmine.createSpy('$location.url');
+            stateService.clear = jasmine.createSpy('stateService.clear');
+            stateService.setWayPoints = jasmine.createSpy('stateService.setWayPoints');
+            stateService.setAreasToAvoid = jasmine.createSpy('stateService.setAreasToAvoid');
+
+            $controller("FormController", {
+                $scope: $scope,
+                $location: $location,
+                config: config,
+                events: events,
+                mapApiService: mapApiService,
+                geoCoderService: geoCoderService,
+                routingService: routingService,
+                stateService: stateService,
+                searchService: searchService
+            });
+
+            $scope.$apply();
+
+            $scope.wayPoints = [
+                {
+                    title: 't1',
+                    coordinates: { latitude: 1, longitude: 1 }
+                },
+                {
+                    title: 't2',
+                    coordinates: { latitude: 2, longitude: 2 }
+                },
+                {
+                    title: 't3',
+                    coordinates: { latitude: 3, longitude: 3 }
+                }
+            ];
+
+            $scope.moveWayPointUp(2);
+
+            expect($scope.wayPoints).toEqual([
+                {
+                    title: 't1',
+                    coordinates: { latitude: 1, longitude: 1 }
+                },
+                {
+                    title: 't3',
+                    coordinates: { latitude: 3, longitude: 3 }
+                },
+                {
+                    title: 't2',
+                    coordinates: { latitude: 2, longitude: 2 }
+                }
+            ]);
+
+            expect(stateService.clear).toHaveBeenCalled();
+            expect(stateService.setWayPoints).toHaveBeenCalledWith($scope.wayPoints);
+            expect(stateService.setAreasToAvoid).toHaveBeenCalledWith($scope.areasToAvoid);
+            expect($location.url).toHaveBeenCalledWith('/?' + stateService.serializeQuery());
+
+        });
+    });
+
+
     describe('getSuggestions', function () {
 
         it('should call service.getSuggestions and add suggestions to active wayPoint', function () {
