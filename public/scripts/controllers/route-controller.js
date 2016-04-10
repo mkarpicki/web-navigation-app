@@ -1,15 +1,7 @@
 /**
  * @todo
- * Think what to do when navigation ends on destination point:
- * - stateService empty?
- * - stateService remembered on load and restore on back?
- *
- * When stop navigation and click back
- * - restore?
- *
- * When click back when navigation
- * - ask to stop ?
- * -if yes then restore?
+ * when click back then ask if user is sure
+ * and then stop navigation mode
  */
 angular.module('navigationApp.controllers').controller('RouteController',
     ['$scope', '$sce', '$routeParams', 'events', 'routingService', 'stateService', 'mapApiService',
@@ -99,13 +91,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
                         var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
 
-                        //console.log('wayPointsToSearch');
-                        //console.log(wayPointsToSearch);
-
                         wayPointsToSearch = addCurrentPositionAsNewStartPoint(wayPointsToSearch, currentPosition);
-
-                        //console.log('addCurrentPositionAsNewStartPoint');
-                        //console.log(wayPointsToSearch);
 
                         $scope.recalculating = true;
 
@@ -140,14 +126,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
             });
 
             var getOnlyNotVisitedWayPoints = function (allWayPoints, visitedWayPoints) {
-
-                //var notVisitedWayPoints = allWayPoints.filter(function (wayPoint) {
-                //    var found = visitedWayPoints.find(function (visitedWayPoint) {
-                //        return visitedWayPoint === wayPoint;
-                //    });
-                //
-                //    return !found;
-                //});
 
                 var notVisitedWayPoints = allWayPoints.filter(function (wayPoint) {
                     var found = visitedWayPoints.filter(function (visitedWayPoint) {
@@ -200,17 +178,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 return justVisitedWayPoints;
 
             };
-
-            //var removeVisitedWayPoints = function (currentPosition, wayPointsUsedForSearch) {
-            //
-            //    wayPointsUsedForSearch = wayPointsUsedForSearch.filter(function (wayPoint) {
-            //        if (mapApiService.distance(currentPosition, wayPoint.coordinates) > numberOfMetersFromWayPointToAssumeVisited) {
-            //            return wayPoint;
-            //        }
-            //    });
-            //
-            //    return wayPointsUsedForSearch;
-            //};
 
             var calculateDistanceFromNearestRoutePoint = function (position, route) {
 

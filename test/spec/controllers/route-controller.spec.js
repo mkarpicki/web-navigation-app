@@ -551,7 +551,7 @@ describe('RouteController', function () {
 
                     beforeEach(function () {
 
-                        mapApiService.distance = function (a, b) {
+                        mapApiService.distance = function () {
                             return 100;
                         };
 
@@ -714,6 +714,115 @@ describe('RouteController', function () {
                                         expect($scope.recalculating).toEqual(false);
 
                                     });
+                                });
+
+                                describe('and visited wayPoint on the route', function () {
+
+                                    it('should ignore wayPoint when recalculating route', function () {
+
+                                        wayPointsUsedForSearch = [
+                                            {
+                                                title: 1,
+                                                coordinates: 'wayPointCoordinate1'
+                                            },
+                                            {
+                                                title: 2,
+                                                coordinates: 'wayPointCoordinate2'
+                                            },
+                                            {
+                                                title: 3,
+                                                coordinates: 'wayPointCoordinate3'
+                                            },
+                                            {
+                                                title: 4,
+                                                coordinates: 'wayPointCoordinate4'
+                                            }
+
+                                        ];
+                                        areasToAvoidUsedForSearch = [];
+
+                                        stateService.getSearchCriteria = function () {
+                                            return {
+                                                wayPoints: wayPointsUsedForSearch,
+                                                areasToAvoid: areasToAvoidUsedForSearch
+                                            };
+                                        };
+
+                                        fakeEventParams.param.coords = {
+                                            latitude: 'positionCoordinates',
+                                            longitude: 'positionCoordinates'
+                                        };
+
+                                        //fake to make code thinking
+                                        //that position is changing
+                                        //but check if wayPoint is visited return true
+                                        //for each iteration change waypoint (make wayPointCoordinate2 visited)
+                                        mapApiService.distance = function (a, b) {
+                                            if (a.coordinates === 'positionCoordinates' && b.coordinates == 'positionCoordinates') {
+                                                return 100;
+                                            } else if (b === 'wayPointCoordinate2') {
+                                                return 0;
+                                            }
+                                            return 100;
+
+                                        };
+
+                                        newRoute = {
+                                            shape: [
+                                                'x,y',
+                                                'a,b'
+                                            ]
+                                        };
+
+
+                                        fakePromise = {
+                                            then: function (success) {
+                                                success([newRoute]);
+                                            }
+                                        };
+
+                                        $controller("RouteController", {
+                                            $scope: $scope,
+                                            $sce: $sce,
+                                            $routeParams: $routeParams,
+                                            routingService: routingService,
+                                            stateService: stateService,
+                                            mapApiService: mapApiService,
+                                            events: events
+                                        });
+
+                                        $scope.$apply();
+
+                                        routingService.clearResults = jasmine.createSpy('routingService.clearResults');
+                                        routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
+                                        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                                        $scope.driveModeEnabled = driveModeEnabled;
+
+                                        wayPointsUsedForSearch[0] = {
+                                            title: '',
+                                            coordinates: {
+                                                latitude: fakeEventParams.param.coords.latitude,
+                                                longitude: fakeEventParams.param.coords.longitude
+                                            }
+                                        };
+
+                                        //prepare expected array without visited wayPoint
+                                        wayPointsUsedForSearch = wayPointsUsedForSearch.filter(function(w) {
+                                            return w.coordinates !== 'wayPointCoordinate2';
+                                        });
+
+                                        $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                        expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                                        expect(routingService.clearResults).toHaveBeenCalled();
+                                        expect(routingService.saveRoute).toHaveBeenCalledWith(newRoute);
+                                        expect($scope.route).toEqual(newRoute);
+                                        expect($scope.recalculating).toEqual(false);
+
+
+                                    });
+
                                 });
 
                             });
