@@ -112,6 +112,13 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'r
 
         });
 
+        scope.allowAddingWayPoints = function () {
+            var validWayPoints = scope.wayPoints.filter(function (wayPoint) {
+                return wayPoint && wayPoint.coordinates && wayPoint.coordinates.latitude && wayPoint.coordinates.longitude;
+            });
+            return validWayPoints.length >= 2;
+        };
+
         scope.$watch(attrs.zoomLevel, function (zoomLevel) {
 
             if (zoomLevel) {
