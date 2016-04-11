@@ -7,7 +7,7 @@
  * add back button when list displayed (??)
  * **/
 
-var helpers = require('./helpers.js');
+var helpers = require('./page-helpers.js');
 
 describe('Search page', function() {
 

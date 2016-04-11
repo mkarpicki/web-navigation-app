@@ -5,7 +5,7 @@
 * http://angular.github.io/protractor/#/tutorial
 * **/
 
-var helpers = require('./helpers.js');
+var helpers = require('./page-helpers.js');
 
 describe('Navigation between pages', function() {
 
