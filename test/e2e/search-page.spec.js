@@ -7,7 +7,7 @@
  * add back button when list displayed (??)
  * **/
 
-var helpers = require('./page-helpers.js');
+var pageHelpers = require('./page-helpers.js');
 
 describe('Search page', function() {
 
@@ -35,14 +35,14 @@ describe('Search page', function() {
 
         it ('should display that there is not enough info to search', function () {
 
-            browser.get(helpers.SEARCH_RESULTS_PAGE.getPage());
+            browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage());
 
-            notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
-            noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
-            resultsList = helpers.SEARCH_RESULTS_PAGE.getResults();
+            notEnoughInformationMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
+            noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
+            resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
+            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
 
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
@@ -59,10 +59,10 @@ describe('Search page', function() {
 
                 it('should move user to previous page', function () {
 
-                    browser.get(helpers.FORM_PAGE.getPage());
-                    browser.get(helpers.SEARCH_RESULTS_PAGE.getPage());
+                    browser.get(pageHelpers.FORM_PAGE.getPage());
+                    browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage());
 
-                    notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+                    notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
 
                     expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
 
@@ -70,7 +70,7 @@ describe('Search page', function() {
 
                     browser.getCurrentUrl().then(function(url) {
 
-                        expect(url).toEqual(helpers.FORM_PAGE.getPage());
+                        expect(url).toEqual(pageHelpers.FORM_PAGE.getPage());
                     });
 
 
@@ -88,14 +88,14 @@ describe('Search page', function() {
 
             var startPoint = 'Warsaw|52.23558,21.01027';
 
-            browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + encodeURIComponent(startPoint));
+            browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + encodeURIComponent(startPoint));
 
-            notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
-            noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
-            resultsList = helpers.SEARCH_RESULTS_PAGE.getResults();
+            notEnoughInformationMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
+            noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
+            resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
+            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
 
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
@@ -113,14 +113,14 @@ describe('Search page', function() {
 
             var destinationPoint = 'Warsaw|52.23558,21.01027';
 
-            browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + encodeURIComponent(destinationPoint));
+            browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + encodeURIComponent(destinationPoint));
 
-            notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
-            noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
-            resultsList = helpers.SEARCH_RESULTS_PAGE.getResults();
+            notEnoughInformationMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
+            noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
+            resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
+            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
 
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
@@ -136,14 +136,14 @@ describe('Search page', function() {
 
         it ('should display that route was not found', function () {
 
-            browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "a" + "&w1=" + "b");
+            browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "a" + "&w1=" + "b");
 
-            notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
-            noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
-            resultsList = helpers.SEARCH_RESULTS_PAGE.getResults();
+            notEnoughInformationMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
+            noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
+            resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
+            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
 
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
@@ -159,15 +159,15 @@ describe('Search page', function() {
 
                 it('should move user to previous page', function () {
 
-                    browser.get(helpers.FORM_PAGE.getPage());
-                    browser.get(helpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "a" + "&w1=" + "b");
+                    browser.get(pageHelpers.FORM_PAGE.getPage());
+                    browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "a" + "&w1=" + "b");
 
-                    notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+                    notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
                     notEnoughInformationMessageBackLink.click();
 
                     browser.getCurrentUrl().then(function(url) {
 
-                        expect(url).toEqual(helpers.FORM_PAGE.getPage());
+                        expect(url).toEqual(pageHelpers.FORM_PAGE.getPage());
                     });
 
                 });
@@ -182,19 +182,19 @@ describe('Search page', function() {
 
         it ('should display results with routes', function () {
 
-            var url = helpers.SEARCH_RESULTS_PAGE.getPage() +
+            var url = pageHelpers.SEARCH_RESULTS_PAGE.getPage() +
                 "?w0=" + encodeURIComponent(wayPoints[0]) +
                 "&w1=" + encodeURIComponent(wayPoints[1]) +
                 "&w2=" + encodeURIComponent(wayPoints[2]);
 
             browser.get(url);
 
-            notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
-            noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
-            resultsList = helpers.SEARCH_RESULTS_PAGE.getResults();
+            notEnoughInformationMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
+            noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
+            resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
+            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
 
             expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
@@ -208,7 +208,7 @@ describe('Search page', function() {
 
             it('should redirect to route details page', function () {
 
-                var url = helpers.SEARCH_RESULTS_PAGE.getPage() +
+                var url = pageHelpers.SEARCH_RESULTS_PAGE.getPage() +
                     "?w0=" + encodeURIComponent(wayPoints[0]) +
                     "&w1=" + encodeURIComponent(wayPoints[1]) +
                     "&w2=" + encodeURIComponent(wayPoints[2]);
@@ -217,7 +217,7 @@ describe('Search page', function() {
 
                 var position = 0;
 
-                var firstItem = helpers.SEARCH_RESULTS_PAGE.getFirstResult();
+                var firstItem = pageHelpers.SEARCH_RESULTS_PAGE.getFirstResult();
 
                 browser.wait(firstItem.isDisplayed()).then(function () {
 
@@ -225,7 +225,7 @@ describe('Search page', function() {
 
                     browser.getCurrentUrl().then(function (url) {
 
-                        expect(url).toEqual(helpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
+                        expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
                     });
                 });
 
@@ -237,19 +237,19 @@ describe('Search page', function() {
 
             it ('should display results with routes', function () {
 
-                var url = helpers.SEARCH_RESULTS_PAGE.getPage() +
+                var url = pageHelpers.SEARCH_RESULTS_PAGE.getPage() +
                     "?w0=" + encodeURIComponent(wayPoints[0]) +
                     "&w1=" + encodeURIComponent(wayPoints[1]) +
                     "&w2=" + encodeURIComponent(wayPoints[2]);
 
                 browser.get(url);
 
-                notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
-                noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
-                resultsList = helpers.SEARCH_RESULTS_PAGE.getResults();
+                notEnoughInformationMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
+                noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
+                resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-                notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-                noRouteFoundMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
+                notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+                noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
 
                 expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
@@ -267,19 +267,19 @@ describe('Search page', function() {
 
                 wayPoints[1] = 'abcdef';
 
-                var url = helpers.SEARCH_RESULTS_PAGE.getPage() +
+                var url = pageHelpers.SEARCH_RESULTS_PAGE.getPage() +
                     "?w0=" + encodeURIComponent(wayPoints[0]) +
                     "&w1=" + encodeURIComponent(wayPoints[1]) +
                     "&w2=" + encodeURIComponent(wayPoints[2]);
 
                 browser.get(url);
 
-                notEnoughInformationMessage = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
-                noRouteFoundMessage = helpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
-                resultsList = helpers.SEARCH_RESULTS_PAGE.getResults();
+                notEnoughInformationMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationElement();
+                noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
+                resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-                notEnoughInformationMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-                noRouteFoundMessageBackLink = helpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
+                notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+                noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
 
                 expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();

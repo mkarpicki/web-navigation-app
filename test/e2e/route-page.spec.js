@@ -5,7 +5,7 @@
  * http://angular.github.io/protractor/#/tutorial
  * **/
 
-var helpers = require('./page-helpers.js');
+var pageHelpers = require('./page-helpers.js');
 
 describe('Route page', function() {
 
@@ -28,11 +28,11 @@ describe('Route page', function() {
 
         it ('should redirect to main page', function () {
 
-            browser.get(helpers.ROUTE_DETAILS_PAGE.getPage() + "/");
+            browser.get(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/");
 
             browser.getCurrentUrl().then(function(url) {
 
-                expect(url).toEqual(helpers.FORM_PAGE.getPage());
+                expect(url).toEqual(pageHelpers.FORM_PAGE.getPage());
             });
 
         });
@@ -43,7 +43,7 @@ describe('Route page', function() {
 
         it('should display that route is not found', function () {
 
-            var notExistingRoutePage = helpers.ROUTE_DETAILS_PAGE.getPage() + "/666";
+            var notExistingRoutePage = pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/666";
 
             browser.get(notExistingRoutePage);
 
@@ -52,7 +52,7 @@ describe('Route page', function() {
                 expect(url).toEqual(notExistingRoutePage);
             });
 
-            noRouteFound = helpers.ROUTE_DETAILS_PAGE.getNoRouteFoundElement();
+            noRouteFound = pageHelpers.ROUTE_DETAILS_PAGE.getNoRouteFoundElement();
 
             expect(noRouteFound.isDisplayed()).toBeTruthy();
 
@@ -64,9 +64,9 @@ describe('Route page', function() {
          */
         it ('should display "go to search" button', function () {
 
-            var notExistingRoutePage = helpers.ROUTE_DETAILS_PAGE.getPage() + "/666";
+            var notExistingRoutePage = pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/666";
 
-            browser.get(helpers.FORM_PAGE.getPage());
+            browser.get(pageHelpers.FORM_PAGE.getPage());
             browser.get(notExistingRoutePage);
 
             browser.getCurrentUrl().then(function(url) {
@@ -74,7 +74,7 @@ describe('Route page', function() {
                 expect(url).toEqual(notExistingRoutePage);
             });
 
-            var getNoRouteFoundBackLink = helpers.ROUTE_DETAILS_PAGE.getNoRouteFoundBackLink();
+            var getNoRouteFoundBackLink = pageHelpers.ROUTE_DETAILS_PAGE.getNoRouteFoundBackLink();
 
             browser.wait(getNoRouteFoundBackLink.isDisplayed()).then(function () {
 
@@ -82,7 +82,7 @@ describe('Route page', function() {
 
                 browser.getCurrentUrl().then(function (url) {
 
-                    expect(url).toEqual(helpers.FORM_PAGE.getPage());
+                    expect(url).toEqual(pageHelpers.FORM_PAGE.getPage());
                 });
             });
 
@@ -95,14 +95,14 @@ describe('Route page', function() {
 
             var position = 0;
 
-            var url = helpers.SEARCH_RESULTS_PAGE.getPage() +
+            var url = pageHelpers.SEARCH_RESULTS_PAGE.getPage() +
                 "?w0=" + encodeURIComponent(wayPoints[0]) +
                 "&w1=" + encodeURIComponent(wayPoints[1]) +
                 "&w2=" + encodeURIComponent(wayPoints[2]);
 
             browser.get(url);
 
-            var firstItem = helpers.SEARCH_RESULTS_PAGE.getFirstResult();
+            var firstItem = pageHelpers.SEARCH_RESULTS_PAGE.getFirstResult();
 
             browser.wait(firstItem.isDisplayed()).then(function () {
 
@@ -110,8 +110,8 @@ describe('Route page', function() {
 
                 browser.getCurrentUrl().then(function (url) {
 
-                    expect(url).toEqual(helpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
-                    expect(helpers.ROUTE_DETAILS_PAGE.getManeuvers().isDisplayed()).toBeTruthy();
+                    expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
+                    expect(pageHelpers.ROUTE_DETAILS_PAGE.getManeuvers().isDisplayed()).toBeTruthy();
                 });
             });
 
