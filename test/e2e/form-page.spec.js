@@ -6,6 +6,7 @@
  * **/
 
 var pageHelpers = require('./page-helpers.js');
+var mapHelpers = require('./map-helpers.js');
 
 describe('Main page (form page)', function() {
 
@@ -46,6 +47,10 @@ describe('Main page (form page)', function() {
                 expect(pageHelpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
             });
 
+            mapHelpers.countWayPoints().then(function (results) {
+                expect(results).toEqual(2);
+            });
+
         });
 
         describe('and middle way points are added', function () {
@@ -74,6 +79,10 @@ describe('Main page (form page)', function() {
                     expect(pageHelpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
                     expect(pageHelpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[1]))).toEqual(true);
                     expect(pageHelpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
+                });
+
+                mapHelpers.countWayPoints().then(function (results) {
+                    expect(results).toEqual(3);
                 });
 
             });
@@ -148,6 +157,10 @@ describe('Main page (form page)', function() {
         wayPoints[2] = "Szczecin";
         wayPoints[3] = "Berlin";
 
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(0);
+        });
+
         pageHelpers.FORM_PAGE.getAddWayPointButton().click();
 
         pageHelpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
@@ -171,6 +184,10 @@ describe('Main page (form page)', function() {
         });
         //.getAttribute('value')).toEqual(text)
 
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(3);
+        });
+
         var searchValue0 = pageHelpers.FORM_PAGE.getWayPointByPosition(0).getAttribute('value'),
             searchValue1 = pageHelpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value'),
             searchValue2 = pageHelpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value');
@@ -189,6 +206,10 @@ describe('Main page (form page)', function() {
         expect(pageHelpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(searchValue0);
         expect(pageHelpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(searchValue2);
 
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(3);
+        });
+
         pageHelpers.FORM_PAGE.getMoveUpWayPointButtonByPosition(1).click();
 
         browser.getCurrentUrl().then(function(url) {
@@ -203,9 +224,17 @@ describe('Main page (form page)', function() {
         expect(pageHelpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(searchValue2);
         expect(pageHelpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(searchValue0);
 
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(3);
+        });
+
     });
 
     it('should allow to remove add way points', function () {
+
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(0);
+        });
 
         pageHelpers.FORM_PAGE.getAddWayPointButton().click();
 
@@ -229,6 +258,10 @@ describe('Main page (form page)', function() {
             expect(pageHelpers.doesUrlContains(url, "w2=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
         });
 
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(3);
+        });
+
         pageHelpers.FORM_PAGE.getRemoveWayPointButton().click();
 
         browser.getCurrentUrl().then(function(url) {
@@ -239,6 +272,10 @@ describe('Main page (form page)', function() {
 
             expect(pageHelpers.FORM_PAGE.getWayPoints().count()).toEqual(2);
 
+        });
+
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(2);
         });
 
     });
@@ -263,6 +300,10 @@ describe('Main page (form page)', function() {
 
             text = wayPoints[1].split("|")[0];
             expect(pageHelpers.FORM_PAGE.getWayPointByPosition(1).getAttribute('value')).toEqual(text);
+
+            mapHelpers.countWayPoints().then(function (results) {
+                expect(results).toEqual(2);
+            });
 
         });
 
@@ -293,6 +334,10 @@ describe('Main page (form page)', function() {
 
                 text = wayPoints[2].split("|")[0];
                 expect(pageHelpers.FORM_PAGE.getWayPointByPosition(2).getAttribute('value')).toEqual(text);
+
+                mapHelpers.countWayPoints().then(function (results) {
+                    expect(results).toEqual(3);
+                });
             });
 
         });

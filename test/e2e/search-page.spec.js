@@ -8,6 +8,8 @@
  * **/
 
 var pageHelpers = require('./page-helpers.js');
+var mapHelpers = require('./map-helpers.js');
+
 
 describe('Search page', function() {
 
@@ -50,6 +52,10 @@ describe('Search page', function() {
 
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
+
+            mapHelpers.countWayPoints().then(function (results) {
+                expect(results).toEqual(0);
+            });
 
         });
 
@@ -103,6 +109,10 @@ describe('Search page', function() {
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
+            mapHelpers.countWayPoints().then(function (results) {
+                expect(results).toEqual(1);
+            });
+
         });
 
     });
@@ -128,6 +138,10 @@ describe('Search page', function() {
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
+            mapHelpers.countWayPoints().then(function (results) {
+                expect(results).toEqual(1);
+            });
+
         });
 
     });
@@ -150,6 +164,10 @@ describe('Search page', function() {
             expect(resultsList.isDisplayed()).toBeFalsy();
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
+
+            mapHelpers.countWayPoints().then(function (results) {
+                expect(results).toEqual(0);
+            });
 
         });
 
@@ -184,8 +202,8 @@ describe('Search page', function() {
 
             var url = pageHelpers.SEARCH_RESULTS_PAGE.getPage() +
                 "?w0=" + encodeURIComponent(wayPoints[0]) +
-                "&w1=" + encodeURIComponent(wayPoints[1]) +
-                "&w2=" + encodeURIComponent(wayPoints[2]);
+                "&w1=" + encodeURIComponent(wayPoints[1]); // +
+                //"&w2=" + encodeURIComponent(wayPoints[2]);
 
             browser.get(url);
 
@@ -201,6 +219,10 @@ describe('Search page', function() {
             expect(resultsList.isDisplayed()).toBeTruthy();
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
+
+            mapHelpers.countWayPoints().then(function (results) {
+                expect(results).toEqual(2);
+            });
 
         });
 
@@ -226,6 +248,10 @@ describe('Search page', function() {
                     browser.getCurrentUrl().then(function (url) {
 
                         expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
+                    });
+
+                    mapHelpers.countWayPoints().then(function (results) {
+                        expect(results).toEqual(3);
                     });
                 });
 
@@ -257,6 +283,10 @@ describe('Search page', function() {
                 expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
+                mapHelpers.countWayPoints().then(function (results) {
+                    expect(results).toEqual(3);
+                });
+
             });
 
         });
@@ -286,6 +316,10 @@ describe('Search page', function() {
                 expect(resultsList.isDisplayed()).toBeTruthy();
                 expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
+
+                mapHelpers.countWayPoints().then(function (results) {
+                    expect(results).toEqual(2);
+                });
 
             });
 

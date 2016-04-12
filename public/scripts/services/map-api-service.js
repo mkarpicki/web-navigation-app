@@ -273,6 +273,10 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         return pointFrom.distance(pointTo);
     };
 
+    var getObjects = function () {
+        return map.getObjects();
+    };
+
     return {
         init: init,
         initBubble: initBubble,
@@ -282,6 +286,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         drawWayPoints: drawWayPoints,
         drawAreasToAvoid: drawAreasToAvoid,
         clear: clear,
+        getObjects: getObjects,
         getTapPosition: getTapPosition,
         removeBubble: removeBubble,
         updateCurrentPosition: updateCurrentPosition,

@@ -929,4 +929,19 @@ describe('map-api-service', function () {
 
     });
 
+    describe('getObjects', function () {
+
+        it('should return map.getObjects', inject(function(mapApiService) {
+
+            var fakeMapObjects = {};
+
+            fakeMap.fakeObjects = jasmine.createSpy('map.getObjects').and.returnValue(fakeMapObjects);
+
+            mapApiService.init([]);
+            expect(mapApiService.getObjects()).toEqual(fakeMapObjects);
+            expect(fakeMap.fakeObjects).toHaveBeenCalled();
+        }));
+
+    });
+
 });

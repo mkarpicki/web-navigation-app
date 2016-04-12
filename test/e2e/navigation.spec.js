@@ -6,6 +6,7 @@
 * **/
 
 var pageHelpers = require('./page-helpers.js');
+var mapHelpers = require('./map-helpers.js');
 
 describe('Navigation between pages', function() {
 
@@ -25,6 +26,10 @@ describe('Navigation between pages', function() {
 
         browser.get(pageHelpers.FORM_PAGE.getPage());
 
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(0);
+        });
+
         pageHelpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
         suggestion = pageHelpers.FORM_PAGE.getSuggestionByPosition(0);
         suggestion.click();
@@ -33,12 +38,21 @@ describe('Navigation between pages', function() {
         suggestion = pageHelpers.FORM_PAGE.getSuggestionByPosition(0);
         suggestion.click();
 
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(2);
+        });
+
         pageHelpers.FORM_PAGE.getCalculateRouteButton().click();
 
         browser.getCurrentUrl().then(function(url) {
             expect(pageHelpers.doesUrlContains(url, pageHelpers.SEARCH_RESULTS_PAGE.getPage())).toEqual(true);
             expect(pageHelpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
             expect(pageHelpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
+
+        });
+
+        mapHelpers.countWayPoints().then(function (results) {
+            expect(results).toEqual(2);
         });
 
         var position = 0,
@@ -53,6 +67,10 @@ describe('Navigation between pages', function() {
 
                 expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
 
+                mapHelpers.countWayPoints().then(function (results) {
+                    expect(results).toEqual(2);
+                });
+
                 browser.navigate().back().then(function () {
 
                     browser.getCurrentUrl().then(function(url) {
@@ -61,10 +79,18 @@ describe('Navigation between pages', function() {
                         expect(pageHelpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
                         expect(pageHelpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
 
+                        mapHelpers.countWayPoints().then(function (results) {
+                            expect(results).toEqual(2);
+                        });
+
                         browser.navigate().forward().then(function () {
 
                             browser.getCurrentUrl().then(function(url) {
                                 expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
+                            });
+
+                            mapHelpers.countWayPoints().then(function (results) {
+                                expect(results).toEqual(2);
                             });
 
                         });

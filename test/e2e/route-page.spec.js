@@ -6,6 +6,8 @@
  * **/
 
 var pageHelpers = require('./page-helpers.js');
+var mapHelpers = require('./map-helpers.js');
+
 
 describe('Route page', function() {
 
@@ -58,10 +60,6 @@ describe('Route page', function() {
 
         });
 
-        /**
-         * @todo
-         * implement me
-         */
         it ('should display "go to search" button', function () {
 
             var notExistingRoutePage = pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/666";
@@ -112,6 +110,10 @@ describe('Route page', function() {
 
                     expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
                     expect(pageHelpers.ROUTE_DETAILS_PAGE.getManeuvers().isDisplayed()).toBeTruthy();
+                });
+
+                mapHelpers.countWayPoints().then(function (results) {
+                    expect(results).toEqual(3);
                 });
             });
 
