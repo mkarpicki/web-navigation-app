@@ -935,11 +935,11 @@ describe('map-api-service', function () {
 
             var fakeMapObjects = {};
 
-            fakeMap.fakeObjects = jasmine.createSpy('map.getObjects').and.returnValue(fakeMapObjects);
+            fakeMap.getObjects = jasmine.createSpy('map.getObjects').and.returnValue(fakeMapObjects);
 
             mapApiService.init([]);
             expect(mapApiService.getObjects()).toEqual(fakeMapObjects);
-            expect(fakeMap.fakeObjects).toHaveBeenCalled();
+            expect(fakeMap.getObjects).toHaveBeenCalled();
         }));
 
     });

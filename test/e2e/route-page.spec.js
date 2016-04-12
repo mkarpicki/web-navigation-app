@@ -8,6 +8,9 @@
 var pageHelpers = require('./page-helpers.js');
 var mapHelpers = require('./map-helpers.js');
 
+var mapHelpersParams = {
+    mapSelector: "#map"
+};
 
 describe('Route page', function() {
 
@@ -112,7 +115,7 @@ describe('Route page', function() {
                     expect(pageHelpers.ROUTE_DETAILS_PAGE.getManeuvers().isDisplayed()).toBeTruthy();
                 });
 
-                mapHelpers.countWayPoints().then(function (results) {
+                mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                     expect(results).toEqual(3);
                 });
             });

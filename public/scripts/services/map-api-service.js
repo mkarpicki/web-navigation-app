@@ -135,7 +135,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var clear = function () {
 
-        var objects = map.getObjects();
+        var objects = getObjects();
 
         objects = objects.filter(function (o) {
            return o !== currentPositionMarker;

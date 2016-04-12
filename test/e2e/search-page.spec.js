@@ -10,6 +10,9 @@
 var pageHelpers = require('./page-helpers.js');
 var mapHelpers = require('./map-helpers.js');
 
+var mapHelpersParams = {
+    mapSelector: "#map"
+};
 
 describe('Search page', function() {
 
@@ -53,7 +56,7 @@ describe('Search page', function() {
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
-            mapHelpers.countWayPoints().then(function (results) {
+            mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                 expect(results).toEqual(0);
             });
 
@@ -109,7 +112,7 @@ describe('Search page', function() {
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
-            mapHelpers.countWayPoints().then(function (results) {
+            mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                 expect(results).toEqual(1);
             });
 
@@ -138,7 +141,7 @@ describe('Search page', function() {
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
-            mapHelpers.countWayPoints().then(function (results) {
+            mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                 expect(results).toEqual(1);
             });
 
@@ -165,7 +168,7 @@ describe('Search page', function() {
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
-            mapHelpers.countWayPoints().then(function (results) {
+            mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                 expect(results).toEqual(0);
             });
 
@@ -220,7 +223,7 @@ describe('Search page', function() {
             expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
-            mapHelpers.countWayPoints().then(function (results) {
+            mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                 expect(results).toEqual(2);
             });
 
@@ -250,7 +253,7 @@ describe('Search page', function() {
                         expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
                     });
 
-                    mapHelpers.countWayPoints().then(function (results) {
+                    mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                         expect(results).toEqual(3);
                     });
                 });
@@ -283,7 +286,7 @@ describe('Search page', function() {
                 expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
-                mapHelpers.countWayPoints().then(function (results) {
+                mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                     expect(results).toEqual(3);
                 });
 
@@ -317,7 +320,7 @@ describe('Search page', function() {
                 expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
-                mapHelpers.countWayPoints().then(function (results) {
+                mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                     expect(results).toEqual(2);
                 });
 
