@@ -8,10 +8,6 @@
 var pageHelpers = require('./page-helpers.js');
 var mapHelpers = require('./map-helpers.js');
 
-var mapHelpersParams = {
-    mapSelector: "#map"
-};
-
 describe('Route page', function() {
 
     var wayPoints = [],
@@ -40,7 +36,7 @@ describe('Route page', function() {
                 expect(url).toEqual(pageHelpers.FORM_PAGE.getPage());
             });
 
-            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+            mapHelpers.countRoutes().then(function (results) {
                 expect(results).toEqual(0);
             });
 
@@ -65,7 +61,7 @@ describe('Route page', function() {
 
             expect(noRouteFound.isDisplayed()).toBeTruthy();
 
-            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+            mapHelpers.countRoutes().then(function (results) {
                 expect(results).toEqual(0);
             });
 
@@ -123,11 +119,11 @@ describe('Route page', function() {
                     expect(pageHelpers.ROUTE_DETAILS_PAGE.getManeuvers().isDisplayed()).toBeTruthy();
                 });
 
-                mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+                mapHelpers.countWayPoints().then(function (results) {
                     expect(results).toEqual(3);
                 });
 
-                mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                mapHelpers.countRoutes().then(function (results) {
                     expect(results).toEqual(1);
                 });
             });

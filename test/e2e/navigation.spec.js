@@ -8,10 +8,6 @@
 var pageHelpers = require('./page-helpers.js');
 var mapHelpers = require('./map-helpers.js');
 
-var mapHelpersParams = {
-    mapSelector: "#map"
-};
-
 describe('Navigation between pages', function() {
 
     var wayPoints = [],
@@ -30,11 +26,11 @@ describe('Navigation between pages', function() {
 
         browser.get(pageHelpers.FORM_PAGE.getPage());
 
-        mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+        mapHelpers.countWayPoints().then(function (results) {
             expect(results).toEqual(0);
         });
 
-        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+        mapHelpers.countRoutes().then(function (results) {
             expect(results).toEqual(0);
         });
 
@@ -46,7 +42,7 @@ describe('Navigation between pages', function() {
         suggestion = pageHelpers.FORM_PAGE.getSuggestionByPosition(0);
         suggestion.click();
 
-        mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+        mapHelpers.countWayPoints().then(function (results) {
             expect(results).toEqual(2);
         });
 
@@ -59,11 +55,11 @@ describe('Navigation between pages', function() {
 
         });
 
-        mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+        mapHelpers.countWayPoints().then(function (results) {
             expect(results).toEqual(2);
         });
 
-        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+        mapHelpers.countRoutes().then(function (results) {
             expect(results > 0).toBeTruthy();
         });
 
@@ -79,11 +75,11 @@ describe('Navigation between pages', function() {
 
                 expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
 
-                mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+                mapHelpers.countWayPoints().then(function (results) {
                     expect(results).toEqual(2);
                 });
 
-                mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                mapHelpers.countRoutes().then(function (results) {
                     expect(results > 0).toBeTruthy();
                 });
 
@@ -95,11 +91,11 @@ describe('Navigation between pages', function() {
                         expect(pageHelpers.doesUrlContains(url, "w0=" + encodeURIComponent(wayPoints[0]))).toEqual(true);
                         expect(pageHelpers.doesUrlContains(url, "w1=" + encodeURIComponent(wayPoints[3]))).toEqual(true);
 
-                        mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+                        mapHelpers.countWayPoints().then(function (results) {
                             expect(results).toEqual(2);
                         });
 
-                        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                        mapHelpers.countRoutes().then(function (results) {
                             expect(results > 0).toBeTruthy();
                         });
 
@@ -109,11 +105,11 @@ describe('Navigation between pages', function() {
                                 expect(url).toEqual(pageHelpers.ROUTE_DETAILS_PAGE.getPage() + "/" + position);
                             });
 
-                            mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+                            mapHelpers.countWayPoints().then(function (results) {
                                 expect(results).toEqual(2);
                             });
 
-                            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                            mapHelpers.countRoutes().then(function (results) {
                                 expect(results > 0).toBeTruthy();
                             });
 

@@ -169,6 +169,10 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 return (lastPosition && mapApiService.distance(currentPosition, lastPosition) <= minimumNumberOfMetersToCheckRouteState);
             };
 
+            /**
+             * @todo
+             * extend check to detect if going in proper direction
+             */
             var notOnRouteAnymore = function (currentPosition, route) {
                 return (calculateDistanceFromNearestRoutePoint(currentPosition, route) > metersFromRouteToRecalculate);
             };
@@ -185,6 +189,14 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             };
 
+            /**
+             * @todo
+             * improve implementation.
+             * currently if points of route are more then number of meters from config
+             * then recalculation may be called when not needed.
+             *
+             * Ideally: check if position on line between 2 points
+             */
             var calculateDistanceFromNearestRoutePoint = function (position, route) {
 
                 var nearestPoint = null;

@@ -1,34 +1,37 @@
+var SELECTORS = {
+    MAP_SELECTOR: "#map"
+};
 
-var getMapApiServiceScript = function (params) {
-    return "var mapApiService = angular.element(document.querySelector('" + params.mapSelector + "')).injector().get('mapApiService'); ";
+var getMapApiServiceScript = function () {
+    return "var mapApiService = angular.element(document.querySelector('" + SELECTORS.MAP_SELECTOR + "')).injector().get('mapApiService'); ";
 };
 
 /*************** markers (wayPoints) ************************/
 
-var getMarkersScript = function (params) {
-    return getMapApiServiceScript(params) + "var markers = mapApiService.getObjects().filter(function(o) { return o instanceof H.map.Marker; }); ";
+var getMarkersScript = function () {
+    return getMapApiServiceScript() + "var markers = mapApiService.getObjects().filter(function(o) { return o instanceof H.map.Marker; }); ";
 };
 
-var getCountWayPointsScript = function (params) {
-    return getMarkersScript(params) + "return markers.length; ";
+var getCountWayPointsScript = function () {
+    return getMarkersScript() + "return markers.length; ";
 };
 
-var countWayPoints = function (params) {
-    return browser.driver.executeScript(getCountWayPointsScript(params));
+var countWayPoints = function () {
+    return browser.driver.executeScript(getCountWayPointsScript());
 };
 
 /*************** routes ************************/
 
-var getRoutesScript = function (params) {
-    return getMapApiServiceScript(params) + "var routes = mapApiService.getObjects().filter(function(o) { return o instanceof H.map.Polyline; }); ";
+var getRoutesScript = function () {
+    return getMapApiServiceScript() + "var routes = mapApiService.getObjects().filter(function(o) { return o instanceof H.map.Polyline; }); ";
 };
 
-var getCountRoutesScript = function (params) {
-    return getRoutesScript(params) + "return routes.length; ";
+var getCountRoutesScript = function () {
+    return getRoutesScript() + "return routes.length; ";
 };
 
-var countRoutes = function (params) {
-    return browser.driver.executeScript(getCountRoutesScript(params));
+var countRoutes = function () {
+    return browser.driver.executeScript(getCountRoutesScript());
 };
 
 var helpers = {
