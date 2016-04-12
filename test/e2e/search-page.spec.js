@@ -60,6 +60,10 @@ describe('Search page', function() {
                 expect(results).toEqual(0);
             });
 
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                expect(results).toEqual(0);
+            });
+
         });
 
         describe("and visited page before", function () {
@@ -116,6 +120,10 @@ describe('Search page', function() {
                 expect(results).toEqual(1);
             });
 
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                expect(results).toEqual(0);
+            });
+
         });
 
     });
@@ -145,6 +153,10 @@ describe('Search page', function() {
                 expect(results).toEqual(1);
             });
 
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                expect(results).toEqual(0);
+            });
+
         });
 
     });
@@ -169,6 +181,10 @@ describe('Search page', function() {
             expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
             mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+                expect(results).toEqual(0);
+            });
+
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
                 expect(results).toEqual(0);
             });
 
@@ -227,6 +243,10 @@ describe('Search page', function() {
                 expect(results).toEqual(2);
             });
 
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                expect(results > 0).toBeTruthy();
+            });
+
         });
 
         describe('when clicked on first result', function () {
@@ -255,6 +275,10 @@ describe('Search page', function() {
 
                     mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                         expect(results).toEqual(3);
+                    });
+
+                    mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                        expect(results > 0).toBeTruthy();
                     });
                 });
 
@@ -290,6 +314,10 @@ describe('Search page', function() {
                     expect(results).toEqual(3);
                 });
 
+                mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                    expect(results > 0).toBeTruthy();
+                });
+
             });
 
         });
@@ -322,6 +350,10 @@ describe('Search page', function() {
 
                 mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                     expect(results).toEqual(2);
+                });
+
+                mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                    expect(results > 0).toBeTruthy();
                 });
 
             });

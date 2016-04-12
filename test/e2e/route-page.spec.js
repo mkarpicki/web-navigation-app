@@ -40,6 +40,10 @@ describe('Route page', function() {
                 expect(url).toEqual(pageHelpers.FORM_PAGE.getPage());
             });
 
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                expect(results).toEqual(0);
+            });
+
         });
 
     });
@@ -60,6 +64,10 @@ describe('Route page', function() {
             noRouteFound = pageHelpers.ROUTE_DETAILS_PAGE.getNoRouteFoundElement();
 
             expect(noRouteFound.isDisplayed()).toBeTruthy();
+
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                expect(results).toEqual(0);
+            });
 
         });
 
@@ -117,6 +125,10 @@ describe('Route page', function() {
 
                 mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                     expect(results).toEqual(3);
+                });
+
+                mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                    expect(results).toEqual(1);
                 });
             });
 

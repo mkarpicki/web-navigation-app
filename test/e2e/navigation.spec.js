@@ -34,6 +34,10 @@ describe('Navigation between pages', function() {
             expect(results).toEqual(0);
         });
 
+        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+            expect(results).toEqual(0);
+        });
+
         pageHelpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
         suggestion = pageHelpers.FORM_PAGE.getSuggestionByPosition(0);
         suggestion.click();
@@ -59,6 +63,10 @@ describe('Navigation between pages', function() {
             expect(results).toEqual(2);
         });
 
+        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+            expect(results > 0).toBeTruthy();
+        });
+
         var position = 0,
             firstItem = pageHelpers.SEARCH_RESULTS_PAGE.getFirstResult();
 
@@ -75,6 +83,10 @@ describe('Navigation between pages', function() {
                     expect(results).toEqual(2);
                 });
 
+                mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                    expect(results > 0).toBeTruthy();
+                });
+
                 browser.navigate().back().then(function () {
 
                     browser.getCurrentUrl().then(function(url) {
@@ -87,6 +99,10 @@ describe('Navigation between pages', function() {
                             expect(results).toEqual(2);
                         });
 
+                        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                            expect(results > 0).toBeTruthy();
+                        });
+
                         browser.navigate().forward().then(function () {
 
                             browser.getCurrentUrl().then(function(url) {
@@ -95,6 +111,10 @@ describe('Navigation between pages', function() {
 
                             mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                                 expect(results).toEqual(2);
+                            });
+
+                            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                                expect(results > 0).toBeTruthy();
                             });
 
                         });

@@ -55,6 +55,10 @@ describe('Main page (form page)', function() {
                 expect(results).toEqual(2);
             });
 
+            mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                expect(results > 0).toBeTruthy();
+            });
+
         });
 
         describe('and middle way points are added', function () {
@@ -87,6 +91,10 @@ describe('Main page (form page)', function() {
 
                 mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                     expect(results).toEqual(3);
+                });
+
+                mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+                    expect(results > 0).toBeTruthy();
                 });
 
             });
@@ -165,6 +173,10 @@ describe('Main page (form page)', function() {
             expect(results).toEqual(0);
         });
 
+        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
+            expect(results).toEqual(0);
+        });
+
         pageHelpers.FORM_PAGE.getAddWayPointButton().click();
 
         pageHelpers.FORM_PAGE.getWayPointByPosition(0).sendKeys(wayPoints[0]);
@@ -232,11 +244,16 @@ describe('Main page (form page)', function() {
             expect(results).toEqual(3);
         });
 
+
     });
 
     it('should allow to remove add way points', function () {
 
         mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
+            expect(results).toEqual(0);
+        });
+
+        mapHelpers.countRoutes(mapHelpersParams).then(function (results) {
             expect(results).toEqual(0);
         });
 
@@ -308,7 +325,7 @@ describe('Main page (form page)', function() {
             mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                 expect(results).toEqual(2);
             });
-
+            
         });
 
         describe('with way point added', function () {
@@ -342,6 +359,7 @@ describe('Main page (form page)', function() {
                 mapHelpers.countWayPoints(mapHelpersParams).then(function (results) {
                     expect(results).toEqual(3);
                 });
+
             });
 
         });
