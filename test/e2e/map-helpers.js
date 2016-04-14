@@ -1,5 +1,6 @@
 var SELECTORS = {
-    MAP_SELECTOR: "#map"
+    MAP_SELECTOR: "#map",
+    MENU: "[data-map] .bubble"
 };
 
 var getMapApiServiceScript = function () {
@@ -34,10 +35,18 @@ var countRoutes = function () {
     return browser.driver.executeScript(getCountRoutesScript());
 };
 
+/*************** menu ************************/
+
+var getMenu = function () {
+    return element.all(by.css(SELECTORS.MAP_SELECTOR)).first();
+};
+
 var helpers = {
 
     countWayPoints: countWayPoints,
-    countRoutes: countRoutes
+    countRoutes: countRoutes,
+
+    getMenu: getMenu
 };
 
 module.exports = helpers;

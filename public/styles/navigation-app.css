@@ -10,6 +10,11 @@
     background: grey
 }
 
+#map .menu {
+    display: none;
+    visibility: hidden;
+}
+
 input {
     width: 250px;
 }

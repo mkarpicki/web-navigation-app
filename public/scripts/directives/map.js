@@ -34,7 +34,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'e
             return;
         }
 
-        if (!node || node.getElementsByClassName('menu').length < 1) {
+        if (!node || node.getElementsByClassName('menu-item').length < 1) {
             return;
         }
 
