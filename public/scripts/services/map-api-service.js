@@ -22,6 +22,10 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         tappedCoordinates,
         currentPositionMarker;
 
+    /**
+     * @todo move that config? or directive eventually?
+     * @type {{strokeColor: string, lineWidth: number}}
+     */
     var areaToAvoidStyle = {
         //fillColor: '#FFFFCC',
         strokeColor: '#e2e2e2',
@@ -196,6 +200,7 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
             point1,
             point2,
             rectangle,
+            area,
             areas = [];
 
         if (areasToAvoid) {
@@ -210,9 +215,15 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
                 rectangle = H.geo.Rect.fromPoints(point1, point2);
 
-                areas.push(new H.map.Rect(rectangle, {
+                area = new H.map.Rect(rectangle, {
                     style: areaToAvoidStyle
-                }));
+                });
+
+                if (areasToAvoid[i].hidden === true) {
+                    area.setVisibility(false);
+                }
+
+                areas.push(area);
             }
 
             map.addObjects(areas);
@@ -221,7 +232,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var drawWayPoints = function (wayPoints) {
 
-        var markers = [],
+        var marker,
+            markers = [],
             wayPoint;
 
         if (wayPoints) {
@@ -230,10 +242,16 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
                 wayPoint = wayPoints[i].coordinates;
 
-                markers.push(new H.map.Marker({
+                marker = new H.map.Marker({
                     lat: wayPoint.latitude,
                     lng: wayPoint.longitude
-                }));
+                });
+
+                if (wayPoints[i].hidden === true) {
+                    marker.setVisibility(false);
+                }
+
+                markers.push(marker);
             }
 
             map.addObjects(markers);
@@ -256,6 +274,10 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         // Create a polyline to display the route:
         var routeLine = getRouteLine(route);
 
+        if (route.hidden === true) {
+            routeLine.setVisibility(false);
+        }
+
         // Add the route polyline and the two markers to the map:
         map.addObjects([routeLine]);
 
@@ -275,6 +297,18 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
 
     var getObjects = function () {
         return map.getObjects();
+    };
+
+    var hideRoutes = function () {
+
+    };
+
+    var showRoutes = function () {
+
+    };
+
+    var showRoute = function (route) {
+
     };
 
     return {

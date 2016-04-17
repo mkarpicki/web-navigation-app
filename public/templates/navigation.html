@@ -1,5 +1,5 @@
 <form>
-    <a data-ng-href="/navigate/{{index}}">Start navigation</a>
+    <button data-ng-hide="undefinedRoute || driveModeEnabled" data-ng-click="back();">Stop navigation</button>
 
     <ul data-ng-hide="undefinedRoute">
         <li data-ng-repeat="maneuver in getManeuver();">

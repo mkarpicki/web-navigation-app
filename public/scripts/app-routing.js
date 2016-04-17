@@ -15,6 +15,10 @@ angular.module('navigationApp').config(['$routeProvider', '$locationProvider', f
             templateUrl: 'templates/route.html',
             controller: 'RouteController'
         }).
+        when('/navigate/:index', {
+            templateUrl: 'templates/navigation.html',
+            controller: 'NavigationController'
+        }).
         otherwise({
             redirectTo: '/'
         });
