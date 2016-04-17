@@ -10,6 +10,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             'use strict';
 
             var visitedWayPoints = [],
+                searchCriteria = null,
 
                 metersFromRouteToRecalculate = config.NUMBER_OF_METERS_FROM_ROUTE_TO_RECALCULATE,
                 minimumNumberOfMetersToCheckRouteState = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT,
@@ -37,15 +38,20 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 return $sce.trustAsHtml(text);
             };
 
-            $scope.$on('$locationChangeStart', function( event ) {
-                var answer = confirm("Are you sure you want to stop navigation?");
-                if (!answer) {
-                    event.preventDefault();
-                } else {
-                    disableDriveMode();
-                }
-            });
-
+            /**
+             * @todo
+             * implement checking with user is really wants to leave
+             * @param event
+             */
+            var onLeave = function (event) {
+                disableDriveMode();
+                //var answer = confirm("Are you sure you want to stop navigation?");
+                //if (!answer) {
+                //    event.preventDefault();
+                //} else {
+                //    disableDriveMode();
+                //}
+            };
 
             var onPositionChange = function (event, params) {
 
@@ -82,30 +88,17 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                 lastPosition = currentPosition;
 
-                console.log('wayPointsUsedForSearch');
-                console.log(wayPointsUsedForSearch);
-
                 var justVisitedWayPoints = findJustVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
 
                 if (justVisitedWayPoints.length > 0) {
                     visitedWayPoints = collectVisitedWayPoints(visitedWayPoints, justVisitedWayPoints);
                 }
 
-                console.log('visitedWayPoints');
-                console.log(visitedWayPoints);
-
                 if (notOnRouteAnymore(currentPosition, $scope.route)) {
 
                     var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
 
-                    console.log('wayPointsToSearch');
-                    console.log(wayPointsToSearch);
-
                     wayPointsToSearch = addCurrentPositionAsNewStartPoint(wayPointsToSearch, currentPosition);
-
-                    console.log('addCyrrentPos wayPointsToSearch');
-                    console.log(wayPointsToSearch);
-                    console.log(wayPointsToSearch.length);
 
                     $scope.recalculating = true;
 
@@ -119,7 +112,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                             $scope.route.hidden = true;
                             newRoute.color = $scope.route.color;
-
                             $scope.route = newRoute;
 
                             wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
@@ -261,10 +253,14 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 if (route) {
                     $scope.route = route;
 
+                    searchCriteria = angular.copy(stateService.getSearchCriteria());
+                    wayPointsUsedForSearch = getWayPointsWithoutStartPoint(searchCriteria.wayPoints);
+                    areasToAvoidUsedForSearch = searchCriteria.areasToAvoid;
+
                     $scope.$on(events.POSITION_EVENT, onPositionChange);
+                    $scope.$on('$locationChangeStart', onLeave);
 
                     enableDriveMode();
-                    //mapApiService.centerToRoute(route);
                 } else {
                     $scope.undefinedRoute = true;
                 }

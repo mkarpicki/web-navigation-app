@@ -93,6 +93,8 @@ describe('NavigationController', function () {
                     events: events
                 });
 
+                $scope.$on = jasmine.createSpy('$scope.$on');
+
                 $scope.$apply();
 
                 expect(routingService.getResults).toHaveBeenCalled();
@@ -283,6 +285,43 @@ describe('NavigationController', function () {
                 expect($scope.getManeuver()).toEqual(fakeManeuver);
 
             });
+
+        });
+
+    });
+
+    describe('when $locationChangeStart even fired', function () {
+
+        it('should stop navigation Mode', function (){
+
+            var routes = [
+                {},
+                {}
+            ];
+
+            var fakeEvent = {};
+
+            $routeParams.index = 1;
+
+            routingService.getResults = jasmine.createSpy('routingService.getResults').and.returnValue(routes);
+            stateService.disableNavigationMode = jasmine.createSpy('stateService.enableNavigationMode');
+
+            $controller("NavigationController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService,
+                stateService: stateService,
+                mapApiService: mapApiService,
+                config: config,
+                events: events
+            });
+
+            $scope.$apply();
+
+            $scope.$emit('$locationChangeStart', fakeEvent);
+
+            expect(stateService.disableNavigationMode).toHaveBeenCalled();
 
         });
 
@@ -493,245 +532,245 @@ describe('NavigationController', function () {
 
                         });
 
-                        //describe('and routingService did not found any routes', function () {
-                        //
-                        //    it('should not update routingService and it should keep old route in scope', function () {
-                        //
-                        //        fakePromise = {
-                        //            then: function (success, failure) {
-                        //                success([]);
-                        //            }
-                        //        };
-                        //
-                        //        newRoute = {};
-                        //
-                        //        $controller("NavigationController", {
-                        //            $scope: $scope,
-                        //            $sce: $sce,
-                        //            $routeParams: $routeParams,
-                        //            routingService: routingService,
-                        //            stateService: stateService,
-                        //            mapApiService: mapApiService,
-                        //            config: config,
-                        //            events: events
-                        //        });
-                        //
-                        //        $scope.$apply();
-                        //
-                        //        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
-                        //
-                        //        wayPointsUsedForSearch[0] = {
-                        //            title: '',
-                        //            coordinates: {
-                        //                latitude: fakeEventParams.param.coords.latitude,
-                        //                longitude: fakeEventParams.param.coords.longitude
-                        //            }
-                        //        };
-                        //
-                        //        $scope.$emit(events.POSITION_EVENT, fakeEventParams);
-                        //
-                        //        expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
-                        //        expect($scope.route).toEqual(defaultRoute);
-                        //        expect($scope.recalculating).toEqual(false);
-                        //
-                        //    });
-                        //
-                        //});
-                        //
-                        //describe('and routingService found at least one route', function () {
-                        //
-                        //    describe('and not visited any wayPoints on route', function () {
-                        //
-                        //        it('should clear routes in routingService, save new route in it and update route in scope', function () {
-                        //
-                        //            newRoute = {};
-                        //
-                        //            $controller("NavigationController", {
-                        //                $scope: $scope,
-                        //                $sce: $sce,
-                        //                $routeParams: $routeParams,
-                        //                routingService: routingService,
-                        //                stateService: stateService,
-                        //                mapApiService: mapApiService,
-                        //                config: config,
-                        //                events: events
-                        //            });
-                        //
-                        //            $scope.$apply();
-                        //
-                        //            routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
-                        //
-                        //            wayPointsUsedForSearch[0] = {
-                        //                title: '',
-                        //                coordinates: {
-                        //                    latitude: fakeEventParams.param.coords.latitude,
-                        //                    longitude: fakeEventParams.param.coords.longitude
-                        //                }
-                        //            };
-                        //
-                        //            $scope.$emit(events.POSITION_EVENT, fakeEventParams);
-                        //
-                        //            expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
-                        //            expect($scope.route).toEqual(newRoute);
-                        //            expect($scope.recalculating).toEqual(false);
-                        //
-                        //        });
-                        //    });
-                        //
-                        //    describe('and visited wayPoint on the route', function () {
-                        //
-                        //        it('should ignore wayPoint when recalculating route', function () {
-                        //
-                        //            wayPointsUsedForSearch = [
-                        //                {
-                        //                    title: 1,
-                        //                    coordinates: 'wayPointCoordinate1'
-                        //                },
-                        //                {
-                        //                    title: 2,
-                        //                    coordinates: 'wayPointCoordinate2'
-                        //                },
-                        //                {
-                        //                    title: 3,
-                        //                    coordinates: 'wayPointCoordinate3'
-                        //                },
-                        //                {
-                        //                    title: 4,
-                        //                    coordinates: 'wayPointCoordinate4'
-                        //                }
-                        //
-                        //            ];
-                        //            areasToAvoidUsedForSearch = [];
-                        //
-                        //            stateService.getSearchCriteria = function () {
-                        //                return {
-                        //                    wayPoints: wayPointsUsedForSearch,
-                        //                    areasToAvoid: areasToAvoidUsedForSearch
-                        //                };
-                        //            };
-                        //
-                        //            fakeEventParams.param.coords = {
-                        //                latitude: 'positionCoordinates',
-                        //                longitude: 'positionCoordinates'
-                        //            };
-                        //
-                        //            //fake to make code thinking
-                        //            //that position is changing
-                        //            //but check if wayPoint is visited return true
-                        //            //for each iteration change waypoint (make wayPointCoordinate2 visited)
-                        //            mapApiService.distance = function (a, b) {
-                        //                if (a.coordinates === 'positionCoordinates' && b.coordinates == 'positionCoordinates') {
-                        //                    return 100;
-                        //                } else if (b === 'wayPointCoordinate2') {
-                        //                    return 0;
-                        //                }
-                        //                return 100;
-                        //
-                        //            };
-                        //
-                        //            newRoute = {
-                        //                shape: [
-                        //                    'x,y',
-                        //                    'a,b'
-                        //                ]
-                        //            };
-                        //
-                        //
-                        //            fakePromise = {
-                        //                then: function (success) {
-                        //                    success([newRoute]);
-                        //                }
-                        //            };
-                        //
-                        //            $controller("NavigationController", {
-                        //                $scope: $scope,
-                        //                $sce: $sce,
-                        //                $routeParams: $routeParams,
-                        //                routingService: routingService,
-                        //                stateService: stateService,
-                        //                mapApiService: mapApiService,
-                        //                config: config,
-                        //                events: events
-                        //            });
-                        //
-                        //            $scope.$apply();
-                        //
-                        //            routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
-                        //
-                        //            wayPointsUsedForSearch[0] = {
-                        //                title: '',
-                        //                coordinates: {
-                        //                    latitude: fakeEventParams.param.coords.latitude,
-                        //                    longitude: fakeEventParams.param.coords.longitude
-                        //                }
-                        //            };
-                        //
-                        //            //prepare expected array without visited wayPoint
-                        //            wayPointsUsedForSearch = wayPointsUsedForSearch.filter(function(w) {
-                        //                return w.coordinates !== 'wayPointCoordinate2';
-                        //            });
-                        //
-                        //            $scope.$emit(events.POSITION_EVENT, fakeEventParams);
-                        //
-                        //            expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
-                        //            expect($scope.route).toEqual(newRoute);
-                        //            expect($scope.recalculating).toEqual(false);
-                        //
-                        //
-                        //        });
-                        //
-                        //    });
-                        //
-                        //});
+                        describe('and routingService did not found any routes', function () {
+
+                            it('should not update routingService and it should keep old route in scope', function () {
+
+                                fakePromise = {
+                                    then: function (success, failure) {
+                                        success([]);
+                                    }
+                                };
+
+                                newRoute = {};
+
+                                $controller("NavigationController", {
+                                    $scope: $scope,
+                                    $sce: $sce,
+                                    $routeParams: $routeParams,
+                                    routingService: routingService,
+                                    stateService: stateService,
+                                    mapApiService: mapApiService,
+                                    config: config,
+                                    events: events
+                                });
+
+                                $scope.$apply();
+
+                                routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                                wayPointsUsedForSearch[0] = {
+                                    title: '',
+                                    coordinates: {
+                                        latitude: fakeEventParams.param.coords.latitude,
+                                        longitude: fakeEventParams.param.coords.longitude
+                                    }
+                                };
+
+                                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                                expect($scope.route).toEqual(defaultRoute);
+                                expect($scope.recalculating).toEqual(false);
+
+                            });
+
+                        });
+
+                        describe('and routingService found at least one route', function () {
+
+                            describe('and not visited any wayPoints on route', function () {
+
+                                it('should clear routes in routingService, save new route in it and update route in scope', function () {
+
+                                    newRoute = {};
+
+                                    $controller("NavigationController", {
+                                        $scope: $scope,
+                                        $sce: $sce,
+                                        $routeParams: $routeParams,
+                                        routingService: routingService,
+                                        stateService: stateService,
+                                        mapApiService: mapApiService,
+                                        config: config,
+                                        events: events
+                                    });
+
+                                    $scope.$apply();
+
+                                    routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                                    wayPointsUsedForSearch[0] = {
+                                        title: '',
+                                        coordinates: {
+                                            latitude: fakeEventParams.param.coords.latitude,
+                                            longitude: fakeEventParams.param.coords.longitude
+                                        }
+                                    };
+
+                                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                    expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                                    expect($scope.route).toEqual(newRoute);
+                                    expect($scope.recalculating).toEqual(false);
+
+                                });
+                            });
+
+                            describe('and visited wayPoint on the route', function () {
+
+                                it('should ignore wayPoint when recalculating route', function () {
+
+                                    wayPointsUsedForSearch = [
+                                        {
+                                            title: 1,
+                                            coordinates: 'wayPointCoordinate1'
+                                        },
+                                        {
+                                            title: 2,
+                                            coordinates: 'wayPointCoordinate2'
+                                        },
+                                        {
+                                            title: 3,
+                                            coordinates: 'wayPointCoordinate3'
+                                        },
+                                        {
+                                            title: 4,
+                                            coordinates: 'wayPointCoordinate4'
+                                        }
+
+                                    ];
+                                    areasToAvoidUsedForSearch = [];
+
+                                    stateService.getSearchCriteria = function () {
+                                        return {
+                                            wayPoints: wayPointsUsedForSearch,
+                                            areasToAvoid: areasToAvoidUsedForSearch
+                                        };
+                                    };
+
+                                    fakeEventParams.param.coords = {
+                                        latitude: 'positionCoordinates',
+                                        longitude: 'positionCoordinates'
+                                    };
+
+                                    //fake to make code thinking
+                                    //that position is changing
+                                    //but check if wayPoint is visited return true
+                                    //for each iteration change waypoint (make wayPointCoordinate2 visited)
+                                    mapApiService.distance = function (a, b) {
+                                        if (a.coordinates === 'positionCoordinates' && b.coordinates == 'positionCoordinates') {
+                                            return 100;
+                                        } else if (b === 'wayPointCoordinate2') {
+                                            return 0;
+                                        }
+                                        return 100;
+
+                                    };
+
+                                    newRoute = {
+                                        shape: [
+                                            'x,y',
+                                            'a,b'
+                                        ]
+                                    };
+
+
+                                    fakePromise = {
+                                        then: function (success) {
+                                            success([newRoute]);
+                                        }
+                                    };
+
+                                    $controller("NavigationController", {
+                                        $scope: $scope,
+                                        $sce: $sce,
+                                        $routeParams: $routeParams,
+                                        routingService: routingService,
+                                        stateService: stateService,
+                                        mapApiService: mapApiService,
+                                        config: config,
+                                        events: events
+                                    });
+
+                                    $scope.$apply();
+
+                                    routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                                    wayPointsUsedForSearch[0] = {
+                                        title: '',
+                                        coordinates: {
+                                            latitude: fakeEventParams.param.coords.latitude,
+                                            longitude: fakeEventParams.param.coords.longitude
+                                        }
+                                    };
+
+                                    //prepare expected array without visited wayPoint
+                                    wayPointsUsedForSearch = wayPointsUsedForSearch.filter(function(w) {
+                                        return w.coordinates !== 'wayPointCoordinate2';
+                                    });
+
+                                    $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                    expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                                    expect($scope.route).toEqual(newRoute);
+                                    expect($scope.recalculating).toEqual(false);
+
+
+                                });
+
+                            });
+
+                        });
 
                     });
 
-                    //describe('and routingService calculation failed', function () {
-                    //
-                    //    it('should not update routingService and it should keep old route in scope', function () {
-                    //
-                    //        fakePromise = {
-                    //            then: function (success, failure) {
-                    //                failure(null);
-                    //            }
-                    //        };
-                    //
-                    //        newRoute = {};
-                    //
-                    //        $controller("NavigationController", {
-                    //            $scope: $scope,
-                    //            $sce: $sce,
-                    //            $routeParams: $routeParams,
-                    //            routingService: routingService,
-                    //            stateService: stateService,
-                    //            mapApiService: mapApiService,
-                    //            config: config,
-                    //            events: events
-                    //        });
-                    //
-                    //        $scope.$apply();
-                    //
-                    //        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
-                    //
-                    //        wayPointsUsedForSearch[0] = {
-                    //            title: '',
-                    //            coordinates: {
-                    //                latitude: fakeEventParams.param.coords.latitude,
-                    //                longitude: fakeEventParams.param.coords.longitude
-                    //            }
-                    //        };
-                    //
-                    //        $scope.recalculating = true;
-                    //
-                    //        $scope.$emit(events.POSITION_EVENT, fakeEventParams);
-                    //
-                    //        expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
-                    //        expect($scope.route).toEqual(defaultRoute);
-                    //        expect($scope.recalculating).toEqual(false);
-                    //
-                    //    });
-                    //
-                    //});
+                    describe('and routingService calculation failed', function () {
+
+                        it('should not update routingService and it should keep old route in scope', function () {
+
+                            fakePromise = {
+                                then: function (success, failure) {
+                                    failure(null);
+                                }
+                            };
+
+                            newRoute = {};
+
+                            $controller("NavigationController", {
+                                $scope: $scope,
+                                $sce: $sce,
+                                $routeParams: $routeParams,
+                                routingService: routingService,
+                                stateService: stateService,
+                                mapApiService: mapApiService,
+                                config: config,
+                                events: events
+                            });
+
+                            $scope.$apply();
+
+                            routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                            wayPointsUsedForSearch[0] = {
+                                title: '',
+                                coordinates: {
+                                    latitude: fakeEventParams.param.coords.latitude,
+                                    longitude: fakeEventParams.param.coords.longitude
+                                }
+                            };
+
+                            $scope.recalculating = true;
+
+                            $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                            expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                            expect($scope.route).toEqual(defaultRoute);
+                            expect($scope.recalculating).toEqual(false);
+
+                        });
+
+                    });
 
                 });
 

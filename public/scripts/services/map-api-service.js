@@ -299,18 +299,6 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         return map.getObjects();
     };
 
-    var hideRoutes = function () {
-
-    };
-
-    var showRoutes = function () {
-
-    };
-
-    var showRoute = function (route) {
-
-    };
-
     return {
         init: init,
         initBubble: initBubble,

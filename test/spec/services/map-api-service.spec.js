@@ -60,7 +60,8 @@ describe('map-api-service', function () {
         };
 
         fakeRouteLine = {
-            getBounds: function () {}
+            getBounds: function () {},
+            setVisibility: function () {}
         };
 
         var fakePlatform = {
@@ -113,7 +114,9 @@ describe('map-api-service', function () {
             return fakeRouteLine;
         };
 
-        H.map.Marker = function () {};
+        H.map.Marker = function () {
+            this.setVisibility = function () {}
+        };
 
         H.map.Circle = function () {
             return fakeCircle;
@@ -558,6 +561,57 @@ describe('map-api-service', function () {
                 expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeRectangleObj]);
             }));
 
+            describe('and areas delivered marked as hidden', function () {
+
+                it('should add any rectangle to map', inject(function(mapApiService) {
+
+                    var fakeArea = {
+                        boundingBox: {
+                            topLeft: {
+                                latitude: 1,
+                                longitude: 2
+                            },
+                            bottomRight: {
+                                latitude: 3,
+                                longitude: 4
+                            }
+                        },
+                        hidden: true
+                    };
+
+                    var fakeRect = {};
+                    var fakePoint = {};
+                    var fakeRectangleObj = {
+                        setVisibility: jasmine.createSpy('fakeRectangleObj.setVisibility')
+                    };
+
+                    H.geo.Point = jasmine.createSpy('H.geo.Point').and.returnValue(fakePoint);
+                    H.geo.Rect.fromPoints = jasmine.createSpy('H.geo.Rect.fromPoints').and.returnValue(fakeRect);
+                    H.map.Rect = jasmine.createSpy('H.map.Rect').and.returnValue(fakeRectangleObj);
+
+                    fakeMap.addObjects = jasmine.createSpy('fakeMap.addObject');
+
+                    mapApiService.init([]);
+                    mapApiService.drawAreasToAvoid([fakeArea]);
+
+                    expect(H.geo.Point).toHaveBeenCalledWith(fakeArea.boundingBox.topLeft.latitude, fakeArea.boundingBox.topLeft.longitude);
+                    expect(H.geo.Point).toHaveBeenCalledWith(fakeArea.boundingBox.bottomRight.latitude, fakeArea.boundingBox.bottomRight.longitude);
+
+                    expect(H.geo.Rect.fromPoints).toHaveBeenCalledWith(fakePoint, fakePoint);
+
+                    expect(H.map.Rect).toHaveBeenCalledWith(fakeRect,{
+                        style: {
+                            strokeColor: '#e2e2e2',
+                            lineWidth: 8
+                        }
+                    });
+
+                    expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeRectangleObj]);
+                    expect(fakeRectangleObj.setVisibility).toHaveBeenCalledWith(false);
+                }));
+
+            });
+
         });
 
     });
@@ -617,6 +671,41 @@ describe('map-api-service', function () {
                 expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeMarker]);
 
             }));
+
+            describe('and wayPoint is marked as hidden', function () {
+
+                it('should draw markers on map as not visible', inject(function(mapApiService) {
+
+                    var wayPoint = {
+                        coordinates: {
+                            latitude: 1,
+                            longitude: 2
+                        },
+                        hidden: true
+                    };
+
+                    var fakeMarker = {
+                        setVisibility: jasmine.createSpy('setVisibility')
+                    };
+
+                    H.map.Marker = jasmine.createSpy('H.map.Marker').and.returnValue(fakeMarker);
+
+                    fakeMap.addObjects = jasmine.createSpy('fakeMap.addObjects');
+
+                    mapApiService.init([]);
+                    mapApiService.drawWayPoints([wayPoint]);
+
+                    expect(H.map.Marker).toHaveBeenCalledWith({
+                        lat: wayPoint.coordinates.latitude,
+                        lng: wayPoint.coordinates.longitude
+                    });
+
+                    expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeMarker]);
+                    expect(fakeMarker.setVisibility).toHaveBeenCalledWith(false);
+
+                }));
+
+            });
 
         });
 
@@ -681,6 +770,37 @@ describe('map-api-service', function () {
             expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeRouteLine]);
 
         }));
+
+        describe('and route should be hidden', function () {
+
+            it ('should add route line to map as not visible', inject(function(mapApiService) {
+
+                route.hidden = true;
+
+                fakeRouteLine.getBounds = jasmine.createSpy('getBounds');
+                fakeRouteLine.setVisibility = jasmine.createSpy('fakeRouteLine.setVisibility');
+
+                fakeMap.addObjects = jasmine.createSpy('fakeMap.addObjects');
+
+                H.map.Polyline = jasmine.createSpy('new H.map.Polyline').and.returnValue(fakeRouteLine);
+
+                H.geo.Strip = function () {
+                    return fakeStrip;
+                };
+
+                mapApiService.init([]);
+                mapApiService.drawRoutes([route]);
+
+                expect(H.map.Polyline).toHaveBeenCalledWith(fakeStrip, {
+                    style: { strokeColor: color, lineWidth: 5 }
+                });
+
+                expect(fakeRouteLine.setVisibility).toHaveBeenCalledWith(false);
+                expect(fakeMap.addObjects).toHaveBeenCalledWith([fakeRouteLine]);
+
+            }));
+
+        });
 
         describe('when routes not passed', function () {
 
