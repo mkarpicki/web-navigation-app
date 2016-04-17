@@ -49,10 +49,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
             var onPositionChange = function (event, params) {
 
-                if (!$scope.route) {
-                    return;
-                }
-
                 if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {
 
                     var geoPosition = params.param;
@@ -86,17 +82,30 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                 lastPosition = currentPosition;
 
+                console.log('wayPointsUsedForSearch');
+                console.log(wayPointsUsedForSearch);
+
                 var justVisitedWayPoints = findJustVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
 
                 if (justVisitedWayPoints.length > 0) {
                     visitedWayPoints = collectVisitedWayPoints(visitedWayPoints, justVisitedWayPoints);
                 }
 
+                console.log('visitedWayPoints');
+                console.log(visitedWayPoints);
+
                 if (notOnRouteAnymore(currentPosition, $scope.route)) {
 
                     var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
 
+                    console.log('wayPointsToSearch');
+                    console.log(wayPointsToSearch);
+
                     wayPointsToSearch = addCurrentPositionAsNewStartPoint(wayPointsToSearch, currentPosition);
+
+                    console.log('addCyrrentPos wayPointsToSearch');
+                    console.log(wayPointsToSearch);
+                    console.log(wayPointsToSearch.length);
 
                     $scope.recalculating = true;
 
@@ -250,13 +259,12 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 }
 
                 if (route) {
+                    $scope.route = route;
 
                     $scope.$on(events.POSITION_EVENT, onPositionChange);
 
                     enableDriveMode();
                     //mapApiService.centerToRoute(route);
-                    $scope.route = route;
-
                 } else {
                     $scope.undefinedRoute = true;
                 }
