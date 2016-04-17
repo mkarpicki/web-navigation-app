@@ -10,9 +10,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             $scope.route = null;
             $scope.undefinedRoute = false;
-            $scope.driveModeEnabled = false;
-            $scope.recalculating = false;
-
             $scope.index = $routeParams.index;
 
             $scope.getManeuver = function () {

@@ -37,10 +37,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 return $sce.trustAsHtml(text);
             };
 
-            $scope.back = function () {
-                stateService.back();
-            };
-
             $scope.$on('$locationChangeStart', function( event ) {
                 var answer = confirm("Are you sure you want to stop navigation?");
                 if (!answer) {
