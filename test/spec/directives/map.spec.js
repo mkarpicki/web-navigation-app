@@ -73,11 +73,12 @@
 
 
 
-//describe('map directive', function () {
+//describe('map', function () {
 //
 //    "use strict";
 //
-//    var $scope,
+//    var mapApiService,
+//        $scope,
 //        $rootScope,
 //        $compile;
 //
@@ -85,15 +86,12 @@
 //
 //    beforeEach(module(function ($provide) {
 //
-//        $provide.provider('mapApiService', function () {
+//        mapApiService = {};
 //
-//            this.init = function () {
-//
-//            };
-//        });
+//        $provide.provider('mapApiService', mapApiService);
 //    }));
 //
-//    beforeEach(inject(function (_$rootScope_, _$compile_,$injector) {
+//    beforeEach(inject(function (_$rootScope_, _$compile_, $injector) {
 //
 //        $compile = _$compile_;
 //        $rootScope = $injector.get('$rootScope');
@@ -103,12 +101,12 @@
 //
 //    describe("initialization", function () {
 //
-//        it("should ", function () {
-//            //
-//            //var element = angular.element('<div data-map></div>');
-//            //$compile(element)($scope);
+//        it("should ", inject(function () {
 //
-//        });
+//            var element = angular.element('<div data-map></div>');
+//            $compile(element)($scope);
+//
+//        }));
 //    });
 //
 //});
