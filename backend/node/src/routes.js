@@ -21,4 +21,8 @@ router.get('/route/*', function (req, res) {
     renderMainView(res);
 });
 
+router.get('/navigate/*', function (req, res) {
+    renderMainView(res);
+});
+
 module.exports = router;
