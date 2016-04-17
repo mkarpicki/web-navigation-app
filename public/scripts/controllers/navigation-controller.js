@@ -1,8 +1,3 @@
-/**
- * @todo
- * when click back then ask if user is sure
- * and then stop navigation mode
- */
 angular.module('navigationApp.controllers').controller('NavigationController',
     ['$scope', '$sce', '$routeParams', 'config', 'events', 'routingService', 'stateService', 'mapApiService',
         function($scope, $sce, $routeParams, config, events, routingService, stateService, mapApiService) {
@@ -86,12 +81,23 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
             var checkRouteProgress = function (currentPosition) {
 
+                /**
+                 * @todo
+                 * cut visible route on map to hide what I already went thru
+                 */
+
                 lastPosition = currentPosition;
 
                 var justVisitedWayPoints = findJustVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
 
                 if (justVisitedWayPoints.length > 0) {
                     visitedWayPoints = collectVisitedWayPoints(visitedWayPoints, justVisitedWayPoints);
+                    /**
+                     * @todo
+                     * - hide visited way points on map
+                     * - when loading each page - reset visibility of objects (to show all)
+                     *
+                     */
                 }
 
                 if (notOnRouteAnymore(currentPosition, $scope.route)) {
