@@ -24,7 +24,6 @@ describe('backButton', function () {
             var element = angular.element('<button data-back-button>back</button>');
             $compile(element)($scope);
 
-            //element.isolateScope().showModal = jasmine.createSpy('showModal').and.callThrough();
             element.triggerHandler('click');
 
             expect($window.history.back).toHaveBeenCalled();
