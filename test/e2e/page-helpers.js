@@ -13,7 +13,7 @@ var SELECTORS = {
         NOT_ENOUGH_INFORMATION: 'p[data-ng-show="notEnoughInformation"]',
         NO_ROUTES_FOUND: 'p[data-ng-show="noRouteFound"]',
         RESULTS_LIST: 'ul[data-ng-hide="noRouteFound || notEnoughInformation"]',
-        BACK_LINK: 'a[data-ng-click="back();"]'
+        BACK_LINK: 'a[data-back-button]'
     },
     ROUTE_PAGE: {
         NO_ROUTE_FOUND: 'p[data-ng-show="undefinedRoute"]',
