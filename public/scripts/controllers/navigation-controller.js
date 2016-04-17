@@ -112,9 +112,9 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                             $scope.route.hidden = true;
                             newRoute.color = $scope.route.color;
-                            $scope.route = newRoute;
 
                             routingService.saveRoute(newRoute);
+                            $scope.route = newRoute;
 
                             wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
                         }

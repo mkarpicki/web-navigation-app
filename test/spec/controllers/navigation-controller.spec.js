@@ -512,6 +512,7 @@ describe('NavigationController', function () {
                                 $scope.$apply();
 
                                 routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+                                routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
 
                                 wayPointsUsedForSearch[0] = {
                                     title: '',
@@ -524,6 +525,7 @@ describe('NavigationController', function () {
                                 $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
                                 expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                                expect(routingService.saveRoute).not.toHaveBeenCalled();
                                 //expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
 
                                 expect($scope.route).toEqual(defaultRoute);
@@ -559,6 +561,7 @@ describe('NavigationController', function () {
                                 $scope.$apply();
 
                                 routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+                                routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
 
                                 wayPointsUsedForSearch[0] = {
                                     title: '',
@@ -571,6 +574,7 @@ describe('NavigationController', function () {
                                 $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
                                 expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                                expect(routingService.saveRoute).not.toHaveBeenCalled();
                                 expect($scope.route).toEqual(defaultRoute);
                                 expect($scope.recalculating).toEqual(false);
 
@@ -600,6 +604,7 @@ describe('NavigationController', function () {
                                     $scope.$apply();
 
                                     routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+                                    routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
 
                                     wayPointsUsedForSearch[0] = {
                                         title: '',
@@ -613,6 +618,7 @@ describe('NavigationController', function () {
 
                                     expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                     expect($scope.route).toEqual(newRoute);
+                                    expect(routingService.saveRoute).toHaveBeenCalledWith(newRoute);
                                     expect($scope.recalculating).toEqual(false);
 
                                 });
@@ -697,6 +703,7 @@ describe('NavigationController', function () {
                                     $scope.$apply();
 
                                     routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+                                    routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
 
                                     wayPointsUsedForSearch[0] = {
                                         title: '',
@@ -715,6 +722,7 @@ describe('NavigationController', function () {
 
                                     expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                     expect($scope.route).toEqual(newRoute);
+                                    expect(routingService.saveRoute).toHaveBeenCalledWith(newRoute);
                                     expect($scope.recalculating).toEqual(false);
 
 
@@ -752,6 +760,7 @@ describe('NavigationController', function () {
                             $scope.$apply();
 
                             routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+                            routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
 
                             wayPointsUsedForSearch[0] = {
                                 title: '',
@@ -766,6 +775,7 @@ describe('NavigationController', function () {
                             $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
                             expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
+                            expect(routingService.saveRoute).not.toHaveBeenCalled();
                             expect($scope.route).toEqual(defaultRoute);
                             expect($scope.recalculating).toEqual(false);
 
