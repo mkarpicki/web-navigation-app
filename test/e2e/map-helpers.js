@@ -9,7 +9,7 @@ var getMapApiServiceScript = function () {
 /*************** markers (wayPoints) ************************/
 
 var getMarkersScript = function () {
-    return getMapApiServiceScript() + "var markers = mapApiService.getObjects().filter(function(o) { return o instanceof H.map.Marker; }); ";
+    return getMapApiServiceScript() + "var markers = mapApiService.getObjects().filter(function(o) { return (o instanceof H.map.Marker && o.getVisibility() === true); }); ";
 };
 
 var getCountWayPointsScript = function () {
@@ -23,7 +23,7 @@ var countWayPoints = function () {
 /*************** routes ************************/
 
 var getRoutesScript = function () {
-    return getMapApiServiceScript() + "var routes = mapApiService.getObjects().filter(function(o) { return o instanceof H.map.Polyline; }); ";
+    return getMapApiServiceScript() + "var routes = mapApiService.getObjects().filter(function(o) { return (o instanceof H.map.Polyline && o.getVisibility() === true); }); ";
 };
 
 var getCountRoutesScript = function () {
