@@ -114,6 +114,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                             newRoute.color = $scope.route.color;
                             $scope.route = newRoute;
 
+                            routingService.saveRoute(newRoute);
+
                             wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
                         }
 
@@ -222,13 +224,9 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 stateService.enableNavigationMode();
             };
 
-            /**
-             * add it onleave
-             */
             var disableDriveMode = function () {
                 stateService.disableNavigationMode();
             };
-
 
             var getRoute = function (index) {
 

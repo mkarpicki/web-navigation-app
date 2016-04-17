@@ -8,10 +8,6 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
         'use strict';
 
-        $scope.back = function () {
-            stateService.back();
-        };
-
         $scope.trustedText = function (text) {
             return $sce.trustAsHtml(text);
         };

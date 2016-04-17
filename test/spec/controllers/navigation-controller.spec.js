@@ -28,6 +28,7 @@ describe('NavigationController', function () {
 
         routingService = {
             getResults: function () {},
+            saveRoute: function () {},
             calculateWithTrafficEnabled: function () {}
         };
 

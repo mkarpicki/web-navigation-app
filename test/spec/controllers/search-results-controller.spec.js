@@ -365,31 +365,6 @@ describe('SearchController', function () {
 
     });
 
-    describe('back', function () {
-
-        it ('should call stateService.back', function () {
-
-            stateService.back = jasmine.createSpy('stateService.back');
-
-            $controller("SearchController", {
-                $scope: $scope,
-                $sce: $sce,
-                routingService: routingService,
-                colorThemesService: colorThemesService,
-                stateService: stateService,
-                mapApiService: mapApiService
-            });
-
-            $scope.$apply();
-
-            $scope.back();
-
-            expect(stateService.back).toHaveBeenCalled();
-
-        });
-
-    });
-
     describe('trustedText', function (){
 
         it ('should return text with HTML', function () {

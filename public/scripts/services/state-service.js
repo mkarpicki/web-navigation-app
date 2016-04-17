@@ -4,7 +4,7 @@
  * or make all dependencies inside service to cut them of from controllers level - then it gives possibilities to change where state is being kept
  * (url, session storage etc).
  */
-angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', '$window', 'events', function ($rootScope, $interpolate, $location, $window, events) {
+angular.module('navigationApp.services').factory('stateService', ['$rootScope', '$interpolate', '$location', 'events', function ($rootScope, $interpolate, $location, events) {
 
     'use strict';
 
@@ -255,10 +255,6 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     };
 
-    var back = function () {
-        $window.history.back();
-    };
-
     var getSearchCriteria = function () {
 
         return {
@@ -294,9 +290,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         enableNavigationMode: enableNavigationMode,
         disableNavigationMode: disableNavigationMode,
 
-        getSearchCriteria: getSearchCriteria,
-
-        back: back
+        getSearchCriteria: getSearchCriteria
     };
 
 }]);

@@ -1,5 +1,9 @@
 <form>
-    <button data-ng-hide="undefinedRoute || driveModeEnabled" data-ng-click="back();">Stop navigation</button>
+    <button
+            data-ng-hide="undefinedRoute || driveModeEnabled"
+            data-back-button>
+        Stop navigation
+    </button>
 
     <ul data-ng-hide="undefinedRoute">
         <li data-ng-repeat="maneuver in getManeuver();">
@@ -8,5 +12,5 @@
     </ul>
 </form>
 <p data-ng-show="undefinedRoute">
-    No route found. <a href="/" data-ng-href="/">Back</a>
+    No route found. <a href="/" data-ng-href="/">Search</a>
 </p>
