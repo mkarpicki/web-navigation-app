@@ -78,6 +78,8 @@
 //    "use strict";
 //
 //    var mapApiService,
+//        events,
+//
 //        $scope,
 //        $rootScope,
 //        $compile;
@@ -86,9 +88,15 @@
 //
 //    beforeEach(module(function ($provide) {
 //
-//        mapApiService = {};
+//        mapApiService = {
+//            init: function () {}
+//        };
 //
 //        $provide.provider('mapApiService', mapApiService);
+//
+//        events = {};
+//
+//        $provide.provider('events', events);
 //    }));
 //
 //    beforeEach(inject(function (_$rootScope_, _$compile_, $injector) {
