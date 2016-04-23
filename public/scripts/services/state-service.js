@@ -12,9 +12,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         AvoidAreaVariable = 'a';
 
     var wayPointsStorage = [],
-        areasToAvoidStorage = [],
-
-        navigationMode = false;
+        areasToAvoidStorage = [];
 
     var serializeWayPoint = function (point) {
 
@@ -236,19 +234,14 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         areasToAvoidStorage.push(area);
     };
 
-    var isNavigationModeEnabled = function () {
-        return navigationMode;
-    };
 
     var disableNavigationMode = function () {
-        navigationMode = false;
         $rootScope.$broadcast(events.NAVIGATION_STATE_EVENT, {
             eventType: events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF
         });
     };
 
     var enableNavigationMode = function () {
-        navigationMode = true;
         $rootScope.$broadcast(events.NAVIGATION_STATE_EVENT, {
             eventType: events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON
         });
@@ -286,7 +279,6 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         addDestinationPoint: addDestinationPoint,
         addAreaToAvoid: addAreaToAvoid,
 
-        isNavigationModeEnabled: isNavigationModeEnabled,
         enableNavigationMode: enableNavigationMode,
         disableNavigationMode: disableNavigationMode,
 

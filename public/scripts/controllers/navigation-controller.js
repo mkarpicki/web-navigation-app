@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('NavigationController',
-    ['$scope', '$sce', '$routeParams', 'config', 'events', 'routingService', 'stateService', 'mapApiService',
-        function($scope, $sce, $routeParams, config, events, routingService, stateService, mapApiService) {
+    ['$scope', '$sce', '$routeParams', 'config', 'events', 'routingService', 'stateService', 'mapApiService', '$window',
+        function($scope, $sce, $routeParams, config, events, routingService, stateService, mapApiService, $window) {
 
             'use strict';
 
@@ -13,11 +13,14 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 lastPosition = null,
 
                 areasToAvoidUsedForSearch = [],
-                wayPointsUsedForSearch = [];
+                wayPointsUsedForSearch = [],
+
+                forceLeave = false;
 
             $scope.route = null;
             $scope.undefinedRoute = false;
             $scope.recalculating = false;
+            $scope.onLeaveConfirmation = false;
 
             $scope.getManeuver = function () {
                 var maneuver = [];
@@ -33,19 +36,24 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 return $sce.trustAsHtml(text);
             };
 
-            /**
-             * @todo
-             * implement checking with user is really wants to leave
-             * @param event
-             */
             var onLeave = function (event) {
+
+                if (!forceLeave) {
+                    $scope.onLeaveConfirmation = true;
+                    event.preventDefault();
+                    return;
+                }
                 disableDriveMode();
-                //var answer = confirm("Are you sure you want to stop navigation?");
-                //if (!answer) {
-                //    event.preventDefault();
-                //} else {
-                //    disableDriveMode();
-                //}
+            };
+
+            $scope.cancel = function () {
+                $scope.onLeaveConfirmation = false;
+            };
+
+            $scope.confirm = function () {
+                forceLeave = true;
+                onLeave(null);
+                $window.history.back();
             };
 
             var onPositionChange = function (event, params) {

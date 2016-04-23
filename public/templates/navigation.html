@@ -1,11 +1,11 @@
-<form>
+<form data-ng-hide="onLeaveConfirmation || undefinedRoute">
     <button
-            data-ng-hide="undefinedRoute || driveModeEnabled"
+            data-ng-hide="driveModeEnabled"
             data-back-button>
         Stop navigation
     </button>
 
-    <ul data-ng-hide="undefinedRoute">
+    <ul>
         <li data-ng-repeat="maneuver in getManeuver();">
             <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
         </li>
@@ -14,3 +14,8 @@
 <p data-ng-show="undefinedRoute">
     No route found. <a href="/" data-ng-href="/">Search</a>
 </p>
+<form data-ng-show="onLeaveConfirmation">
+    <p>Stop navigation?</p>
+    <button data-ng-click="cancel();">Cancel</button>
+    <button data-ng-click="confirm();">Stop</button>
+</form>

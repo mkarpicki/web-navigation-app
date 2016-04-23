@@ -40,11 +40,8 @@ describe('stateService', function () {
 
             _$rootScope_.$broadcast= jasmine.createSpy('$rootScope.$broadcast');
 
-            expect(stateService.isNavigationModeEnabled()).toEqual(false);
-
             stateService.enableNavigationMode();
 
-            expect(stateService.isNavigationModeEnabled()).toEqual(true);
             expect(_$rootScope_.$broadcast).toHaveBeenCalledWith(_events_.NAVIGATION_STATE_EVENT, {
                 eventType: _events_.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON
             })
@@ -59,15 +56,8 @@ describe('stateService', function () {
 
             _$rootScope_.$broadcast= jasmine.createSpy('$rootScope.$broadcast');
 
-            expect(stateService.isNavigationModeEnabled()).toEqual(false);
-
-            stateService.enableNavigationMode();
-
-            expect(stateService.isNavigationModeEnabled()).toEqual(true);
-
             stateService.disableNavigationMode();
 
-            expect(stateService.isNavigationModeEnabled()).toEqual(false);
             expect(_$rootScope_.$broadcast).toHaveBeenCalledWith(_events_.NAVIGATION_STATE_EVENT, {
                 eventType: _events_.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF
             })

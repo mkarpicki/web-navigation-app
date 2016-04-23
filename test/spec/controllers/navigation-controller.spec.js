@@ -8,6 +8,7 @@ describe('NavigationController', function () {
 
         $sce,
         $routeParams,
+        $window,
 
         routingService,
         stateService,
@@ -25,6 +26,12 @@ describe('NavigationController', function () {
 
         $sce = _$sce_;
         $routeParams = {};
+
+        $window = {
+            history: {
+                back: function () {}
+            }
+        };
 
         routingService = {
             getResults: function () {},
@@ -91,7 +98,8 @@ describe('NavigationController', function () {
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
-                    events: events
+                    events: events,
+                    $window: $window
                 });
 
                 $scope.$on = jasmine.createSpy('$scope.$on');
@@ -128,7 +136,8 @@ describe('NavigationController', function () {
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
-                    events: events
+                    events: events,
+                    $window: $window
                 });
 
                 $scope.$apply();
@@ -159,7 +168,8 @@ describe('NavigationController', function () {
                 stateService: stateService,
                 mapApiService: mapApiService,
                 config: config,
-                events: events
+                events: events,
+                $window: $window
             });
 
             $scope.$apply();
@@ -187,7 +197,8 @@ describe('NavigationController', function () {
                 stateService: stateService,
                 mapApiService: mapApiService,
                 config: config,
-                events: events
+                events: events,
+                $window: $window
             });
 
             $scope.$apply();
@@ -215,7 +226,8 @@ describe('NavigationController', function () {
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
-                    events: events
+                    events: events,
+                    $window: $window
                 });
 
                 $scope.$apply();
@@ -240,7 +252,8 @@ describe('NavigationController', function () {
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
-                    events: events
+                    events: events,
+                    $window: $window
                 });
 
                 $scope.$apply();
@@ -273,7 +286,8 @@ describe('NavigationController', function () {
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
-                    events: events
+                    events: events,
+                    $window: $window
                 });
 
                 $scope.$apply();
@@ -305,7 +319,7 @@ describe('NavigationController', function () {
             $routeParams.index = 1;
 
             routingService.getResults = jasmine.createSpy('routingService.getResults').and.returnValue(routes);
-            stateService.disableNavigationMode = jasmine.createSpy('stateService.enableNavigationMode');
+            fakeEvent.preventDefault = jasmine.createSpy('fakeEvent.preventDefault');
 
             $controller("NavigationController", {
                 $scope: $scope,
@@ -315,15 +329,18 @@ describe('NavigationController', function () {
                 stateService: stateService,
                 mapApiService: mapApiService,
                 config: config,
-                events: events
+                events: events,
+                $window: $window
             });
 
             $scope.$apply();
 
+            $scope.onLeaveConfirmation = false;
+
             $scope.$emit('$locationChangeStart', fakeEvent);
 
-            expect(stateService.disableNavigationMode).toHaveBeenCalled();
-
+            expect($scope.onLeaveConfirmation).toEqual(true);
+            //expect(fakeEvent.preventDefault).toHaveBeenCalled();
         });
 
     });
@@ -395,7 +412,8 @@ describe('NavigationController', function () {
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
-                    events: events
+                    events: events,
+                    $window: $window
                 });
 
                 $scope.$apply();
@@ -436,7 +454,8 @@ describe('NavigationController', function () {
                         stateService: stateService,
                         mapApiService: mapApiService,
                         config: config,
-                        events: events
+                        events: events,
+                        $window: $window
                     });
 
                     $scope.$apply();
@@ -506,7 +525,8 @@ describe('NavigationController', function () {
                                     stateService: stateService,
                                     mapApiService: mapApiService,
                                     config: config,
-                                    events: events
+                                    events: events,
+                                    $window: $window
                                 });
 
                                 $scope.$apply();
@@ -555,7 +575,8 @@ describe('NavigationController', function () {
                                     stateService: stateService,
                                     mapApiService: mapApiService,
                                     config: config,
-                                    events: events
+                                    events: events,
+                                    $window: $window
                                 });
 
                                 $scope.$apply();
@@ -598,7 +619,8 @@ describe('NavigationController', function () {
                                         stateService: stateService,
                                         mapApiService: mapApiService,
                                         config: config,
-                                        events: events
+                                        events: events,
+                                        $window: $window
                                     });
 
                                     $scope.$apply();
@@ -697,7 +719,8 @@ describe('NavigationController', function () {
                                         stateService: stateService,
                                         mapApiService: mapApiService,
                                         config: config,
-                                        events: events
+                                        events: events,
+                                        $window: $window
                                     });
 
                                     $scope.$apply();
@@ -754,7 +777,8 @@ describe('NavigationController', function () {
                                 stateService: stateService,
                                 mapApiService: mapApiService,
                                 config: config,
-                                events: events
+                                events: events,
+                                $window: $window
                             });
 
                             $scope.$apply();
@@ -787,6 +811,66 @@ describe('NavigationController', function () {
 
 
             });
+
+        });
+
+    });
+
+    describe('cancel', function () {
+
+        it ('should set scope.onLeaveConfirmation to false', function () {
+
+            $controller("NavigationController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService,
+                stateService: stateService,
+                mapApiService: mapApiService,
+                config: config,
+                events: events,
+                $window: $window
+            });
+
+            $scope.$apply();
+
+            $scope.onLeaveConfirmation = true;
+
+            $scope.cancel();
+
+            expect($scope.onLeaveConfirmation).toEqual(false);
+
+
+
+        });
+
+    });
+
+    describe('confirm', function () {
+
+        it ('should disable navigationMode and move back in history', function () {
+
+            stateService.disableNavigationMode = jasmine.createSpy('stateService.disableNavigationMode');
+            $window.history.back = jasmine.createSpy('$window.history.back');
+
+            $controller("NavigationController", {
+                $scope: $scope,
+                $sce: $sce,
+                $routeParams: $routeParams,
+                routingService: routingService,
+                stateService: stateService,
+                mapApiService: mapApiService,
+                config: config,
+                events: events,
+                $window: $window
+            });
+
+            $scope.$apply();
+
+            $scope.confirm();
+
+            expect(stateService.disableNavigationMode).toHaveBeenCalled();
+            expect($window.history.back).toHaveBeenCalled();
 
         });
 
