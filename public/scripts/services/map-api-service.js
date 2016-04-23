@@ -299,6 +299,10 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         return map.getObjects();
     };
 
+    var resizeMap = function () {
+        map.getViewPort().resize();
+    };
+
     return {
         init: init,
         initBubble: initBubble,
@@ -314,7 +318,8 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         updateCurrentPosition: updateCurrentPosition,
         setZoomLevel: setZoomLevel,
         distance: distance,
-        centerToRoute: centerToRoute
+        centerToRoute: centerToRoute,
+        resizeMap: resizeMap
     };
 
 }]);
