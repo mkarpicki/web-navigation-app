@@ -126,6 +126,16 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'e
             }
         });
 
+        scope.$watch(
+            function () {
+                return [element[0].offsetWidth, element[0].offsetHeight].join('x');
+            },
+            function (value) {
+                //console.log('directive got resized:', value.split('x'));
+                mapApiService.resizeMap();
+            }
+        );
+
         scope.$watchGroup([attrs.currentPosition, attrs.updateToPosition], function (newValues) {
 
             var currentPosition = newValues[0],
