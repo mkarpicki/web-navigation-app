@@ -7,33 +7,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link rel="stylesheet" type="text/css" href="styles/navigation-app.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
 </head>
 <body data-ng-app="navigationApp" class="page">
-    <div data-ng-controller="PageController" data-ng-class="ready" data-ng-init="pageReady();">
-        <section id="panel">
-            <!--<span data-ng-hid="gettingLocationError">geo:{{currentPosition.latitude}} {{currentPosition.longitude}}</span>-->
-            <span data-ng-show="gettingLocationError">Problem with finding geo localisation.</span>
-            <section data-ng-view></section>
-        </section>
-        <section
-                id="map"
-                data-map
-                data-routes="routes"
-                data-way-points="wayPoints"
-                data-areas-to-avoid="areasToAvoid"
-                data-current-position="currentPosition"
-                data-update-to-position="updateToPosition"
-                data-zoom-level="zoomLevel">
-            <form>
-                <ul class="bubble">
-                    <li><button class="menu from">from</button></li>
-                    <li><button class="menu waypoint" data-ng-disabled="!allowAddingWayPoints();">add way point</button></li>
-                    <li><button class="menu to">to</button></li>
-                    <li><button class="menu avoid">avoid area</button></li>
-                </ul>
-            </form>
-        </section>
+    <div data-ng-controller="PageController" data-ng-class="ready" data-ng-init="pageReady();" class="container-fluid">
+        <div class="row">
+            <section id="panel" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <!--<span data-ng-hid="gettingLocationError">geo:{{currentPosition.latitude}} {{currentPosition.longitude}}</span>-->
+                <span data-ng-show="gettingLocationError">Problem with finding geo localisation.</span>
+                <section data-ng-view></section>
+            </section>
+            <section
+                    class="col-xs-12 col-sm-12 col-md-8 col-lg-8"
+                    id="map"
+                    data-map
+                    data-resize-element
+                    data-routes="routes"
+                    data-way-points="wayPoints"
+                    data-areas-to-avoid="areasToAvoid"
+                    data-current-position="currentPosition"
+                    data-update-to-position="updateToPosition"
+                    data-zoom-level="zoomLevel">
+                <form>
+                    <ul class="bubble">
+                        <li><button class="menu from">from</button></li>
+                        <li><button class="menu waypoint" data-ng-disabled="!allowAddingWayPoints();">add way point</button></li>
+                        <li><button class="menu to">to</button></li>
+                        <li><button class="menu avoid">avoid area</button></li>
+                    </ul>
+                </form>
+            </section>
+        </div>
     </div>
 
     <!--<script src="scripts/angular.min.js"></script>-->
@@ -62,6 +67,7 @@
 
     <script type="text/javascript" charset="UTF-8" src="scripts/directives/map.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/directives/back-button.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/directives/resize-element.js"></script>
 
     <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
     <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
