@@ -1,15 +1,9 @@
-<form>
-    <a data-ng-hide="undefinedRoute"
-       data-ng-href="/navigate/{{index}}">
-        Start navigation
-    </a>
+<form data-ng-hide="undefinedRoute">
+    <a data-ng-href="/navigate/{{index}}">Start navigation</a>
 
-    <button data-ng-hide="undefinedRoute"
-            data-back-button>
-        Back
-    </button>
+    <button data-back-button>Back</button>
 
-    <ul data-ng-hide="undefinedRoute">
+    <ul>
         <li data-ng-repeat="maneuver in getManeuver();">
             <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
         </li>
