@@ -9,12 +9,52 @@
             data-ng-model="useCurrentPosition"
             data-ng-change="useCurrentPositionAsStartPoint();">
 
+    <!--<ul class="list-unstyled">-->
+        <!--<li data-ng-repeat="wayPoint in wayPoints track by $index">-->
+            <!--<div class="input-group">-->
+
+                <!--<input-->
+                    <!--id="search-field-{{$index}}"-->
+                    <!--type="text"-->
+                    <!--class="form-control"-->
+                    <!--autocomplete="off"-->
+                    <!--placeholder="Type location"-->
+                    <!--data-ng-focus="markActiveField($index);"-->
+                    <!--data-ng-blug="unMarkActiveField();"-->
+                    <!--data-ng-keyup="getSuggestions();"-->
+                    <!--data-ng-model="wayPoints[$index].title"-->
+                    <!-->
+
+                <!--<span class="input-group-btn">-->
+                    <!--<button-->
+                            <!--class="btn btn-default"-->
+                            <!--type="button"-->
+                            <!--data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"-->
+                            <!--data-ng-click="removeWayPoint($index);" >-</button>-->
+                    <!--<button-->
+                            <!--class="btn btn-default"-->
+                            <!--type="button"-->
+                            <!--data-ng-if="$index < (wayPoints.length - 1)"-->
+                            <!--data-ng-click="moveWayPointDown($index);" >down</button>-->
+                    <!--<button-->
+                            <!--class="btn btn-default"-->
+                            <!--type="button"-->
+                            <!--data-ng-if="$index > 0"-->
+                            <!--data-ng-click="moveWayPointUp($index);" >up</button>-->
+                <!--</span>-->
+
+            <!--</div>-->
+
+            <!--<ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">-->
+                <!--<li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">-->
+                    <!--<button class="btn btn-link" data-ng-click="search(suggestion);">{{suggestion}}</button>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</li>-->
+    <!--</ul>-->
+
     <ul class="list-unstyled">
         <li data-ng-repeat="wayPoint in wayPoints track by $index">
-            <!--<label data-ng-if="$index === 0" for="search-field-{{$index}}">From:</label>-->
-            <!--<label data-ng-if="$index > 0 && $index < (wayPoints.length - 1)" for="search-field-{{$index}}">Thru:</label>-->
-            <!--<label data-ng-if="$index === (wayPoints.length - 1)" for="search-field-{{$index}}">To:</label>-->
-            <!--<label for="search-field-{{$index}}">{{$index+1}}.</label>-->
 
             <input
                     id="search-field-{{$index}}"
@@ -27,14 +67,35 @@
                     data-ng-model="wayPoints[$index].title"
                     >
 
-            <button data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
-                    data-ng-click="removeWayPoint($index);" >-</button>
+            <button
+                    class="btn btn-default"
+                    aria-label="remove"
+                    type="button"
+                    data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
+                    data-ng-click="removeWayPoint($index);"
+                    >
+                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            </button>
 
-            <button data-ng-if="$index < (wayPoints.length - 1)"
-                    data-ng-click="moveWayPointDown($index);" >down</button>
+            <button
+                    class="btn btn-default"
+                    aria-label="down"
+                    type="button"
+                    data-ng-if="$index < (wayPoints.length - 1)"
+                    data-ng-click="moveWayPointDown($index);"
+                    >
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+            </button>
 
-            <button data-ng-if="$index > 0"
-                    data-ng-click="moveWayPointUp($index);" >up</button>
+            <button
+                    class="btn btn-default"
+                    aria-label="up"
+                    type="button"
+                    data-ng-if="$index > 0"
+                    data-ng-click="moveWayPointUp($index);"
+                    >
+                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+            </button>
 
             <ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">
                 <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
