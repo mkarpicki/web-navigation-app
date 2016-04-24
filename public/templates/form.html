@@ -1,6 +1,5 @@
 <form>
 
-    <!--<span>geo: {{geoLocation}}</span>-->
     <label for="current-position-as-start-point">Use current position as start point</label>
     <input
             type="checkbox"
@@ -10,26 +9,23 @@
             data-ng-model="useCurrentPosition"
             data-ng-change="useCurrentPositionAsStartPoint();">
 
-    <ul>
+    <ul class="list-unstyled">
         <li data-ng-repeat="wayPoint in wayPoints track by $index">
-            <label data-ng-if="$index === 0" for="search-field-{{$index}}">From:</label>
-            <label data-ng-if="$index > 0 && $index < (wayPoints.length - 1)" for="search-field-{{$index}}">Thru:</label>
-            <label data-ng-if="$index === (wayPoints.length - 1)" for="search-field-{{$index}}">To:</label>
+            <!--<label data-ng-if="$index === 0" for="search-field-{{$index}}">From:</label>-->
+            <!--<label data-ng-if="$index > 0 && $index < (wayPoints.length - 1)" for="search-field-{{$index}}">Thru:</label>-->
+            <!--<label data-ng-if="$index === (wayPoints.length - 1)" for="search-field-{{$index}}">To:</label>-->
+            <!--<label for="search-field-{{$index}}">{{$index+1}}.</label>-->
 
             <input
                     id="search-field-{{$index}}"
                     type="text"
                     autocomplete="off"
+                    placeholder="Type location"
                     data-ng-focus="markActiveField($index);"
                     data-ng-blug="unMarkActiveField();"
                     data-ng-keyup="getSuggestions();"
                     data-ng-model="wayPoints[$index].title"
                     >
-            <ul data-ng-if="isActiveField($index);" class="search-suggestions">
-                <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
-                    <button data-ng-click="search(suggestion);">{{suggestion}}</button>
-                </li>
-            </ul>
 
             <button data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
                     data-ng-click="removeWayPoint($index);" >-</button>
@@ -39,6 +35,12 @@
 
             <button data-ng-if="$index > 0"
                     data-ng-click="moveWayPointUp($index);" >up</button>
+
+            <ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">
+                <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
+                    <button class="btn btn-link" data-ng-click="search(suggestion);">{{suggestion}}</button>
+                </li>
+            </ul>
         </li>
     </ul>
 
@@ -54,6 +56,6 @@
         </li>
     </ul>
 
-    <button data-ng-click="getRoute();" class="btn btn-primary">Get route</button>
+    <button data-ng-click="getRoute();" class="btn btn-primary">Calculate</button>
     <button data-ng-click="clear();" class="btn btn-default">Clear</button>
 </form>
