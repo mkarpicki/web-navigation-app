@@ -101,6 +101,10 @@ angular.module('navigationApp.controllers').controller('PageController',
         //
         //};
 
+        $scope.onlyMapShown = function () {
+            return !!($location.hash());
+        };
+
         $scope.$on(events.POSITION_EVENT, function (event, params) {
 
             if (params.eventType === events.POSITION_EVENT_TYPES.CHANGE) {

@@ -10,3 +10,9 @@
 input {
 
 }
+
+@media (min-width: 992px) {
+    .panel-toggle {
+        display: none;
+    }
+}

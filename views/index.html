@@ -16,7 +16,23 @@
             <section id="panel" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <!--<span data-ng-hid="gettingLocationError">geo:{{currentPosition.latitude}} {{currentPosition.longitude}}</span>-->
                 <span data-ng-show="gettingLocationError">Problem with finding geo localisation.</span>
-                <section data-ng-view></section>
+                <section data-ng-hide="onlyMapShown()" data-ng-view></section>
+                <a
+                        class="panel-toggle"
+                        data-ng-hide="onlyMapShown()"
+                        href="#show-map-btn"
+                        data-ng-href="#show-map-btn"
+                        data-ng-click="mapShown = !mapShown"
+                        id="show-map-btn">
+                    show map
+                </a>
+                <button
+                        class="panel-toggle"
+                        data-ng-show="onlyMapShown()"
+                        data-back-button
+                        data-ng-click="mapShown = !mapShown" >
+                    show panel
+                </button>
             </section>
             <section
                     class="col-xs-12 col-sm-12 col-md-8 col-lg-8"
