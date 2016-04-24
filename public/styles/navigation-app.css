@@ -1,5 +1,5 @@
 #panel {
-    margin: 0 0 10px 0;
+    margin: 10px 0;
 }
 
 #map {
@@ -9,6 +9,16 @@
 
 input {
 
+}
+
+/* toggle map / panel button ***************************/
+
+.panel-toggle {
+    float: right;
+}
+
+button.panel-toggle {
+    margin-top: 10px;
 }
 
 @media (min-width: 992px) {
