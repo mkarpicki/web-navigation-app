@@ -1,14 +1,14 @@
 <form data-ng-hide="undefinedRoute">
-    <a data-ng-href="/navigate/{{index}}">Start navigation</a>
+    <a data-ng-href="/navigate/{{index}}" class="btn btn-primary">Start navigation</a>
 
-    <button data-back-button>Back</button>
+    <button data-back-button class="btn btn-default">Back</button>
 
-    <ul>
-        <li data-ng-repeat="maneuver in getManeuver();">
+    <ul class="list-group">
+        <li data-ng-repeat="maneuver in getManeuver();" class="list-group-item">
             <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
         </li>
     </ul>
 </form>
 <p data-ng-show="undefinedRoute">
-    No route found. <a href="/" data-ng-href="/">Search</a>
+    No route found. <a href="/" data-ng-href="/" class="btn btn-default">Search</a>
 </p>

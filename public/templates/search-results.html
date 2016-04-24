@@ -1,5 +1,5 @@
-<ul data-ng-hide="noRouteFound || notEnoughInformation">
-    <li data-ng-repeat="route in routes track by $index">
+<ul data-ng-hide="noRouteFound || notEnoughInformation" class="list-group">
+    <li data-ng-repeat="route in routes track by $index" class="list-group-item">
         <a data-ng-bind-html="trustedText(route.summary.text);" data-ng-href="/route/{{$index}}"></a>
     </li>
 </ul>
@@ -9,4 +9,4 @@
 <p data-ng-show="notEnoughInformation">
     Not enough information to calculate route.
 </p>
-<a href="/" data-back-button>Back</a>
+<a href="/" data-back-button class="btn btn-default">Back</a>

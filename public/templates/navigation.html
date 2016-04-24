@@ -1,5 +1,6 @@
 <form data-ng-hide="onLeaveConfirmation || undefinedRoute">
     <button
+            class="btn btn-primary"
             data-ng-hide="driveModeEnabled"
             data-back-button>
         Stop navigation
@@ -12,10 +13,10 @@
     </ul>
 </form>
 <p data-ng-show="undefinedRoute">
-    No route found. <a href="/" data-ng-href="/">Search</a>
+    No route found. <a href="/" data-ng-href="/" class="btn btn-default">Search</a>
 </p>
 <form data-ng-show="onLeaveConfirmation">
     <p>Stop navigation?</p>
-    <button data-ng-click="cancel();">Cancel</button>
-    <button data-ng-click="confirm();">Stop</button>
+    <button data-ng-click="cancel();" class="btn btn-default">Cancel</button>
+    <button data-ng-click="confirm();" class="btn btn-primary">Stop</button>
 </form>
