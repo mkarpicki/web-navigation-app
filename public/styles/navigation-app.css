@@ -7,9 +7,12 @@
     padding: 0;
 }
 
-input {
+/* form page ***********************/
 
+li.way-point {
+    padding: 5px 0;
 }
+
 
 /* toggle map / panel button ***************************/
 

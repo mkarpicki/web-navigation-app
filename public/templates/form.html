@@ -54,48 +54,53 @@
     <!--</ul>-->
 
     <ul class="list-unstyled">
-        <li data-ng-repeat="wayPoint in wayPoints track by $index">
+        <li class="way-point" data-ng-repeat="wayPoint in wayPoints track by $index">
 
-            <input
-                    id="search-field-{{$index}}"
-                    type="text"
-                    autocomplete="off"
-                    placeholder="Type location"
-                    data-ng-focus="markActiveField($index);"
-                    data-ng-blug="unMarkActiveField();"
-                    data-ng-keyup="getSuggestions();"
-                    data-ng-model="wayPoints[$index].title"
-                    >
+            <div class="input-group">
+                <input
+                        id="search-field-{{$index}}"
+                        type="text"
+                        autocomplete="off"
+                        class="form-control"
+                        placeholder="Type location"
+                        data-ng-focus="markActiveField($index);"
+                        data-ng-blug="unMarkActiveField();"
+                        data-ng-keyup="getSuggestions();"
+                        data-ng-model="wayPoints[$index].title"
+                        >
 
-            <button
-                    class="btn btn-default"
-                    aria-label="remove"
-                    type="button"
-                    data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
-                    data-ng-click="removeWayPoint($index);"
-                    >
-                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-            </button>
+                <span class="input-group-btn">
+                    <button
+                            class="btn btn-default"
+                            aria-label="remove"
+                            type="button"
+                            data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
+                            data-ng-click="removeWayPoint($index);"
+                            >
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                    </button>
 
-            <button
-                    class="btn btn-default"
-                    aria-label="down"
-                    type="button"
-                    data-ng-if="$index < (wayPoints.length - 1)"
-                    data-ng-click="moveWayPointDown($index);"
-                    >
-                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-            </button>
+                    <button
+                            class="btn btn-default"
+                            aria-label="down"
+                            type="button"
+                            data-ng-if="$index < (wayPoints.length - 1)"
+                            data-ng-click="moveWayPointDown($index);"
+                            >
+                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                    </button>
 
-            <button
-                    class="btn btn-default"
-                    aria-label="up"
-                    type="button"
-                    data-ng-if="$index > 0"
-                    data-ng-click="moveWayPointUp($index);"
-                    >
-                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-            </button>
+                    <button
+                            class="btn btn-default"
+                            aria-label="up"
+                            type="button"
+                            data-ng-if="$index > 0"
+                            data-ng-click="moveWayPointUp($index);"
+                            >
+                        <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                    </button>
+                </span>
+            </div>
 
             <ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">
                 <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
