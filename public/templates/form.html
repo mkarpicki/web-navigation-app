@@ -9,50 +9,6 @@
             data-ng-model="useCurrentPosition"
             data-ng-change="useCurrentPositionAsStartPoint();">
 
-    <!--<ul class="list-unstyled">-->
-        <!--<li data-ng-repeat="wayPoint in wayPoints track by $index">-->
-            <!--<div class="input-group">-->
-
-                <!--<input-->
-                    <!--id="search-field-{{$index}}"-->
-                    <!--type="text"-->
-                    <!--class="form-control"-->
-                    <!--autocomplete="off"-->
-                    <!--placeholder="Type location"-->
-                    <!--data-ng-focus="markActiveField($index);"-->
-                    <!--data-ng-blug="unMarkActiveField();"-->
-                    <!--data-ng-keyup="getSuggestions();"-->
-                    <!--data-ng-model="wayPoints[$index].title"-->
-                    <!-->
-
-                <!--<span class="input-group-btn">-->
-                    <!--<button-->
-                            <!--class="btn btn-default"-->
-                            <!--type="button"-->
-                            <!--data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"-->
-                            <!--data-ng-click="removeWayPoint($index);" >-</button>-->
-                    <!--<button-->
-                            <!--class="btn btn-default"-->
-                            <!--type="button"-->
-                            <!--data-ng-if="$index < (wayPoints.length - 1)"-->
-                            <!--data-ng-click="moveWayPointDown($index);" >down</button>-->
-                    <!--<button-->
-                            <!--class="btn btn-default"-->
-                            <!--type="button"-->
-                            <!--data-ng-if="$index > 0"-->
-                            <!--data-ng-click="moveWayPointUp($index);" >up</button>-->
-                <!--</span>-->
-
-            <!--</div>-->
-
-            <!--<ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">-->
-                <!--<li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">-->
-                    <!--<button class="btn btn-link" data-ng-click="search(suggestion);">{{suggestion}}</button>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</li>-->
-    <!--</ul>-->
-
     <ul class="list-unstyled">
         <li class="way-point" data-ng-repeat="wayPoint in wayPoints track by $index">
 
@@ -69,7 +25,7 @@
                         data-ng-model="wayPoints[$index].title"
                         >
 
-                <span class="input-group-btn">
+                <div class="input-group-btn">
                     <button
                             class="btn btn-default"
                             aria-label="remove"
@@ -99,14 +55,22 @@
                             >
                         <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
                     </button>
-                </span>
+                </div>
             </div>
 
-            <ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">
-                <li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">
-                    <button class="btn btn-link" data-ng-click="search(suggestion);">{{suggestion}}</button>
-                </li>
-            </ul>
+            <div data-ng-if="isActiveField($index);" class="search-suggestions list-group">
+                <a
+                        class="list-group-item"
+                        data-ng-click="search(suggestion);"
+                        data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">{{suggestion}}</a>
+            </div>
+
+            <!--<ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">-->
+                <!--<li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">-->
+                    <!--<button class="btn btn-link" data-ng-click="search(suggestion);">{{suggestion}}</button>-->
+                <!--</li>-->
+            <!--</ul>-->
+
         </li>
     </ul>
 
@@ -116,7 +80,7 @@
 
     <ul>
         <li data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
-            <span>{{$index}}.</span>
+            <span>{{$index + 1}}.</span>
             <span>{{areaToAvoid.title}}</span>
             <button data-ng-click="removeWayAreaToAvoid($index);" >-</button>
         </li>
