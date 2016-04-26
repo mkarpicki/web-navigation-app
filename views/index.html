@@ -15,7 +15,7 @@
         <div class="row">
             <section id="panel" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <!--<span data-ng-hid="gettingLocationError">geo:{{currentPosition.latitude}} {{currentPosition.longitude}}</span>-->
-                <span data-ng-show="gettingLocationError">Problem with finding geo localisation.</span>
+                <span class="alert alert-warning" role="alert" data-ng-show="gettingLocationError">Problem with finding your localisation.</span>
                 <section data-ng-hide="onlyMapShown()" data-ng-view></section>
                 <a
                         class="panel-toggle"

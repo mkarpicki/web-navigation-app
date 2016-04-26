@@ -9,7 +9,7 @@
 
 /* form page ***********************/
 
-li.way-point {
+li.way-point, li.area-to-avoid {
     padding: 5px 0;
 }
 

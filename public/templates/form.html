@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div data-ng-if="isActiveField($index);" class="search-suggestions list-group">
+            <div data-ng-if="isActiveField($index) && wayPoints[$index].suggestions;" class="search-suggestions list-group">
                 <a
                         class="list-group-item"
                         data-ng-click="search(suggestion);"
@@ -74,17 +74,46 @@
         </li>
     </ul>
 
-    <button data-ng-click="unMarkActiveField(); addWayPoint();">+</button>
+    <button
+            class="btn btn-default"
+            aria-label="up"
+            type="button"
+            data-ng-click="unMarkActiveField(); addWayPoint();"
+            >
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+    </button>
 
     <br>
 
-    <ul>
-        <li data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
-            <span>{{$index + 1}}.</span>
-            <span>{{areaToAvoid.title}}</span>
-            <button data-ng-click="removeWayAreaToAvoid($index);" >-</button>
-        </li>
-    </ul>
+    <fieldset data-ng-show="areasToAvoid">
+        <legend>Areas to avoid:</legend>
+        <ul class="list-unstyled">
+            <li class="area-to-avoid" data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
+                <!--<span>{{$index + 1}}.</span>-->
+                <!--<span>{{areaToAvoid.title}}</span>-->
+
+                <div class="input-group">
+                    <input
+                            type="text"
+                            autocomplete="off"
+                            class="form-control"
+                            data-ng-model="areaToAvoid.title"
+                            disabled="disabled"
+                            >
+                    <div class="input-group-btn">
+                        <button
+                                class="btn btn-default"
+                                aria-label="remove"
+                                type="button"
+                                data-ng-click="removeWayAreaToAvoid($index);"
+                                >
+                            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </fieldset>
 
     <button data-ng-click="getRoute();" class="btn btn-primary">Calculate</button>
     <button data-ng-click="clear();" class="btn btn-default">Clear</button>
