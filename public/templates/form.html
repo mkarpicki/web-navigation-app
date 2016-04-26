@@ -65,12 +65,6 @@
                         data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">{{suggestion}}</a>
             </div>
 
-            <!--<ul data-ng-if="isActiveField($index);" class="search-suggestions list-unstyled">-->
-                <!--<li data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">-->
-                    <!--<button class="btn btn-link" data-ng-click="search(suggestion);">{{suggestion}}</button>-->
-                <!--</li>-->
-            <!--</ul>-->
-
         </li>
     </ul>
 
@@ -83,10 +77,9 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </button>
 
-    <br>
+    <hr>
 
-    <div data-ng-show="areasToAvoid">
-        <hr>
+    <div data-ng-show="areasToAvoid.length > 0">
         <h5>Areas to avoid:</h5>
         <ul class="list-unstyled">
             <li class="area-to-avoid" data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
@@ -116,6 +109,8 @@
         </ul>
     </div>
 
-    <button data-ng-click="getRoute();" class="btn btn-primary">Calculate</button>
-    <button data-ng-click="clear();" class="btn btn-default">Clear</button>
+    <div>
+        <button data-ng-click="getRoute();" class="btn btn-primary">Calculate</button>
+        <button data-ng-click="clear();" class="btn btn-default">Clear</button>
+    </div>
 </form>
