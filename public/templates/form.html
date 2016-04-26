@@ -33,7 +33,7 @@
                             data-ng-if="$index > 0 && $index < (wayPoints.length - 1)"
                             data-ng-click="removeWayPoint($index);"
                             >
-                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
 
                     <button
@@ -43,7 +43,7 @@
                             data-ng-if="$index < (wayPoints.length - 1)"
                             data-ng-click="moveWayPointDown($index);"
                             >
-                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                     </button>
 
                     <button
@@ -53,7 +53,7 @@
                             data-ng-if="$index > 0"
                             data-ng-click="moveWayPointUp($index);"
                             >
-                        <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                     </button>
                 </div>
             </div>
@@ -76,11 +76,11 @@
 
     <button
             class="btn btn-default"
-            aria-label="up"
+            aria-label="add"
             type="button"
             data-ng-click="unMarkActiveField(); addWayPoint();"
             >
-        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </button>
 
     <br>
@@ -108,7 +108,7 @@
                                 type="button"
                                 data-ng-click="removeWayAreaToAvoid($index);"
                                 >
-                            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
                     </div>
                 </div>
