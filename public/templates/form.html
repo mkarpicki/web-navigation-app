@@ -85,8 +85,9 @@
 
     <br>
 
-    <fieldset data-ng-show="areasToAvoid">
-        <legend>Areas to avoid:</legend>
+    <div data-ng-show="areasToAvoid">
+        <hr>
+        <h5>Areas to avoid:</h5>
         <ul class="list-unstyled">
             <li class="area-to-avoid" data-ng-repeat="areaToAvoid in areasToAvoid track by $index">
                 <!--<span>{{$index + 1}}.</span>-->
@@ -113,7 +114,7 @@
                 </div>
             </li>
         </ul>
-    </fieldset>
+    </div>
 
     <button data-ng-click="getRoute();" class="btn btn-primary">Calculate</button>
     <button data-ng-click="clear();" class="btn btn-default">Clear</button>
