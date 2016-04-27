@@ -13,6 +13,12 @@ li.way-point, li.area-to-avoid {
     padding: 5px 0;
 }
 
+/* route page ***********************/
+
+ul.maneuvers-list {
+    margin-top: 20px;
+}
+
 
 /* toggle map / panel button ***************************/
 

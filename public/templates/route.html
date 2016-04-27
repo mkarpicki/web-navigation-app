@@ -3,7 +3,7 @@
 
     <button data-back-button class="btn btn-default">Back</button>
 
-    <ul class="list-group">
+    <ul class="list-group maneuvers-list">
         <li data-ng-repeat="maneuver in getManeuver();" class="list-group-item">
             <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
         </li>

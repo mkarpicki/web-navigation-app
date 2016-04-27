@@ -8,6 +8,8 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
         'use strict';
 
+        var alreadyFound = [];
+
         $scope.trustedText = function (text) {
             return $sce.trustAsHtml(text);
         };
@@ -30,8 +32,15 @@ angular.module('navigationApp.controllers').controller('SearchController',
             for (var i = 0, l = routes.length; i < l; i++) {
 
                 route = routes[i];
-                route.color = colorThemesService.getColor(theme);
 
+                if (alreadyFound[route.summary.text]) {
+                    break;
+                }
+
+                alreadyFound[route.summary.text] = route;
+
+                route.color = colorThemesService.getColor(theme);
+                
                 routingService.saveRoute(route);
             }
 
