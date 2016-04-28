@@ -14,8 +14,13 @@
     <div data-ng-controller="PageController" data-ng-class="ready" data-ng-init="pageReady();" class="container-fluid">
         <div class="row">
             <section id="panel" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <!--<span data-ng-hid="gettingLocationError">geo:{{currentPosition.latitude}} {{currentPosition.longitude}}</span>-->
-                <span class="alert alert-warning center-block text-center" role="alert" data-ng-show="gettingLocationError">Problem with finding your location.</span>
+                <span
+                        class="alert alert-warning center-block text-center"
+                        role="alert"
+                        data-ng-show="gettingLocationError"
+                        >
+                    Problem with finding your location.
+                </span>
                 <section data-ng-hide="onlyMapShown()" data-ng-view></section>
                 <a
                         class="panel-toggle pull-right"
