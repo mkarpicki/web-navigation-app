@@ -3,10 +3,10 @@
         <a data-ng-bind-html="trustedText(route.summary.text);" data-ng-href="/route/{{$index}}"></a>
     </li>
 </ul>
-<p data-ng-show="noRouteFound">
+<p data-ng-show="noRouteFound" class="alert alert-danger" role="alert">
     There was no route found for that criteria.
 </p>
-<p data-ng-show="notEnoughInformation">
+<p data-ng-show="notEnoughInformation" class="alert alert-danger" role="alert">
     Not enough information to calculate route.
 </p>
 <a href="/" data-back-button class="btn btn-default">Back</a>

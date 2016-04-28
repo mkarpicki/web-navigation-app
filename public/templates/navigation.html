@@ -12,8 +12,8 @@
         </li>
     </ul>
 </form>
-<p data-ng-show="undefinedRoute">
-    No route found. <a href="/" data-ng-href="/" class="btn btn-default">Search</a>
+<p data-ng-show="undefinedRoute" class="alert alert-danger" role="alert">
+    No route found. <a href="/" data-ng-href="/">Search</a>
 </p>
 <form data-ng-show="onLeaveConfirmation">
     <p>Stop navigation?</p>
