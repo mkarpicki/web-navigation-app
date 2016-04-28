@@ -40,7 +40,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 alreadyFound[route.summary.text] = route;
 
                 route.color = colorThemesService.getColor(theme);
-                
+
                 routingService.saveRoute(route);
             }
 

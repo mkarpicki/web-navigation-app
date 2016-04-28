@@ -22,10 +22,6 @@ ul.maneuvers-list {
 
 /* toggle map / panel button ***************************/
 
-.panel-toggle {
-    float: right;
-}
-
 button.panel-toggle {
     margin-top: 10px;
 }
