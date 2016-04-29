@@ -60,6 +60,7 @@
 
             <div data-ng-if="isActiveField($index) && wayPoints[$index].suggestions;" class="search-suggestions list-group">
                 <a
+                        href="#"
                         class="list-group-item"
                         data-ng-click="search(suggestion);"
                         data-ng-repeat="suggestion in wayPoints[$index].suggestions track by $index">{{suggestion}}</a>

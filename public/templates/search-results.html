@@ -1,9 +1,15 @@
-<ul data-ng-hide="noRouteFound || notEnoughInformation" class="list-group">
-    <li data-ng-repeat="route in routes track by $index" class="list-group-item">
-        <a data-ng-bind-html="trustedText(route.summary.text);" data-ng-href="/route/{{$index}}"></a>
-    </li>
-</ul>
-<p data-ng-show="noRouteFound" class="alert alert-danger" role="alert">
+<div data-ng-hide="noRouteFound || notEnoughInformation" class="list-group">
+    <a
+            href="#"
+            data-ng-repeat="route in routes track by $index"
+            class="list-group-item"
+            data-ng-href="/route/{{$index}}"
+            >
+        <span data-ng-bind-html="trustedText(route.summary.text);"></span>
+        <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
+    </a>
+</div>
+<p data-ng-show="noRouteFound" class="alert alert-warning" role="alert">
     There was no route found for that criteria.
 </p>
 <p data-ng-show="notEnoughInformation" class="alert alert-danger" role="alert">
