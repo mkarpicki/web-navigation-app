@@ -321,7 +321,10 @@ describe('SearchController', function () {
                         }
                     ];
 
-                    var routes = [1,2];
+                    var routes = [
+                        { summary: { text: 'route1' }},
+                        { summary: { text: 'route2' }}
+                    ];
 
                     var someTheme = colorThemesService.POSITIVE_THEME;
 
@@ -333,8 +336,6 @@ describe('SearchController', function () {
 
                     routingService.getResults = jasmine.createSpy('routingService.getResults').and.returnValue(routes);
                     routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
-
-                    colorThemesService.getColor = jasmine.createSpy('colorThemesService.getColor').and.returnValue('some-color');
 
                     $controller("SearchController", {
                         $scope: $scope,
@@ -350,7 +351,6 @@ describe('SearchController', function () {
                     expect($scope.noRouteFound).toEqual(false);
                     expect($scope.routes).toEqual(routes);
 
-                    expect(colorThemesService.getColor).toHaveBeenCalledWith(someTheme);
                     expect(routingService.saveRoute).toHaveBeenCalledWith(routes[0]);
                     expect(routingService.saveRoute).toHaveBeenCalledWith(routes[1]);
                     expect(routingService.getResults).toHaveBeenCalled();
