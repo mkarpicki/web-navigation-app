@@ -18,8 +18,7 @@ describe('Search page', function() {
         noRouteFoundMessage,
         resultsList,
 
-        notEnoughInformationMessageBackLink,
-        noRouteFoundMessageBackLink;
+        backLink;
 
 
     beforeEach(function () {
@@ -42,15 +41,9 @@ describe('Search page', function() {
             noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
             resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
-
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
             expect(resultsList.isDisplayed()).toBeFalsy();
-
-            expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
-            expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
             mapHelpers.countWayPoints().then(function (results) {
                 expect(results).toEqual(0);
@@ -71,11 +64,9 @@ describe('Search page', function() {
                     browser.get(pageHelpers.FORM_PAGE.getPage());
                     browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage());
 
-                    notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
+                    backLink = pageHelpers.SEARCH_RESULTS_PAGE.getBackLink();
 
-                    expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
-
-                    notEnoughInformationMessageBackLink.click();
+                    backLink.click();
 
                     browser.getCurrentUrl().then(function(url) {
 
@@ -103,14 +94,9 @@ describe('Search page', function() {
             noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
             resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
-
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
             expect(resultsList.isDisplayed()).toBeFalsy();
-            expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
-            expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
             mapHelpers.countWayPoints().then(function (results) {
                 expect(results).toEqual(1);
@@ -136,14 +122,9 @@ describe('Search page', function() {
             noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
             resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
-
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
             expect(resultsList.isDisplayed()).toBeFalsy();
-            expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
-            expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
             mapHelpers.countWayPoints().then(function (results) {
                 expect(results).toEqual(1);
@@ -167,14 +148,9 @@ describe('Search page', function() {
             noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
             resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
-
             expect(notEnoughInformationMessage.isDisplayed()).toBeTruthy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
             expect(resultsList.isDisplayed()).toBeFalsy();
-            expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeTruthy();
-            expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
             mapHelpers.countWayPoints().then(function (results) {
                 expect(results).toEqual(0);
@@ -195,8 +171,8 @@ describe('Search page', function() {
                     browser.get(pageHelpers.FORM_PAGE.getPage());
                     browser.get(pageHelpers.SEARCH_RESULTS_PAGE.getPage() + "/?w0=" + "a" + "&w1=" + "b");
 
-                    notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-                    notEnoughInformationMessageBackLink.click();
+                    backLink = pageHelpers.SEARCH_RESULTS_PAGE.getBackLink();
+                    backLink.click();
 
                     browser.getCurrentUrl().then(function(url) {
 
@@ -226,14 +202,9 @@ describe('Search page', function() {
             noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
             resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-            notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-            noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
-
             expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
             expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
             expect(resultsList.isDisplayed()).toBeTruthy();
-            expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
-            expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
             mapHelpers.countWayPoints().then(function (results) {
                 expect(results).toEqual(2);
@@ -297,14 +268,9 @@ describe('Search page', function() {
                 noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
                 resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-                notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-                noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
-
                 expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
                 expect(resultsList.isDisplayed()).toBeTruthy();
-                expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
-                expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
                 mapHelpers.countWayPoints().then(function (results) {
                     expect(results).toEqual(3);
@@ -335,14 +301,9 @@ describe('Search page', function() {
                 noRouteFoundMessage = pageHelpers.SEARCH_RESULTS_PAGE.getNoRoutesFoundElement();
                 resultsList = pageHelpers.SEARCH_RESULTS_PAGE.getResults();
 
-                notEnoughInformationMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNotEnoughInformationMessageBackLink();
-                noRouteFoundMessageBackLink = pageHelpers.SEARCH_RESULTS_PAGE.getNoRouteFoundMessageBackLink();
-
                 expect(notEnoughInformationMessage.isDisplayed()).toBeFalsy();
                 expect(noRouteFoundMessage.isDisplayed()).toBeFalsy();
                 expect(resultsList.isDisplayed()).toBeTruthy();
-                expect(notEnoughInformationMessageBackLink.isDisplayed()).toBeFalsy();
-                expect(noRouteFoundMessageBackLink.isDisplayed()).toBeFalsy();
 
                 mapHelpers.countWayPoints().then(function (results) {
                     expect(results).toEqual(2);

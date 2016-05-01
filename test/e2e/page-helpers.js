@@ -6,19 +6,19 @@ var SELECTORS = {
         BTN_MOVE_WAY_POINT_UP: 'button[data-ng-click="moveWayPointUp($index);"]',
         BTN_MOVE_WAY_POINT_DOWN: 'button[data-ng-click="moveWayPointDown($index);"]',
         BTN_GET_ROUTE: 'button[data-ng-click="getRoute();"]',
-        BTN_SEARCH_SUGGESTION: 'ul.search-suggestions button',
+        BTN_SEARCH_SUGGESTION: '.search-suggestions a',
         BTN_CLEAR: 'button[data-ng-click="clear();"]'
     },
     SEARCH_PAGE: {
         NOT_ENOUGH_INFORMATION: 'p[data-ng-show="notEnoughInformation"]',
         NO_ROUTES_FOUND: 'p[data-ng-show="noRouteFound"]',
-        RESULTS_LIST: 'ul[data-ng-hide="noRouteFound || notEnoughInformation"]',
+        RESULTS_LIST: 'div[data-ng-hide="noRouteFound || notEnoughInformation"]',
         BACK_LINK: 'a[data-back-button]'
     },
     ROUTE_PAGE: {
         NO_ROUTE_FOUND: 'p[data-ng-show="undefinedRoute"]',
         NO_ROUTE_FOUND_BACK_LINK: 'p[data-ng-show="undefinedRoute"] a',
-        ROUTE_MANEUVERS: 'ul[data-ng-hide="undefinedRoute"]'
+        ROUTE_MANEUVERS: 'ul.maneuvers-list'
     }
 };
 
@@ -91,7 +91,7 @@ searchResultsPage.getResults = function () {
 };
 
 searchResultsPage.getFirstResult = function () {
-    return element.all(by.css(SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' li:first-child a')).first();
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.RESULTS_LIST + ' a')).first();
 };
 
 searchResultsPage.getNotEnoughInformationElement = function () {
@@ -102,12 +102,8 @@ searchResultsPage.getNoRoutesFoundElement = function () {
     return element.all(by.css(SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND)).first();
 };
 
-searchResultsPage.getNotEnoughInformationMessageBackLink = function () {
-    return element.all(by.css(SELECTORS.SEARCH_PAGE.NOT_ENOUGH_INFORMATION + " " + SELECTORS.SEARCH_PAGE.BACK_LINK)).first();
-};
-
-searchResultsPage.getNoRouteFoundMessageBackLink = function () {
-    return element.all(by.css(SELECTORS.SEARCH_PAGE.NO_ROUTES_FOUND + " " + SELECTORS.SEARCH_PAGE.BACK_LINK)).first();
+searchResultsPage.getBackLink = function () {
+    return element.all(by.css(SELECTORS.SEARCH_PAGE.BACK_LINK)).first();
 };
 
 /****************************************************************************************/
