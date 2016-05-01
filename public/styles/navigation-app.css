@@ -1,3 +1,12 @@
+
+#page {
+    display:none;
+}
+
+#page.ready {
+    display:block;
+}
+
 #panel {
     margin: 10px 0;
 }
