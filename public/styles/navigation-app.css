@@ -22,12 +22,12 @@ ul.maneuvers-list {
 
 /* toggle map / panel button ***************************/
 
-button.panel-toggle {
+button.toggle-panels-btn {
     margin-top: 10px;
 }
 
 @media (min-width: 992px) {
-    .panel-toggle {
+    .toggle-panels-btn {
         display: none;
     }
 }

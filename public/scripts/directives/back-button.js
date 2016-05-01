@@ -2,7 +2,7 @@ angular.module('navigationApp.directives').directive('backButton', ['$window', f
 
     'use strict';
 
-    var scope = {};
+    //var scope = {};
 
     var goBack = function () {
         $window.history.back();
@@ -14,9 +14,15 @@ angular.module('navigationApp.directives').directive('backButton', ['$window', f
 
     };
 
+    //var controller = function (scope) {
+    //
+    //    scope.goBack = goBack;
+    //};
+
     return {
         restrict: 'A',
-        scope: scope,
+        //controller: controller,
+        //scope: scope,
         link: link
     };
 

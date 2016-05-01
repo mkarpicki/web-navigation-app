@@ -22,28 +22,29 @@
                     Problem with finding your location.
                 </span>
                 <section data-ng-hide="onlyMapShown()" data-ng-view></section>
-                <a
-                        class="panel-toggle pull-right"
-                        data-ng-hide="onlyMapShown()"
-                        href="#show-map-btn"
-                        data-ng-href="#show-map-btn"
-                        data-ng-click="mapShown = !mapShown"
-                        id="show-map-btn">
-                    show map
-                </a>
-                <button
-                        class="panel-toggle pull-right"
-                        data-ng-show="onlyMapShown()"
-                        data-back-button
-                        data-ng-click="mapShown = !mapShown" >
-                    show panel
-                </button>
+                <a data-toggle-panels data-toggled="onlyMapShown()"></a>
+                <!--<a-->
+                        <!--class="panel-toggle pull-right"-->
+                        <!--data-ng-hide="onlyMapShown()"-->
+                        <!--href="#show-map-btn"-->
+                        <!--data-ng-href="#show-map-btn"-->
+                        <!--data-ng-click="mapShown = !mapShown"-->
+                        <!--id="show-map-btn">-->
+                    <!--show map-->
+                <!--</a>-->
+                <!--<button-->
+                        <!--class="panel-toggle pull-right"-->
+                        <!--data-ng-show="onlyMapShown()"-->
+                        <!--data-back-button-->
+                        <!--data-ng-click="mapShown = !mapShown" >-->
+                    <!--show panel-->
+                <!--</button>-->
             </section>
             <section
                     class="col-xs-12 col-sm-12 col-md-8 col-lg-8"
                     id="map"
                     data-map
-                    data-resize-element
+
                     data-routes="routes"
                     data-way-points="wayPoints"
                     data-areas-to-avoid="areasToAvoid"
@@ -89,6 +90,7 @@
     <script type="text/javascript" charset="UTF-8" src="scripts/directives/map.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/directives/back-button.js"></script>
     <script type="text/javascript" charset="UTF-8" src="scripts/directives/resize-element.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="scripts/directives/toggle-panels.js"></script>
 
     <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
     <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
