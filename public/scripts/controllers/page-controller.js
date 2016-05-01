@@ -23,6 +23,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         $scope.gettingLocationError = false;
         $scope.ready = false;
+        $scope.forceToggleToHide = false;
 
         var overwriteStartPoint = function (point, text) {
 
@@ -138,12 +139,15 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         $scope.$on(events.NAVIGATION_STATE_EVENT, function (event, params) {
 
+            $scope.forceToggleToHide = false;
+
             switch (params.eventType) {
 
                 case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_ON:
 
                     $scope.zoomLevel = navigationZoomLevel;
                     $scope.updateToPosition = true;
+                    $scope.forceToggleToHide = true;
                     break;
 
                 case events.NAVIGATION_STATE_EVENT_TYPES.NAVIGATION_OFF:
