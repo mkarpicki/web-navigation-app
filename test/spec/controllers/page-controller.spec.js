@@ -30,7 +30,8 @@ describe('PageController', function () {
         $scope = $rootScope.$new();
 
         $location = {
-            url: function () {}
+            url: function () {},
+            hash: function () {}
         };
 
         routingService = {
@@ -115,12 +116,70 @@ describe('PageController', function () {
 
     }));
 
+    describe('onlyMapShown', function () {
+
+        describe('when hash in url', function () {
+
+            it('should return true', function () {
+
+                $location.hash = jasmine.createSpy('$location.hash').and.returnValue(true);
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService,
+                    geoCoderService: geoCoderService
+                });
+
+                $scope.$apply();
+
+                expect($scope.onlyMapShown()).toEqual(true);
+
+                expect($location.hash).toHaveBeenCalled();
+
+            });
+
+        });
+
+        describe('when hash not in url', function () {
+
+            it('should return false', function () {
+
+                $location.hash = jasmine.createSpy('$location.hash').and.returnValue(false);
+
+                $controller("PageController", {
+                    $scope: $scope,
+                    $location: $location,
+                    events: events,
+                    routingService: routingService,
+                    stateService: stateService,
+                    geoLocationService: geoLocationService,
+                    geoCoderService: geoCoderService
+                });
+
+                $scope.$apply();
+
+                expect($scope.onlyMapShown()).toEqual(false);
+
+                expect($location.hash).toHaveBeenCalled();
+
+
+            });
+
+        });
+
+    });
+
     describe('pageReady', function () {
 
         it('should set $scope.ready to true', function () {
 
             $controller("PageController", {
                 $scope: $scope,
+                $location: $location,
                 events: events,
                 routingService: routingService,
                 stateService: stateService,

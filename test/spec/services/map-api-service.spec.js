@@ -56,7 +56,12 @@ describe('map-api-service', function () {
             screenToGeo: function () {},
             setCenter: function () {},
             setZoom: function () {},
-            setViewBounds: function () {}
+            setViewBounds: function () {},
+            getViewPort: function () {
+                return {
+                    resize: function(){}
+                }
+            }
         };
 
         fakeRouteLine = {
@@ -1060,6 +1065,26 @@ describe('map-api-service', function () {
             mapApiService.init([]);
             expect(mapApiService.getObjects()).toEqual(fakeMapObjects);
             expect(fakeMap.getObjects).toHaveBeenCalled();
+        }));
+
+    });
+
+    describe('resizeMap', function () {
+
+        it('should call map getViewPort and resize on it', inject(function(mapApiService) {
+
+            var fakeViewPort = {
+                resize: jasmine.createSpy('resize')
+            };
+
+            fakeMap.getViewPort = jasmine.createSpy('map.getViewPort').and.returnValue(fakeViewPort);
+
+            mapApiService.init([]);
+            mapApiService.resizeMap();
+
+            expect(fakeMap.getViewPort).toHaveBeenCalled();
+            expect(fakeViewPort.resize).toHaveBeenCalled();
+
         }));
 
     });
