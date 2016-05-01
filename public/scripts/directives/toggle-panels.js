@@ -15,7 +15,6 @@ angular.module('navigationApp.directives').directive('togglePanels', ['$window',
     return {
         restrict: 'A',
         templateUrl: 'scripts/directives/toggle-panels.html',
-        //require: "backButton",
         scope: scope,
         link: link
     };

@@ -31,10 +31,6 @@ ul.maneuvers-list {
 
 /* toggle map / panel button ***************************/
 
-button.toggle-panels-btn {
-    margin-top: 10px;
-}
-
 @media (min-width: 992px) {
     .toggle-panels-btn {
         display: none;
