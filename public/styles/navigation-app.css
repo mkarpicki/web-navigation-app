@@ -14,6 +14,7 @@
 #map {
     height: 100vh;
     padding: 0;
+    border: 2px solid red;
 }
 
 /* form page ***********************/
@@ -35,4 +36,34 @@ ul.maneuvers-list {
     .toggle-panels-btn {
         display: none;
     }
+}
+
+/* making panels displayed to take full space in mobile view ************/
+
+@media (max-width: 991px) {
+
+    html, body, #page, #page .row {
+        height: 100%;
+    }
+
+    #page.container-fluid {
+        padding-right: 0;
+    }
+
+    #page .row {
+        display: table;
+        width: 100%;
+        padding-left: 15px;
+        padding-top: 15px;
+    }
+
+    #map {
+        height: 100%;
+    }
+
+    #panel, #map {
+        float: none;
+        display: table-row;
+    }
+
 }
