@@ -32,6 +32,12 @@ ul.maneuvers-list {
     margin-top: 20px;
 }
 
+/* navigation page ***********************/
+
+#stop-navigation, #stop-navigation-confirm {
+    margin-bottom: 15px;
+}
+
 
 /* toggle map / panel button ***************************/
 

@@ -1,6 +1,7 @@
 <form data-ng-hide="onLeaveConfirmation || undefinedRoute">
     <button
             class="btn btn-primary"
+            id="stop-navigation"
             data-ng-hide="driveModeEnabled"
             data-back-button>
         Stop navigation
@@ -15,7 +16,7 @@
 <p data-ng-show="undefinedRoute" class="alert alert-danger" role="alert">
     No route found. <a href="/" class="pull-right" data-ng-href="/">search</a>
 </p>
-<form data-ng-show="onLeaveConfirmation">
+<form id="stop-navigation-confirm" data-ng-show="onLeaveConfirmation">
     <p>Stop navigation?</p>
     <button data-ng-click="cancel();" class="btn btn-default">Cancel</button>
     <button data-ng-click="confirm();" class="btn btn-primary">Stop</button>
