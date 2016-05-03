@@ -1,6 +1,8 @@
-angular.module('navigationApp.directives').directive('map', ['mapApiService', 'events', function(mapApiService, events) {
+angular.module('navigationApp.directives').directive('map', ['mapApiService', 'events', '$interval', function(mapApiService, events, $interval) {
 
     'use strict';
+
+    var lastElementSize = null;
 
     var scope = {
         currentPosition: '=currentPosition',
@@ -126,15 +128,36 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'e
             }
         });
 
-        scope.$watch(
-            function () {
-                return [element[0].offsetWidth, element[0].offsetHeight].join('x');
-            },
-            function (value) {
-                //console.log('directive got resized:', value.split('x'));
-                mapApiService.resizeMap();
+        $interval(function () {
+
+            var newElementSize = [element[0].offsetWidth, element[0].offsetHeight].join('x');
+
+            if (newElementSize === lastElementSize) {
+                return;
             }
-        );
+
+            lastElementSize = newElementSize;
+
+            mapApiService.resizeMap();
+
+        }, 1000);
+
+        //scope.$watch(
+        //    function () {
+        //        return [element[0].offsetWidth, element[0].offsetHeight].join('x');
+        //    },
+        //    function (newSize) {
+        //
+        //        if (newSize === lastElementSize) {
+        //            return;
+        //        }
+        //
+        //        lastElementSize = newSize;
+        //
+        //        //console.log('directive got resized:', value.split('x'));
+        //        mapApiService.resizeMap();
+        //    }
+        //);
 
         scope.$watchGroup([attrs.currentPosition, attrs.updateToPosition], function (newValues) {
 
