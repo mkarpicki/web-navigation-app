@@ -20,25 +20,6 @@
     padding-right: 25px;
 }
 
-/* form page ***********************/
-
-li.way-point, li.area-to-avoid {
-    padding: 5px 0;
-}
-
-/* route page ***********************/
-
-ul.maneuvers-list {
-    margin-top: 20px;
-}
-
-/* navigation page ***********************/
-
-#stop-navigation, #stop-navigation-confirm {
-    margin-bottom: 15px;
-}
-
-
 /* toggle map / panel button ***************************/
 
 .toggle-panels-btn-container {
@@ -78,5 +59,22 @@ ul.maneuvers-list {
         float: none;
         display: table-row;
     }
+}
 
+/* form page ***********************/
+
+li.way-point, li.area-to-avoid {
+    padding: 5px 0;
+}
+
+/* route page ***********************/
+
+ul.maneuvers-list {
+    margin-top: 20px;
+}
+
+/* navigation page ***********************/
+
+#stop-navigation, #stop-navigation-confirm {
+    margin-bottom: 15px;
 }
