@@ -1,4 +1,4 @@
-angular.module('navigationApp.directives').directive('togglePanels', ['$window', function($window) {
+angular.module('navigationApp.directives').directive('togglePanels', [function() {
 
     'use strict';
 
