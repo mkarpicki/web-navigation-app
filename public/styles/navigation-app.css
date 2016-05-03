@@ -35,12 +35,12 @@ ul.maneuvers-list {
 
 /* toggle map / panel button ***************************/
 
-.toggle-panels-btn {
+.toggle-panels-btn-container {
     margin-bottom: 15px;
 }
 
 @media (min-width: 992px) {
-    .toggle-panels-btn {
+    .toggle-panels-btn-container {
         display: none;
     }
 }
