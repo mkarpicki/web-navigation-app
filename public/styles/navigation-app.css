@@ -16,6 +16,10 @@
     padding: 0;
 }
 
+.bubble {
+    padding-right: 25px;
+}
+
 /* form page ***********************/
 
 li.way-point, li.area-to-avoid {

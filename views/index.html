@@ -36,12 +36,12 @@
                     data-update-to-position="updateToPosition"
                     data-zoom-level="zoomLevel">
                 <form>
-                    <ul class="bubble">
-                        <li><button class="menu from">from</button></li>
-                        <li><button class="menu waypoint" data-ng-disabled="!allowAddingWayPoints();">add way point</button></li>
-                        <li><button class="menu to">to</button></li>
-                        <li><button class="menu avoid">avoid area</button></li>
-                    </ul>
+                    <div class="bubble btn-group-vertical" role="group">
+                        <button class="btn btn-default menu from">from</button>
+                        <button class="btn btn-default menu waypoint" data-ng-disabled="!allowAddingWayPoints();">add way point</button>
+                        <button class="btn btn-default menu to">to</button>
+                        <button class="btn btn-default menu avoid">avoid area</button>
+                    </div>
                 </form>
             </section>
         </div>
