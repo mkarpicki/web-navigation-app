@@ -12,7 +12,8 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         AvoidAreaVariable = 'a';
 
     var wayPointsStorage = [],
-        areasToAvoidStorage = [];
+        areasToAvoidStorage = [],
+        routes = [];
 
     var serializeWayPoint = function (point) {
 
@@ -256,12 +257,26 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         };
     };
 
+    var addRoute = function (route) {
+        routes.push(route);
+    };
+
+    var getRoutes = function () {
+        return routes;
+    };
+
+    var clearRoutes = function () {
+        routes = [];
+    };
+
     var init = function () {
         var objectsFromQuery = deserializeQuery();
 
         setWayPoints(objectsFromQuery.wayPoints);
         setAreasToAvoid(objectsFromQuery.areasToAvoid);
     };
+
+
 
     init();
 
@@ -281,6 +296,10 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
         enableNavigationMode: enableNavigationMode,
         disableNavigationMode: disableNavigationMode,
+
+        addRoute: addRoute,
+        getRoutes: getRoutes,
+        clearRoutes: clearRoutes,
 
         getSearchCriteria: getSearchCriteria
     };

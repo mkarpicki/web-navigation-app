@@ -38,6 +38,12 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
             var onLeave = function (event) {
 
+                /**
+                 * @todo
+                 * clear routes
+                 * and add only those that were in atate service during init (to not have too many routes)
+                 */
+
                 if (!forceLeave) {
                     $scope.onLeaveConfirmation = true;
                     event.preventDefault();
@@ -128,7 +134,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                             newRoute.color = $scope.route.color;
                             //newRoute.color = 'black';
 
-                            routingService.saveRoute(newRoute);
+                            stateService.addRoute(newRoute);
                             $scope.route = newRoute;
 
                             wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
@@ -254,7 +260,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                     return;
                 }
 
-                routes = routingService.getResults();
+                routes = stateService.getRoutes();
 
                 for (var i = 0, len = routes.length; i < len; i++) {
 

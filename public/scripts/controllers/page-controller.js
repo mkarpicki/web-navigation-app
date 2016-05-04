@@ -1,5 +1,5 @@
 angular.module('navigationApp.controllers').controller('PageController',
-    ["$scope", '$location', '$q', 'events', 'routingService', 'stateService', 'geoLocationService', 'geoCoderService', function($scope, $location, $q, events, routingService, stateService, geoLocationService, geoCoderService) {
+    ["$scope", '$location', '$q', 'events', 'stateService', 'geoLocationService', 'geoCoderService', function($scope, $location, $q, events, stateService, geoLocationService, geoCoderService) {
 
         'use strict';
 
@@ -92,7 +92,7 @@ angular.module('navigationApp.controllers').controller('PageController',
             var query = stateService.serializeQuery();
 
             $location.url('/?' + query);
-            routingService.clearResults();
+            stateService.clearRoutes();
         };
 
         //var stopPositionListener = function () {
@@ -212,7 +212,7 @@ angular.module('navigationApp.controllers').controller('PageController',
 
         }, true);
 
-        $scope.$watch(function () { return routingService.getResults(); }, function (routes) {
+        $scope.$watch(function () { return stateService.getRoutes(); }, function (routes) {
 
             $scope.routes = routes;
 

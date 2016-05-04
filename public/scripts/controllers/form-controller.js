@@ -4,8 +4,8 @@
  * if so then keep in state if use or not use location
  */
 angular.module('navigationApp.controllers').controller('FormController',
-    ['$rootScope', '$scope', '$location', 'config', 'events', 'routingService', 'stateService', 'searchService', 'mapApiService', 'geoCoderService',
-        function($rootScope, $scope, $location, config, events, routingService, stateService, searchService, mapApiService, geoCoderService) {
+    ['$rootScope', '$scope', '$location', 'config', 'events', 'stateService', 'searchService', 'mapApiService', 'geoCoderService',
+        function($rootScope, $scope, $location, config, events, stateService, searchService, mapApiService, geoCoderService) {
 
         'use strict';
 
@@ -268,7 +268,7 @@ angular.module('navigationApp.controllers').controller('FormController',
                 $scope.areasToAvoid = areasToAvoid;
             }
 
-            routingService.clearResults();
+            stateService.clearRoutes();
 
         };
 
