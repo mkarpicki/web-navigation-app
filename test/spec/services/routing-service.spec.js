@@ -2,15 +2,13 @@ describe('routingService', function () {
 
     'use strict';
 
-    var config;
+    var config = {};
+    config.APP_ID = 'someAppId';
+    config.APP_CODE = 'someAppCode';
 
     beforeEach(module('navigationApp.services'));
 
     beforeEach(module(function ($provide) {
-
-        config = {};
-        config.APP_ID = 'someAppId';
-        config.APP_CODE = 'someAppCode';
 
         $provide.value('config', config);
 
@@ -43,7 +41,7 @@ describe('routingService', function () {
                     }
                 }
             ];
-
+            
             URL = "https://route.api.here.com/routing/7.2/calculateroute.json?" +
                 "app_id=" + config.APP_ID +
                 "&app_code=" + config.APP_CODE +
