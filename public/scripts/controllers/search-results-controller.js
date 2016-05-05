@@ -42,9 +42,10 @@ angular.module('navigationApp.controllers').controller('SearchController',
                 route.color = colorThemesService.getColor(theme);
 
                 stateService.addRoute(route);
+                $scope.routes.push(route);
             }
 
-            $scope.routes = stateService.getRoutes();
+            //$scope.routes = stateService.getRoutes();
 
             mapApiService.centerToRoute($scope.routes[0]);
         };
@@ -78,16 +79,18 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             $scope.routes = stateService.getRoutes() || [];
 
-            if ($scope.routes.length > 0) {
+            var routesLength =  $scope.routes.length;
 
-                for (var i = 0, len = $scope.routes.length; i < len; i++) {
+            if (routesLength > 0) {
+
+                for (var i = 0; i < routesLength; i++) {
                     $scope.routes[i].hidden = false;
                 }
 
                 return;
             }
 
-            stateService.clearRoutes();
+            //stateService.clearRoutes();
 
             var deSerializedQuery = stateService.getSearchCriteria(),
                 wayPoints = deSerializedQuery.wayPoints,
