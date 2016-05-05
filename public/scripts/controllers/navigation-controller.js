@@ -15,6 +15,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 areasToAvoidUsedForSearch = [],
                 wayPointsUsedForSearch = [],
 
+                originalRoutes = [],
+
                 forceLeave = false;
 
             $scope.route = null;
@@ -49,6 +51,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                     event.preventDefault();
                     return;
                 }
+                stateService.clearRoutes();
+                stateService.saveRoutes(originalRoutes);
                 disableDriveMode();
             };
 
@@ -261,6 +265,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 }
 
                 routes = stateService.getRoutes();
+                originalRoutes = angular.copy(routes);
 
                 for (var i = 0, len = routes.length; i < len; i++) {
 

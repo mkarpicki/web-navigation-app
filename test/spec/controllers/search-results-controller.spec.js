@@ -33,9 +33,6 @@ describe('SearchController', function () {
         };
 
         routingService = {
-            getResults: function () {},
-            clearResults: function () {},
-            saveRoute: function () {},
             calculateWithTrafficDisabled: function () { return fakeRoutingServicePromise; },
             calculateWithTrafficEnabled: function () { return fakeRoutingServicePromise; }
         };
@@ -55,7 +52,9 @@ describe('SearchController', function () {
             getSearchCriteria: function () {
                 return fakeDeSerializedQuery;
             },
-            back: function () {}
+            addRoute: function () {},
+            clearRoutes: function () {},
+            getRoutes: function () { return []; }
         };
 
         mapApiService = {
@@ -68,7 +67,7 @@ describe('SearchController', function () {
 
         it('should reset scope variables and routes in routeService', function () {
 
-            routingService.clearResults = jasmine.createSpy('routingService.clearResults');
+            stateService.clearRoutes = jasmine.createSpy('stateService.clearRoutes');
 
             $controller("SearchController", {
                 $scope: $scope,
@@ -81,7 +80,7 @@ describe('SearchController', function () {
 
             $scope.$apply();
 
-            expect(routingService.clearResults).toHaveBeenCalled();
+            expect(stateService.clearRoutes).toHaveBeenCalled();
             expect($scope.routes).toEqual([]);
             expect($scope.noRouteFound).toEqual(false);
             //expect($scope.notEnoughInformation).toEqual(true);
@@ -302,7 +301,7 @@ describe('SearchController', function () {
 
             describe('and routes found', function () {
 
-                it('should set in scope noRouteFound value to true', function () {
+                it('should set in scope routes', function () {
 
                     var wayPoints = [
                         {
@@ -334,8 +333,7 @@ describe('SearchController', function () {
 
                     fakeDeSerializedQuery.wayPoints = wayPoints;
 
-                    routingService.getResults = jasmine.createSpy('routingService.getResults').and.returnValue(routes);
-                    routingService.saveRoute = jasmine.createSpy('routingService.saveRoute');
+                    stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue(routes);
 
                     $controller("SearchController", {
                         $scope: $scope,
@@ -351,9 +349,7 @@ describe('SearchController', function () {
                     expect($scope.noRouteFound).toEqual(false);
                     expect($scope.routes).toEqual(routes);
 
-                    expect(routingService.saveRoute).toHaveBeenCalledWith(routes[0]);
-                    expect(routingService.saveRoute).toHaveBeenCalledWith(routes[1]);
-                    expect(routingService.getResults).toHaveBeenCalled();
+                    expect(stateService.getRoutes).toHaveBeenCalled();
 
                     expect($scope.routes).toEqual(routes);
 

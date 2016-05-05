@@ -50,7 +50,6 @@ angular.module('navigationApp.controllers').controller('RouteController',
                 }
 
                 if (route) {
-
                     mapApiService.centerToRoute(route);
                     $scope.route = route;
 

@@ -76,9 +76,14 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             reset();
 
-            $scope.routes = stateService.getRoutes();
+            $scope.routes = stateService.getRoutes() || [];
 
             if ($scope.routes.length > 0) {
+
+                for (var i = 0, len = $scope.routes.length; i < len; i++) {
+                    $scope.routes[i].hidden = false;
+                }
+
                 return;
             }
 

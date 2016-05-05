@@ -16,48 +16,6 @@ describe('routingService', function () {
 
     }));
 
-    describe('getResults & saveResults', function () {
-
-       it('should get saved results', inject(function (routingService) {
-
-           var route1 = 'r1',
-               route2 = 'r2';
-
-           routingService.saveRoute(route1);
-           routingService.saveRoute(route2);
-
-           var res = routingService.getResults();
-
-           expect(res[0]).toEqual(route1);
-           expect(res[1]).toEqual(route2);
-
-       }))
-
-   });
-
-    describe('clearResults', function () {
-
-        it('should get saved results', inject(function (routingService) {
-
-            var route1 = 'r1',
-                route2 = 'r2';
-
-            routingService.saveRoute(route1);
-            routingService.saveRoute(route2);
-
-            var res = routingService.getResults();
-
-            expect(res[0]).toEqual(route1);
-            expect(res[1]).toEqual(route2);
-
-            routingService.clearResults();
-
-            expect(routingService.getResults().length).toEqual(0);
-
-        }))
-
-    });
-
     describe('calculateWithTrafficEnabled', function () {
 
         var wayPoints,

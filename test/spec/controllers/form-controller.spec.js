@@ -10,7 +10,6 @@ describe('FormController', function () {
 
         config,
         events,
-        routingService,
         stateService,
         searchService,
         mapApiService,
@@ -29,10 +28,6 @@ describe('FormController', function () {
         $location = {};
         $location.replace = function () {};
         $location.url = function () { return $location.replace; };
-
-        routingService = {
-            clearResults: function () {}
-        };
 
         fakeDeSerializedQuery = {
             wayPoints: [],
@@ -58,7 +53,8 @@ describe('FormController', function () {
             serializeQuery: function () {},
             getSearchCriteria: function () {
                 return fakeDeSerializedQuery;
-            }
+            },
+            clearRoutes: function (){}
         };
 
         searchService = {
@@ -78,9 +74,9 @@ describe('FormController', function () {
 
     describe('when initialized', function () {
 
-        it('should clear results of routingService', function () {
+        it('should clear results of stateService', function () {
 
-            routingService.clearResults = jasmine.createSpy('routingService.clearResults');
+            stateService.clearRoutes = jasmine.createSpy('stateService.clearRoutes');
 
             $controller("FormController", {
                 $scope: $scope,
@@ -89,14 +85,13 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
 
             $scope.$apply();
 
-            expect(routingService.clearResults).toHaveBeenCalled();
+            expect(stateService.clearRoutes).toHaveBeenCalled();
 
         });
 
@@ -120,7 +115,6 @@ describe('FormController', function () {
                         events: events,
                         mapApiService: mapApiService,
                         geoCoderService: geoCoderService,
-                        routingService: routingService,
                         stateService: stateService,
                         searchService: searchService
                     });
@@ -170,7 +164,6 @@ describe('FormController', function () {
                         events: events,
                         mapApiService: mapApiService,
                         geoCoderService: geoCoderService,
-                        routingService: routingService,
                         stateService: stateService,
                         searchService: searchService
                     });
@@ -201,7 +194,6 @@ describe('FormController', function () {
                     events: events,
                     mapApiService: mapApiService,
                     geoCoderService: geoCoderService,
-                    routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
                 });
@@ -235,7 +227,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -292,7 +283,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -319,7 +309,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -390,7 +379,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -420,7 +408,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -446,7 +433,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -476,7 +462,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -511,7 +496,6 @@ describe('FormController', function () {
                     events: events,
                     mapApiService: mapApiService,
                     geoCoderService: geoCoderService,
-                    routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
                 });
@@ -554,7 +538,6 @@ describe('FormController', function () {
                     events: events,
                     mapApiService: mapApiService,
                     geoCoderService: geoCoderService,
-                    routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
                 });
@@ -597,7 +580,6 @@ describe('FormController', function () {
                     events: events,
                     mapApiService: mapApiService,
                     geoCoderService: geoCoderService,
-                    routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
                 });
@@ -637,7 +619,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -709,7 +690,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -765,7 +745,6 @@ describe('FormController', function () {
                     events: events,
                     mapApiService: mapApiService,
                     geoCoderService: geoCoderService,
-                    routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
                 });
@@ -830,7 +809,6 @@ describe('FormController', function () {
                     events: events,
                     mapApiService: mapApiService,
                     geoCoderService: geoCoderService,
-                    routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
                 });
@@ -881,7 +859,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -944,7 +921,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -1021,7 +997,6 @@ describe('FormController', function () {
                 events: events,
                 mapApiService: mapApiService,
                 geoCoderService: geoCoderService,
-                routingService: routingService,
                 stateService: stateService,
                 searchService: searchService
             });
@@ -1078,7 +1053,6 @@ describe('FormController', function () {
                     events: events,
                     mapApiService: mapApiService,
                     geoCoderService: geoCoderService,
-                    routingService: routingService,
                     stateService: stateService,
                     searchService: searchService
                 });
@@ -1122,7 +1096,6 @@ describe('FormController', function () {
                         events: events,
                         mapApiService: mapApiService,
                         geoCoderService: geoCoderService,
-                        routingService: routingService,
                         stateService: stateService,
                         searchService: searchService
                     });
@@ -1154,7 +1127,6 @@ describe('FormController', function () {
                             events: events,
                             mapApiService: mapApiService,
                             geoCoderService: geoCoderService,
-                            routingService: routingService,
                             stateService: stateService,
                             searchService: searchService
                         });
@@ -1203,7 +1175,6 @@ describe('FormController', function () {
                         events: events,
                         mapApiService: mapApiService,
                         geoCoderService: geoCoderService,
-                        routingService: routingService,
                         stateService: stateService,
                         searchService: searchService
                     });
@@ -1234,7 +1205,6 @@ describe('FormController', function () {
                         events: events,
                         mapApiService: mapApiService,
                         geoCoderService: geoCoderService,
-                        routingService: routingService,
                         stateService: stateService,
                         searchService: searchService
                     });
@@ -1274,7 +1244,6 @@ describe('FormController', function () {
                             events: events,
                             mapApiService: mapApiService,
                             geoCoderService: geoCoderService,
-                            routingService: routingService,
                             stateService: stateService,
                             searchService: searchService
                         });
@@ -1315,7 +1284,6 @@ describe('FormController', function () {
                                 events: events,
                                 mapApiService: mapApiService,
                                 geoCoderService: geoCoderService,
-                                routingService: routingService,
                                 stateService: stateService,
                                 searchService: searchService
                             });
@@ -1349,7 +1317,6 @@ describe('FormController', function () {
                                     events: events,
                                     mapApiService: mapApiService,
                                     geoCoderService: geoCoderService,
-                                    routingService: routingService,
                                     stateService: stateService,
                                     searchService: searchService
                                 });
@@ -1400,7 +1367,6 @@ describe('FormController', function () {
                                         events: events,
                                         mapApiService: mapApiService,
                                         geoCoderService: geoCoderService,
-                                        routingService: routingService,
                                         stateService: stateService,
                                         searchService: searchService
                                     });
@@ -1441,7 +1407,6 @@ describe('FormController', function () {
                                         events: events,
                                         mapApiService: mapApiService,
                                         geoCoderService: geoCoderService,
-                                        routingService: routingService,
                                         stateService: stateService,
                                         searchService: searchService
                                     });

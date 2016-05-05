@@ -128,36 +128,23 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'e
             }
         });
 
-        $interval(function () {
-
-            var newElementSize = [element[0].offsetWidth, element[0].offsetHeight].join('x');
-
-            if (newElementSize === lastElementSize) {
-                return;
-            }
-
-            lastElementSize = newElementSize;
-
-            mapApiService.resizeMap();
-
-        }, 1000);
-
-        //scope.$watch(
-        //    function () {
-        //        return [element[0].offsetWidth, element[0].offsetHeight].join('x');
-        //    },
-        //    function (newSize) {
+        /**
+         * @todo bring it back but improve as I see whole world sometimes
+         */
+        //$interval(function () {
         //
-        //        if (newSize === lastElementSize) {
-        //            return;
-        //        }
+        //    var newElementSize = [element[0].offsetWidth, element[0].offsetHeight].join('x');
         //
-        //        lastElementSize = newSize;
-        //
-        //        //console.log('directive got resized:', value.split('x'));
-        //        mapApiService.resizeMap();
+        //    if (newElementSize === lastElementSize) {
+        //        return;
         //    }
-        //);
+        //
+        //    lastElementSize = newElementSize;
+        //
+        //    mapApiService.resizeMap();
+        //
+        //}, 1000);
+
 
         scope.$watchGroup([attrs.currentPosition, attrs.updateToPosition], function (newValues) {
 

@@ -261,6 +261,10 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         routes.push(route);
     };
 
+    var saveRoutes = function (newRoutes){
+        routes = newRoutes;
+    };
+
     var getRoutes = function () {
         return routes;
     };
@@ -300,6 +304,7 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         addRoute: addRoute,
         getRoutes: getRoutes,
         clearRoutes: clearRoutes,
+        saveRoutes: saveRoutes,
 
         getSearchCriteria: getSearchCriteria
     };

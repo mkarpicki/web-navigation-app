@@ -9,7 +9,6 @@ describe('RouteController', function () {
         $sce,
         $routeParams,
 
-        routingService,
         stateService,
         mapApiService,
         events,
@@ -26,10 +25,6 @@ describe('RouteController', function () {
         $sce = _$sce_;
         $routeParams = {};
 
-        routingService = {
-            getResults: function () {}
-        };
-
         stateService = {
             getSearchCriteria: function () {
                 return {
@@ -41,7 +36,8 @@ describe('RouteController', function () {
             setAreasToAvoid: function () {},
             enableNavigationMode: function () {},
             disableNavigationMode: function (){},
-            back: function () {}
+
+            getRoutes: function () {}
         };
 
         config = {
@@ -78,13 +74,12 @@ describe('RouteController', function () {
 
                 $routeParams.index = 1;
 
-                routingService.getResults = jasmine.createSpy('routingService.getResults').and.returnValue(routes);
+                stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue(routes);
 
                 $controller("RouteController", {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
@@ -93,7 +88,7 @@ describe('RouteController', function () {
 
                 $scope.$apply();
 
-                expect(routingService.getResults).toHaveBeenCalled();
+                expect(stateService.getRoutes).toHaveBeenCalled();
                 expect($scope.undefinedRoute).toEqual(false);
                 expect($scope.route).toEqual(routes[$routeParams.index]);
 
@@ -112,13 +107,12 @@ describe('RouteController', function () {
 
                 $routeParams.index = 666;
 
-                routingService.getResults = jasmine.createSpy('routingService.getResults').and.returnValue(routes);
+                stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue(routes);
 
                 $controller("RouteController", {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
@@ -127,7 +121,7 @@ describe('RouteController', function () {
 
                 $scope.$apply();
 
-                expect(routingService.getResults).toHaveBeenCalled();
+                expect(stateService.getRoutes).toHaveBeenCalled();
                 expect($scope.undefinedRoute).toEqual(true);
                 expect($scope.route).toEqual(null);
 
@@ -143,13 +137,12 @@ describe('RouteController', function () {
 
             $routeParams.index = null;
 
-            routingService.getResults = jasmine.createSpy('routingService.getResults');
+            stateService.getRoutes = jasmine.createSpy('stateService.getRoutes');
 
             $controller("RouteController", {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
                 config: config,
@@ -158,7 +151,7 @@ describe('RouteController', function () {
 
             $scope.$apply();
 
-            expect(routingService.getResults).not.toHaveBeenCalled();
+            expect(stateService.getRoutes).not.toHaveBeenCalled();
             expect($scope.undefinedRoute).toEqual(true);
             expect($scope.route).toEqual(null);
 
@@ -177,7 +170,6 @@ describe('RouteController', function () {
                 $scope: $scope,
                 $sce: $sce,
                 $routeParams: $routeParams,
-                routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
                 config: config,
@@ -204,7 +196,6 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
@@ -229,7 +220,6 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
@@ -262,7 +252,6 @@ describe('RouteController', function () {
                     $scope: $scope,
                     $sce: $sce,
                     $routeParams: $routeParams,
-                    routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
                     config: config,
