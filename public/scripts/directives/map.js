@@ -131,19 +131,19 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'e
         /**
          * @todo bring it back but improve as I see whole world sometimes
          */
-        //$interval(function () {
-        //
-        //    var newElementSize = [element[0].offsetWidth, element[0].offsetHeight].join('x');
-        //
-        //    if (newElementSize === lastElementSize) {
-        //        return;
-        //    }
-        //
-        //    lastElementSize = newElementSize;
-        //
-        //    mapApiService.resizeMap();
-        //
-        //}, 1000);
+        $interval(function () {
+
+            var newElementSize = [element[0].offsetWidth, element[0].offsetHeight].join('x');
+
+            if (newElementSize === lastElementSize) {
+                return;
+            }
+
+            lastElementSize = newElementSize;
+
+            mapApiService.resizeMap();
+
+        }, 1000);
 
 
         scope.$watchGroup([attrs.currentPosition, attrs.updateToPosition], function (newValues) {
