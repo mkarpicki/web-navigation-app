@@ -280,8 +280,6 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
         setAreasToAvoid(objectsFromQuery.areasToAvoid);
     };
 
-
-
     init();
 
     return {

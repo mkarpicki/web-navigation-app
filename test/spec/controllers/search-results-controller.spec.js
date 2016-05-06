@@ -561,7 +561,7 @@ describe('SearchController', function () {
         });
 
     });
-    
+
     describe('trustedText', function (){
 
         it ('should return text with HTML', function () {

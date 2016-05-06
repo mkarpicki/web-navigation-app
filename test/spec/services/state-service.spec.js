@@ -705,4 +705,66 @@ describe('stateService', function () {
 
     });
 
+    describe('addRoute', function () {
+
+        it('should add single route to state object', inject(function (stateService) {
+
+            var route1 = {},
+                route2 = {};
+
+            stateService.addRoute(route1);
+            stateService.addRoute(route2);
+
+            var r = stateService.getRoutes();
+
+            expect(r.length).toEqual(2);
+            expect(r[0]).toEqual(route1);
+            expect(r[1]).toEqual(route2);
+
+        }));
+
+    });
+
+    describe('saveRoutes', function () {
+
+        it('should add routes to state object and overwrite existing ones', inject(function (stateService) {
+
+            var route1 = {},
+                route2 = {},
+                route3 = {};
+
+            stateService.addRoute(route1);
+            stateService.saveRoutes([route2, route3]);
+
+            var r = stateService.getRoutes();
+
+            expect(r.length).toEqual(2);
+            expect(r[0]).toEqual(route2);
+            expect(r[1]).toEqual(route3);
+
+        }));
+
+    });
+
+    describe('clearRoutes', function () {
+
+        it('should clear saved routes in state object', inject(function (stateService) {
+
+            var route1 = {},
+                route2 = {},
+                route3 = {};
+
+            stateService.addRoute(route1);
+            stateService.saveRoutes([route2, route3]);
+
+            stateService.clearRoutes();
+
+            var r = stateService.getRoutes();
+
+            expect(r.length).toEqual(0);
+
+        }));
+
+    });
+
 });
