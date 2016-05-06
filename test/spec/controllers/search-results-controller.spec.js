@@ -101,6 +101,416 @@ describe('SearchController', function () {
 
         });
 
+        describe('and stateService has no routes saved', function () {
+
+            var fakePromise;
+
+            beforeEach(function () {
+
+                fakePromise = {
+                    then: function () {}
+                };
+
+            });
+
+            describe('when stateService.getRoutes result is empty', function () {
+
+                describe('and search criteria were NOT defined', function () {
+
+                    it ('should set notEnoughInformation in scope', function () {
+
+                        stateService.getSearchCriteria = function () {
+                            return {
+                                wayPoints: [],
+                                areasToAvoid: []
+                            }
+                        };
+
+                        stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue(null);
+
+                        routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                        $controller("SearchController", {
+                            $scope: $scope,
+                            $sce: $sce,
+                            routingService: routingService,
+                            colorThemesService: colorThemesService,
+                            stateService: stateService,
+                            mapApiService: mapApiService
+                        });
+
+                        $scope.$apply();
+
+                        expect(routingService.calculateWithTrafficDisabled).not.toHaveBeenCalled();
+                        expect(routingService.calculateWithTrafficEnabled).not.toHaveBeenCalled();
+
+                        expect($scope.notEnoughInformation).toEqual(true);
+
+                    });
+
+                });
+
+                describe('and search criteria were defined', function () {
+
+                    it ('should use routingService to find routes', function () {
+
+                        stateService.getSearchCriteria = function () {
+                            return {
+                                wayPoints: [
+                                    { coordinates: { latitude: 1, longitude: 2}},
+                                    { coordinates: { latitude: 3, longitude: 4}}
+                                ],
+                                areasToAvoid: [
+                                    {},
+                                    {}
+                                ]
+                            }
+                        };
+
+                        stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                        routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                        $controller("SearchController", {
+                            $scope: $scope,
+                            $sce: $sce,
+                            routingService: routingService,
+                            colorThemesService: colorThemesService,
+                            stateService: stateService,
+                            mapApiService: mapApiService
+                        });
+
+                        $scope.$apply();
+
+                        expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalled();
+                        expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
+
+                        expect($scope.notEnoughInformation).toEqual(false);
+
+                    });
+
+                });
+
+            });
+
+            describe('when stateService.getRoutes result is empty arrays of routes', function () {
+
+                describe('and search criteria were NOT defined', function () {
+
+                    it ('should set notEnoughInformation in scope', function () {
+
+                        stateService.getSearchCriteria = function () {
+                            return {
+                                wayPoints: [],
+                                areasToAvoid: []
+                            }
+                        };
+
+                        stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                        routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                        $controller("SearchController", {
+                            $scope: $scope,
+                            $sce: $sce,
+                            routingService: routingService,
+                            colorThemesService: colorThemesService,
+                            stateService: stateService,
+                            mapApiService: mapApiService
+                        });
+
+                        $scope.$apply();
+
+                        expect(routingService.calculateWithTrafficDisabled).not.toHaveBeenCalled();
+                        expect(routingService.calculateWithTrafficEnabled).not.toHaveBeenCalled();
+
+                        expect($scope.notEnoughInformation).toEqual(true);
+
+                    });
+
+                });
+
+                describe('and search criteria were defined', function () {
+
+                    it ('should use routingService to find routes', function () {
+
+                        stateService.getSearchCriteria = function () {
+                            return {
+                                wayPoints: [
+                                    { coordinates: { latitude: 1, longitude: 2}},
+                                    { coordinates: { latitude: 3, longitude: 4}}
+                                ],
+                                areasToAvoid: [
+                                    {},
+                                    {}
+                                ]
+                            }
+                        };
+
+                        stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                        routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                        routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                        $controller("SearchController", {
+                            $scope: $scope,
+                            $sce: $sce,
+                            routingService: routingService,
+                            colorThemesService: colorThemesService,
+                            stateService: stateService,
+                            mapApiService: mapApiService
+                        });
+
+                        $scope.$apply();
+
+                        expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalled();
+                        expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
+
+                        expect($scope.notEnoughInformation).toEqual(false);
+
+                    });
+
+                    describe('and routingService can not deliver any routes', function () {
+
+                        it ('should set in scope that noRouteFound', function () {
+
+                            fakePromise = {
+                                then: function (callback) {
+                                    callback(null);
+                                }
+                            };
+
+                            stateService.getSearchCriteria = function () {
+                                return {
+                                    wayPoints: [
+                                        { coordinates: { latitude: 1, longitude: 2}},
+                                        { coordinates: { latitude: 3, longitude: 4}}
+                                    ],
+                                    areasToAvoid: [
+                                        {},
+                                        {}
+                                    ]
+                                }
+                            };
+
+                            stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                            routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                            routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                            $controller("SearchController", {
+                                $scope: $scope,
+                                $sce: $sce,
+                                routingService: routingService,
+                                colorThemesService: colorThemesService,
+                                stateService: stateService,
+                                mapApiService: mapApiService
+                            });
+
+                            $scope.$apply();
+
+                            expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalled();
+                            expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
+
+                            expect($scope.notEnoughInformation).toEqual(false);
+
+                            expect($scope.noRouteFound).toEqual(true);
+
+                        });
+
+                    });
+
+                    describe('and routingService can not deliver empty array of routes', function () {
+
+                        it ('should set in scope that noRouteFound', function () {
+
+                            fakePromise = {
+                                then: function (callback) {
+                                    callback([]);
+                                }
+                            };
+
+                            stateService.getSearchCriteria = function () {
+                                return {
+                                    wayPoints: [
+                                        { coordinates: { latitude: 1, longitude: 2}},
+                                        { coordinates: { latitude: 3, longitude: 4}}
+                                    ],
+                                    areasToAvoid: [
+                                        {},
+                                        {}
+                                    ]
+                                }
+                            };
+
+                            stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                            routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                            routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                            $controller("SearchController", {
+                                $scope: $scope,
+                                $sce: $sce,
+                                routingService: routingService,
+                                colorThemesService: colorThemesService,
+                                stateService: stateService,
+                                mapApiService: mapApiService
+                            });
+
+                            $scope.$apply();
+
+                            expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalled();
+                            expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
+
+                            expect($scope.notEnoughInformation).toEqual(false);
+
+                            expect($scope.noRouteFound).toEqual(true);
+
+                        });
+
+                    });
+
+                    describe('and routingService can deliver routes', function () {
+
+                        it ('should not set in scope that noRouteFound but set routes', function () {
+
+                            var routes = [
+                                { summary: {
+                                    text: 'route1'
+                                }}
+                            ];
+
+                            fakePromise = {
+                                then: function (callback) {
+                                    callback(routes);
+                                }
+                            };
+
+                            stateService.getSearchCriteria = function () {
+                                return {
+                                    wayPoints: [
+                                        { coordinates: { latitude: 1, longitude: 2}},
+                                        { coordinates: { latitude: 3, longitude: 4}}
+                                    ],
+                                    areasToAvoid: [
+                                        {},
+                                        {}
+                                    ]
+                                }
+                            };
+
+                            stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                            routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                            routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                            mapApiService.centerToRoute = jasmine.createSpy('mapApiService.centerToRoute');
+
+                            $controller("SearchController", {
+                                $scope: $scope,
+                                $sce: $sce,
+                                routingService: routingService,
+                                colorThemesService: colorThemesService,
+                                stateService: stateService,
+                                mapApiService: mapApiService
+                            });
+
+                            $scope.$apply();
+
+                            expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalled();
+                            expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
+
+                            expect($scope.notEnoughInformation).toEqual(false);
+                            expect($scope.noRouteFound).toEqual(false);
+
+                            expect($scope.routes).toEqual(routes);
+
+                            expect(mapApiService.centerToRoute).toHaveBeenCalledWith(routes[0]);
+
+                        });
+
+                        describe('and two returned routes are same', function () {
+
+                            it ('should set route only once', function () {
+
+                                var routes = [
+                                    { summary: {
+                                        text: 'route1'
+                                    }},
+                                    { summary: {
+                                        text: 'route1'
+                                    }},
+                                    { summary: {
+                                        text: 'route2'
+                                    }}
+                                ];
+
+                                fakePromise = {
+                                    then: function (callback) {
+                                        callback(routes);
+                                    }
+                                };
+
+                                stateService.getSearchCriteria = function () {
+                                    return {
+                                        wayPoints: [
+                                            { coordinates: { latitude: 1, longitude: 2}},
+                                            { coordinates: { latitude: 3, longitude: 4}}
+                                        ],
+                                        areasToAvoid: [
+                                            {},
+                                            {}
+                                        ]
+                                    }
+                                };
+
+                                stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                                routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                                routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                                mapApiService.centerToRoute = jasmine.createSpy('mapApiService.centerToRoute');
+
+                                $controller("SearchController", {
+                                    $scope: $scope,
+                                    $sce: $sce,
+                                    routingService: routingService,
+                                    colorThemesService: colorThemesService,
+                                    stateService: stateService,
+                                    mapApiService: mapApiService
+                                });
+
+                                $scope.$apply();
+
+                                expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalled();
+                                expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
+
+                                expect($scope.notEnoughInformation).toEqual(false);
+                                expect($scope.noRouteFound).toEqual(false);
+
+                                expect($scope.routes.length).toEqual(2);
+                                expect($scope.routes[0]).toEqual(routes[0]);
+                                expect($scope.routes[1]).toEqual(routes[2]);
+
+
+                                expect(mapApiService.centerToRoute).toHaveBeenCalledWith(routes[0]);
+
+                            });
+
+                        });
+
+                    });
+
+
+                });
+
+            });
+
+        });
+
     });
 
     //describe('when initialised', function () {
