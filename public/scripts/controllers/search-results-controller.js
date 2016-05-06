@@ -40,12 +40,10 @@ angular.module('navigationApp.controllers').controller('SearchController',
                     route.color = colorThemesService.getColor(theme);
 
                     stateService.addRoute(route);
-                    $scope.routes.push(route);
+
                 }
 
             }
-
-            //$scope.routes = stateService.getRoutes();
 
             mapApiService.centerToRoute($scope.routes[0]);
         };
@@ -77,7 +75,7 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
             reset();
 
-            $scope.routes = stateService.getRoutes() || [];
+            $scope.routes = stateService.getRoutes();
 
             var routesLength =  $scope.routes.length;
 
