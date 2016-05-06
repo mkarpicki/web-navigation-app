@@ -323,7 +323,7 @@ describe('SearchController', function () {
 
                     });
 
-                    describe('and routingService can not deliver empty array of routes', function () {
+                    describe('and routingService deliver empty array of routes', function () {
 
                         it ('should set in scope that noRouteFound', function () {
 
@@ -437,15 +437,15 @@ describe('SearchController', function () {
                             it ('should set route only once', function () {
 
                                 var routes = [
-                                    { summary: {
-                                        text: 'route1'
-                                    }},
-                                    { summary: {
-                                        text: 'route1'
-                                    }},
-                                    { summary: {
-                                        text: 'route2'
-                                    }}
+                                    {
+                                        summary: { text: 'route1' }
+                                    },
+                                    {
+                                        summary: { text: 'route1' }
+                                    },
+                                    {
+                                        summary: { text: 'route2' }
+                                    }
                                 ];
 
                                 fakePromise = {
@@ -495,10 +495,59 @@ describe('SearchController', function () {
                                 expect($scope.routes[0]).toEqual(routes[0]);
                                 expect($scope.routes[1]).toEqual(routes[2]);
 
-
                                 expect(mapApiService.centerToRoute).toHaveBeenCalledWith(routes[0]);
 
                             });
+
+                        });
+
+                    });
+
+                    describe('and routingService rejected promise (failed)', function () {
+
+                        it('should set noRouteFound in scope', function () {
+
+                            fakePromise = {
+                                then: function (callback, errCallback) {
+                                    errCallback();
+                                }
+                            };
+
+                            stateService.getSearchCriteria = function () {
+                                return {
+                                    wayPoints: [
+                                        { coordinates: { latitude: 1, longitude: 2}},
+                                        { coordinates: { latitude: 3, longitude: 4}}
+                                    ],
+                                    areasToAvoid: [
+                                        {},
+                                        {}
+                                    ]
+                                }
+                            };
+
+                            stateService.getRoutes = jasmine.createSpy('stateService.getRoutes').and.returnValue([]);
+
+                            routingService.calculateWithTrafficDisabled = jasmine.createSpy('routingService.calculateWithTrafficDisabled').and.returnValue(fakePromise);
+                            routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
+
+                            $controller("SearchController", {
+                                $scope: $scope,
+                                $sce: $sce,
+                                routingService: routingService,
+                                colorThemesService: colorThemesService,
+                                stateService: stateService,
+                                mapApiService: mapApiService
+                            });
+
+                            $scope.$apply();
+
+                            expect(routingService.calculateWithTrafficDisabled).toHaveBeenCalled();
+                            expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
+
+                            expect($scope.notEnoughInformation).toEqual(false);
+
+                            expect($scope.noRouteFound).toEqual(true);
 
                         });
 

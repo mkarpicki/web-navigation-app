@@ -33,16 +33,16 @@ angular.module('navigationApp.controllers').controller('SearchController',
 
                 route = routes[i];
 
-                if (alreadyFound[route.summary.text]) {
-                    break;
+                if (!alreadyFound[route.summary.text]) {
+
+                    alreadyFound[route.summary.text] = route;
+
+                    route.color = colorThemesService.getColor(theme);
+
+                    stateService.addRoute(route);
+                    $scope.routes.push(route);
                 }
 
-                alreadyFound[route.summary.text] = route;
-
-                route.color = colorThemesService.getColor(theme);
-
-                stateService.addRoute(route);
-                $scope.routes.push(route);
             }
 
             //$scope.routes = stateService.getRoutes();
