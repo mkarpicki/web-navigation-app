@@ -4,8 +4,8 @@
     <button data-back-button class="btn btn-default">Back</button>
 
     <ul class="list-group maneuvers-list">
-        <li data-ng-repeat="maneuver in getManeuver();" class="list-group-item">
-            <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
+        <li data-ng-repeat="maneuvers in maneuvers; track by $index" class="list-group-item">
+            <p data-ng-bind-html="trustedText(maneuvers.instruction);"></p>
         </li>
     </ul>
 </form>
