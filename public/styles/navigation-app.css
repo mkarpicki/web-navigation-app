@@ -75,6 +75,10 @@ ul.maneuvers-list {
 
 /* navigation page ***********************/
 
+.current-maneuver {
+    border: 1px solid red;
+}
+
 #stop-navigation, #stop-navigation-confirm {
     margin-bottom: 15px;
 }

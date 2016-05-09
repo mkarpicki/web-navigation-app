@@ -7,9 +7,15 @@
         Stop navigation
     </button>
 
+    <!--<p data-ng-bind-html="getInstruction()"></p>-->
     <ul>
-        <li data-ng-repeat="maneuver in getManeuver();">
-            <p data-ng-bind-html="trustedText(maneuver.instruction);"></p>
+        <li data-ng-repeat="maneuver in maneuvers;">
+            <p
+                    data-ng-class="{ 'current-maneuver' : maneuver.current }"
+                    data-ng-bind-html="trustedText(maneuver.instruction);"
+                    >
+
+            </p>
         </li>
     </ul>
 </form>

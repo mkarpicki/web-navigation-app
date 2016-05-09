@@ -23,16 +23,17 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             $scope.undefinedRoute = false;
             $scope.recalculating = false;
             $scope.onLeaveConfirmation = false;
+            $scope.maneuvers = null;
 
-            $scope.getManeuver = function () {
-                var maneuver = [];
-
-                if ($scope.route && $scope.route.leg && $scope.route.leg[0]) {
-                    maneuver =  $scope.route.leg[0].maneuver;
-                }
-
-                return maneuver;
-            };
+            //$scope.getManeuver = function () {
+            //    var maneuver = [];
+            //
+            //    if ($scope.route && $scope.route.leg && $scope.route.leg[0]) {
+            //        maneuver =  $scope.route.leg[0].maneuver;
+            //    }
+            //
+            //    return maneuver;
+            //};
 
             $scope.trustedText = function (text) {
                 return $sce.trustAsHtml(text);
@@ -64,6 +65,40 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 forceLeave = true;
                 onLeave(null);
                 $window.history.back();
+            };
+
+
+            /**
+             * @todo expose as mini servie to be used in two controllers
+             * @param route
+             * @returns {Array}
+             */
+            var getManeuvers = function (route) {
+
+                var maneuvers = [];
+
+                if (route && route.leg) {
+
+                    var lastLeg = route.leg[route.leg.length - 1],
+                        maneuversFromLastLeg = lastLeg.maneuver;
+
+                    if (maneuversFromLastLeg) {
+
+                        var lastManeuver = maneuversFromLastLeg[maneuversFromLastLeg.length - 1];
+
+                        for (var i = 0, len = route.leg.length; i < len; i++) {
+                            var m = route.leg[i].maneuver;
+                            m.pop();
+                            maneuvers = maneuvers.concat(m);
+                        }
+
+                        maneuvers.push(lastManeuver);
+
+                    }
+                }
+
+                return maneuvers;
+
             };
 
             var onPositionChange = function (event, params) {
@@ -118,6 +153,10 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                      */
                 }
 
+                $scope.maneuvers = findCurrentManeuver(currentPosition, $scope.maneuvers);
+
+                console.log($scope.maneuvers);
+
                 if (notOnRouteAnymore(currentPosition, $scope.route)) {
 
                     var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
@@ -140,6 +179,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                             stateService.addRoute(newRoute);
                             $scope.route = newRoute;
+                            console.log('new maneuvers');
+                            $scope.maneuvers = getManeuvers($scope.route);
 
                             wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
                         }
@@ -196,6 +237,30 @@ angular.module('navigationApp.controllers').controller('NavigationController',
              */
             var notOnRouteAnymore = function (currentPosition, route) {
                 return (calculateDistanceFromNearestRoutePoint(currentPosition, route) > metersFromRouteToRecalculate);
+            };
+
+            var setCurrentManeuver = function (maneuver) {
+
+                for (var i = 0, len = $scope.maneuvers.length; i < len; i++) {
+                    $scope.maneuvers[i].current = ($scope.maneuvers[i].position === maneuver.position) ? true : false;
+                }
+
+            };
+
+            var findCurrentManeuver = function (currentPosition, maneuvers) {
+
+                for (var i = 0, len = maneuvers.length; i < len; i++) {
+
+                    var distance = mapApiService.distance(currentPosition, maneuvers[i].position);
+
+                    console.log('m: ', distance);
+
+                    if (distance <= numberOfMetersFromWayPointToAssumeVisited) {
+                        setCurrentManeuver(maneuvers[i]);
+                    }
+                }
+
+                return maneuvers;
             };
 
             var findJustVisitedWayPoints = function (currentPosition, wayPointsUsedForSearch) {
@@ -276,6 +341,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                 if (route) {
                     $scope.route = route;
+                    $scope.maneuvers = getManeuvers($scope.route);
+                    setCurrentManeuver($scope.maneuvers[0]);
 
                     searchCriteria = angular.copy(stateService.getSearchCriteria());
                     wayPointsUsedForSearch = getWayPointsWithoutStartPoint(searchCriteria.wayPoints);
