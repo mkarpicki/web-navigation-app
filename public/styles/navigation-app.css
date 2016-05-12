@@ -59,6 +59,14 @@
         float: none;
         display: table-row;
     }
+
+    #navigation-view .list-group-item {
+        display:none;
+    }
+
+    #navigation-view .list-group-item.active {
+        display:block;
+    }
 }
 
 /* form page ***********************/
@@ -75,13 +83,6 @@ ul.maneuvers-list {
 
 /* navigation page ***********************/
 
-.visited-maneuver {
-    display: none;
-}
-
-.next-maneuver {
-    border: 1px solid red;
-}
 
 #stop-navigation, #stop-navigation-confirm {
     margin-bottom: 15px;

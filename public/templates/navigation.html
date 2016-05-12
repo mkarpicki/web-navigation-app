@@ -1,16 +1,21 @@
-<form data-ng-hide="onLeaveConfirmation || undefinedRoute">
+<form id="navigation-view" data-ng-hide="onLeaveConfirmation || undefinedRoute">
     <button
             class="btn btn-primary"
             id="stop-navigation"
             data-ng-hide="driveModeEnabled"
-            data-back-button>
+            data-back-button
+            >
         Stop navigation
     </button>
 
     <!--<p data-ng-bind-html="getInstruction()"></p>-->
     <ul class="list-group maneuvers-list">
-        <li data-ng-repeat="maneuvers in maneuvers; track by $index" class="list-group-item">
-            <p data-ng-class="{ 'next-maneuver' : isNextManeuver($index) }" data-ng-bind-html="trustedText(maneuvers.instruction);"></p>
+        <li
+                data-ng-repeat="maneuvers in maneuvers; track by $index"
+                class="list-group-item"
+                data-ng-class="{ 'active' : isNextManeuver($index) }"
+                >
+            <p data-ng-bind-html="trustedText(maneuvers.instruction);"></p>
         </li>
     </ul>
     <!--<ul>      -->
