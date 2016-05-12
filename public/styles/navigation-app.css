@@ -75,7 +75,11 @@ ul.maneuvers-list {
 
 /* navigation page ***********************/
 
-.current-maneuver {
+.visited-maneuver {
+    display: none;
+}
+
+.next-maneuver {
     border: 1px solid red;
 }
 

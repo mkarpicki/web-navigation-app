@@ -1,6 +1,6 @@
 angular.module('navigationApp.controllers').controller('NavigationController',
-    ['$scope', '$sce', '$routeParams', 'config', 'events', 'routingService', 'stateService', 'mapApiService', '$window',
-        function($scope, $sce, $routeParams, config, events, routingService, stateService, mapApiService, $window) {
+    ['$scope', '$sce', '$routeParams', 'config', 'events', 'routingService', 'stateService', 'mapApiService', 'maneuversService', '$window',
+        function($scope, $sce, $routeParams, config, events, routingService, stateService, mapApiService, maneuversService, $window) {
 
             'use strict';
 
@@ -39,6 +39,27 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 return $sce.trustAsHtml(text);
             };
 
+            $scope.cancel = function () {
+                $scope.onLeaveConfirmation = false;
+            };
+
+            $scope.confirm = function () {
+                forceLeave = true;
+                onLeave(null);
+                $window.history.back();
+            };
+
+            $scope.isManeuverVisited = function (index) {
+                return ($scope.maneuvers[index].visited);
+            };
+
+            $scope.isNextManeuver = function (index) {
+                if (index === 0) {
+                    return !$scope.isManeuverVisited(index);
+                }
+                return !$scope.isManeuverVisited(index) && $scope.isManeuverVisited(index - 1);
+            };
+
             var onLeave = function (event) {
 
                 /**
@@ -57,17 +78,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 disableDriveMode();
             };
 
-            $scope.cancel = function () {
-                $scope.onLeaveConfirmation = false;
-            };
-
-            $scope.confirm = function () {
-                forceLeave = true;
-                onLeave(null);
-                $window.history.back();
-            };
-
-
             /**
              * @todo expose as mini servie to be used in two controllers
              * @param route
@@ -75,29 +85,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
              */
             var getManeuvers = function (route) {
 
-                var maneuvers = [];
-
-                if (route && route.leg) {
-
-                    var lastLeg = route.leg[route.leg.length - 1],
-                        maneuversFromLastLeg = lastLeg.maneuver;
-
-                    if (maneuversFromLastLeg) {
-
-                        var lastManeuver = maneuversFromLastLeg[maneuversFromLastLeg.length - 1];
-
-                        for (var i = 0, len = route.leg.length; i < len; i++) {
-                            var m = route.leg[i].maneuver;
-                            m.pop();
-                            maneuvers = maneuvers.concat(m);
-                        }
-
-                        maneuvers.push(lastManeuver);
-
-                    }
-                }
-
-                return maneuvers;
+                return maneuversService.getRouteManeuvers(route);
 
             };
 
@@ -155,8 +143,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                 $scope.maneuvers = findCurrentManeuver(currentPosition, $scope.maneuvers);
 
-                console.log($scope.maneuvers);
-
                 if (notOnRouteAnymore(currentPosition, $scope.route)) {
 
                     var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
@@ -179,7 +165,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                             stateService.addRoute(newRoute);
                             $scope.route = newRoute;
-                            console.log('new maneuvers');
                             $scope.maneuvers = getManeuvers($scope.route);
 
                             wayPointsUsedForSearch = getWayPointsWithoutStartPoint(angular.copy(wayPointsToSearch));
@@ -239,25 +224,38 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 return (calculateDistanceFromNearestRoutePoint(currentPosition, route) > metersFromRouteToRecalculate);
             };
 
-            var setCurrentManeuver = function (maneuver) {
-
-                for (var i = 0, len = $scope.maneuvers.length; i < len; i++) {
-                    $scope.maneuvers[i].current = ($scope.maneuvers[i].position === maneuver.position) ? true : false;
-                }
-
+            var setManeuverAsVisited = function (maneuver) {
+                maneuver.visited = true;
             };
 
+            //var setCurrentManeuver = function (maneuver) {
+            //
+            //    for (var i = 0, len = $scope.maneuvers.length; i < len; i++) {
+            //        $scope.maneuvers[i].current = ($scope.maneuvers[i].position === maneuver.position) ? true : false;
+            //    }
+            //
+            //};
+
             var findCurrentManeuver = function (currentPosition, maneuvers) {
+
+                var position = 0;
 
                 for (var i = 0, len = maneuvers.length; i < len; i++) {
 
                     var distance = mapApiService.distance(currentPosition, maneuvers[i].position);
 
-                    console.log('m: ', distance);
-
                     if (distance <= numberOfMetersFromWayPointToAssumeVisited) {
-                        setCurrentManeuver(maneuvers[i]);
+                        setManeuverAsVisited(maneuvers[i]);
+                        position = i;
+                        break;
+                        //if (maneuvers[i + 1]) {
+                        //    setCurrentManeuver(maneuvers[i + 1]);
+                        //}
                     }
+                }
+
+                for (var j = 0 ; j < position; j++) {
+                    setManeuverAsVisited(maneuvers[j]);
                 }
 
                 return maneuvers;
@@ -342,7 +340,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 if (route) {
                     $scope.route = route;
                     $scope.maneuvers = getManeuvers($scope.route);
-                    setCurrentManeuver($scope.maneuvers[0]);
+                    //setCurrentManeuver($scope.maneuvers[0]);
 
                     searchCriteria = angular.copy(stateService.getSearchCriteria());
                     wayPointsUsedForSearch = getWayPointsWithoutStartPoint(searchCriteria.wayPoints);

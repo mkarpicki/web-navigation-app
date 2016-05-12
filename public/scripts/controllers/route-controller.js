@@ -3,8 +3,8 @@
  * implement clicking on maneuvers to move map into on map
  */
 angular.module('navigationApp.controllers').controller('RouteController',
-    ['$scope', '$sce', '$routeParams', 'config', 'events', 'stateService', 'mapApiService',
-        function($scope, $sce, $routeParams, config, events, stateService, mapApiService) {
+    ['$scope', '$sce', '$routeParams', 'config', 'events', 'stateService', 'mapApiService', 'maneuversService',
+        function($scope, $sce, $routeParams, config, events, stateService, mapApiService, maneuversService) {
 
             'use strict';
 
@@ -31,29 +31,7 @@ angular.module('navigationApp.controllers').controller('RouteController',
 
             var getManeuvers = function (route) {
 
-                var maneuvers = [];
-
-                if (route && route.leg) {
-
-                    var lastLeg = route.leg[route.leg.length - 1],
-                        maneuversFromLastLeg = lastLeg.maneuver;
-
-                    if (maneuversFromLastLeg) {
-
-                        var lastManeuver = maneuversFromLastLeg[maneuversFromLastLeg.length - 1];
-
-                        for (var i = 0, len = route.leg.length; i < len; i++) {
-                            var m = route.leg[i].maneuver;
-                            m.pop();
-                            maneuvers = maneuvers.concat(m);
-                        }
-
-                        maneuvers.push(lastManeuver);
-
-                    }
-                }
-
-                return maneuvers;
+                return maneuversService.getRouteManeuvers(route);
 
             };
 

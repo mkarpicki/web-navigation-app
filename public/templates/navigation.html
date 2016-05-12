@@ -8,16 +8,21 @@
     </button>
 
     <!--<p data-ng-bind-html="getInstruction()"></p>-->
-    <ul>
-        <li data-ng-repeat="maneuver in maneuvers;">
-            <p
-                    data-ng-class="{ 'current-maneuver' : maneuver.current }"
-                    data-ng-bind-html="trustedText(maneuver.instruction);"
-                    >
-
-            </p>
+    <ul class="list-group maneuvers-list">
+        <li data-ng-repeat="maneuvers in maneuvers; track by $index" class="list-group-item">
+            <p data-ng-class="{ 'next-maneuver' : isNextManeuver($index) }" data-ng-bind-html="trustedText(maneuvers.instruction);"></p>
         </li>
     </ul>
+    <!--<ul>      -->
+        <!--<li data-ng-repeat="maneuver in maneuvers; track by $index">-->
+            <!--<p-->
+                    <!--data-ng-class="{ 'next-maneuver' : isNextManeuver($index) }"-->
+                    <!--data-ng-bind-html="trustedText(maneuver.instruction);"-->
+                    <!-->
+
+            <!--</p>-->
+        <!--</li>-->
+    <!--</ul>-->
 </form>
 <p data-ng-show="undefinedRoute" class="alert alert-danger" role="alert">
     No route found. <a href="/" class="pull-right" data-ng-href="/">search</a>

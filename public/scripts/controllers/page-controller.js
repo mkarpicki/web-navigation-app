@@ -124,10 +124,10 @@ angular.module('navigationApp.controllers').controller('PageController',
                 //on first found position map was updated
                 //reset value to stop updating it
                 //it may be turned on again by NAVIGATION EVENT
-                if (!firstPositionFound) {
-                    $scope.updateToPosition = false;
-                    firstPositionFound = true;
-                }
+                //if (!firstPositionFound) {
+                //    $scope.updateToPosition = false;
+                //    firstPositionFound = true;
+                //}
 
             } else if (params.eventType === events.POSITION_EVENT_TYPES.ERROR) {
 
