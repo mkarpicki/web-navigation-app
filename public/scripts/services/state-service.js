@@ -249,6 +249,12 @@ angular.module('navigationApp.services').factory('stateService', ['$rootScope', 
 
     };
 
+    /**
+     * @todo
+     * hmm is both empty try from query ?
+     * or stop using this method but deserialize from query as originally designed
+     * @returns {{wayPoints: Array, areasToAvoid: Array}}
+     */
     var getSearchCriteria = function () {
 
         return {
