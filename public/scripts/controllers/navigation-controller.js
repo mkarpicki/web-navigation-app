@@ -227,15 +227,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             var setManeuverAsVisited = function (maneuver) {
                 maneuver.visited = true;
             };
-
-            //var setCurrentManeuver = function (maneuver) {
-            //
-            //    for (var i = 0, len = $scope.maneuvers.length; i < len; i++) {
-            //        $scope.maneuvers[i].current = ($scope.maneuvers[i].position === maneuver.position) ? true : false;
-            //    }
-            //
-            //};
-
+            
             var findCurrentManeuver = function (currentPosition, maneuvers) {
 
                 var position = 0;
@@ -248,9 +240,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                         setManeuverAsVisited(maneuvers[i]);
                         position = i;
                         break;
-                        //if (maneuvers[i + 1]) {
-                        //    setCurrentManeuver(maneuvers[i + 1]);
-                        //}
                     }
                 }
 
@@ -340,7 +329,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 if (route) {
                     $scope.route = route;
                     $scope.maneuvers = getManeuvers($scope.route);
-                    //setCurrentManeuver($scope.maneuvers[0]);
 
                     searchCriteria = angular.copy(stateService.getSearchCriteria());
                     wayPointsUsedForSearch = getWayPointsWithoutStartPoint(searchCriteria.wayPoints);

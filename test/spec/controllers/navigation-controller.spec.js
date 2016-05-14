@@ -360,7 +360,6 @@ describe('NavigationController', function () {
 
     });
 
-
     describe('trustedText', function (){
 
         it ('should return text with HTML', function () {
@@ -672,6 +671,53 @@ describe('NavigationController', function () {
                     mapApiService.distance = function () {
                         return 100;
                     };
+
+                });
+
+                describe('and maneuver is visited', function () {
+
+                    it ('should mark maneuver as visited', function () {
+
+                        mapApiService.distance = function (a, b) {
+
+                            if (a.isFakeManeuver || b.isFakeManeuver) {
+                                return 0;
+                            }
+
+                            return 100;
+                        };
+
+
+                        routingService.calculateWithTrafficEnabled = function() {
+                            return fakePromise;
+                        };
+
+                        $controller("NavigationController", {
+                            $scope: $scope,
+                            $sce: $sce,
+                            $routeParams: $routeParams,
+                            routingService: routingService,
+                            stateService: stateService,
+                            mapApiService: mapApiService,
+                            maneuversService: maneuversService,
+                            config: config,
+                            events: events,
+                            $window: $window
+                        });
+
+                        $scope.$apply();
+
+                        $scope.maneuvers = [
+
+                            { position: {}, visited: false },
+                            { position: { isFakeManeuver: true }, visited: false }
+                        ];
+
+                        $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                        expect($scope.maneuvers[1].visited).toEqual(true);
+
+                    });
 
                 });
 
