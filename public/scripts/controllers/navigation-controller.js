@@ -227,7 +227,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             var setManeuverAsVisited = function (maneuver) {
                 maneuver.visited = true;
             };
-            
+
             var findCurrentManeuver = function (currentPosition, maneuvers) {
 
                 var position = 0;

@@ -13,17 +13,16 @@ angular.module('navigationApp.controllers').controller('RouteController',
             $scope.index = $routeParams.index;
             $scope.maneuvers = null;
 
-
-            $scope.getManeuver = function () {
-                var maneuver = [];
-
-                if ($scope.route && $scope.route.leg && $scope.route.leg[0]) {
-                    maneuver =  $scope.route.leg[0].maneuver;
-                }
-
-                return maneuver;
-
-            };
+            //$scope.getManeuver = function () {
+            //    var maneuver = [];
+            //
+            //    if ($scope.route && $scope.route.leg && $scope.route.leg[0]) {
+            //        maneuver =  $scope.route.leg[0].maneuver;
+            //    }
+            //
+            //    return maneuver;
+            //
+            //};
 
             $scope.trustedText = function (text) {
                 return $sce.trustAsHtml(text);
