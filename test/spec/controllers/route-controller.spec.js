@@ -195,94 +195,94 @@ describe('RouteController', function () {
 
     });
 
-    describe('getManeuver', function () {
-
-        describe('and no route set in scope', function () {
-
-            it('should return empty array', function () {
-
-                $controller("RouteController", {
-                    $scope: $scope,
-                    $sce: $sce,
-                    $routeParams: $routeParams,
-                    stateService: stateService,
-                    mapApiService: mapApiService,
-                    maneuversService: maneuversService,
-                    config: config,
-                    events: events
-                });
-
-                $scope.$apply();
-
-                $scope.route = null;
-
-                expect($scope.getManeuver()).toEqual([]);
-
-            });
-
-        });
-
-        describe('and route set in scope has no leg', function () {
-
-            it('should return empty array', function () {
-
-                $controller("RouteController", {
-                    $scope: $scope,
-                    $sce: $sce,
-                    $routeParams: $routeParams,
-                    stateService: stateService,
-                    mapApiService: mapApiService,
-                    maneuversService: maneuversService,
-                    config: config,
-                    events: events
-                });
-
-                $scope.$apply();
-
-                $scope.route = {};
-                $scope.route.leg = null;
-
-                expect($scope.getManeuver()).toEqual([]);
-
-                $scope.route = {};
-                $scope.route.leg = [];
-
-                expect($scope.getManeuver()).toEqual([]);
-
-            });
-
-        });
-
-        describe('and route set in scope has leg(s)', function () {
-
-            it('should return maneuver from first leg', function () {
-
-                var fakeManeuver = {};
-
-                $controller("RouteController", {
-                    $scope: $scope,
-                    $sce: $sce,
-                    $routeParams: $routeParams,
-                    stateService: stateService,
-                    mapApiService: mapApiService,
-                    maneuversService: maneuversService,
-                    config: config,
-                    events: events
-                });
-
-                $scope.$apply();
-
-                $scope.route = {};
-                $scope.route.leg = [{
-                    maneuver: fakeManeuver
-                }];
-
-                expect($scope.getManeuver()).toEqual(fakeManeuver);
-
-            });
-
-        });
-
-    });
+    //describe('getManeuver', function () {
+    //
+    //    describe('and no route set in scope', function () {
+    //
+    //        it('should return empty array', function () {
+    //
+    //            $controller("RouteController", {
+    //                $scope: $scope,
+    //                $sce: $sce,
+    //                $routeParams: $routeParams,
+    //                stateService: stateService,
+    //                mapApiService: mapApiService,
+    //                maneuversService: maneuversService,
+    //                config: config,
+    //                events: events
+    //            });
+    //
+    //            $scope.$apply();
+    //
+    //            $scope.route = null;
+    //
+    //            expect($scope.getManeuver()).toEqual([]);
+    //
+    //        });
+    //
+    //    });
+    //
+    //    describe('and route set in scope has no leg', function () {
+    //
+    //        it('should return empty array', function () {
+    //
+    //            $controller("RouteController", {
+    //                $scope: $scope,
+    //                $sce: $sce,
+    //                $routeParams: $routeParams,
+    //                stateService: stateService,
+    //                mapApiService: mapApiService,
+    //                maneuversService: maneuversService,
+    //                config: config,
+    //                events: events
+    //            });
+    //
+    //            $scope.$apply();
+    //
+    //            $scope.route = {};
+    //            $scope.route.leg = null;
+    //
+    //            expect($scope.getManeuver()).toEqual([]);
+    //
+    //            $scope.route = {};
+    //            $scope.route.leg = [];
+    //
+    //            expect($scope.getManeuver()).toEqual([]);
+    //
+    //        });
+    //
+    //    });
+    //
+    //    describe('and route set in scope has leg(s)', function () {
+    //
+    //        it('should return maneuver from first leg', function () {
+    //
+    //            var fakeManeuver = {};
+    //
+    //            $controller("RouteController", {
+    //                $scope: $scope,
+    //                $sce: $sce,
+    //                $routeParams: $routeParams,
+    //                stateService: stateService,
+    //                mapApiService: mapApiService,
+    //                maneuversService: maneuversService,
+    //                config: config,
+    //                events: events
+    //            });
+    //
+    //            $scope.$apply();
+    //
+    //            $scope.route = {};
+    //            $scope.route.leg = [{
+    //                maneuver: fakeManeuver
+    //            }];
+    //
+    //            expect($scope.getManeuver()).toEqual(fakeManeuver);
+    //
+    //        });
+    //
+    //    });
+    //
+    //});
 
 });
