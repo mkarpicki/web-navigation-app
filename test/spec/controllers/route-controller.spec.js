@@ -11,6 +11,7 @@ describe('RouteController', function () {
 
         stateService,
         mapApiService,
+        maneuversService,
         events,
         config;
 
@@ -57,7 +58,11 @@ describe('RouteController', function () {
         mapApiService = {
             distance: function () {},
             centerToRoute: function () {}
-        }
+        };
+
+        maneuversService = {
+            getRouteManeuvers: function () { return []; }
+        };
 
     }));
 
@@ -82,6 +87,7 @@ describe('RouteController', function () {
                     $routeParams: $routeParams,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events
                 });
@@ -115,6 +121,7 @@ describe('RouteController', function () {
                     $routeParams: $routeParams,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events
                 });
@@ -145,6 +152,7 @@ describe('RouteController', function () {
                 $routeParams: $routeParams,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                maneuversService: maneuversService,
                 config: config,
                 events: events
             });
@@ -172,6 +180,7 @@ describe('RouteController', function () {
                 $routeParams: $routeParams,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                maneuversService: maneuversService,
                 config: config,
                 events: events
             });
@@ -198,6 +207,7 @@ describe('RouteController', function () {
                     $routeParams: $routeParams,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events
                 });
@@ -222,6 +232,7 @@ describe('RouteController', function () {
                     $routeParams: $routeParams,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events
                 });
@@ -254,6 +265,7 @@ describe('RouteController', function () {
                     $routeParams: $routeParams,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events
                 });

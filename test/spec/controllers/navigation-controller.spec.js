@@ -13,6 +13,7 @@ describe('NavigationController', function () {
         routingService,
         stateService,
         mapApiService,
+        maneuversService,
         events,
         config;
 
@@ -70,9 +71,183 @@ describe('NavigationController', function () {
         mapApiService = {
             distance: function () {},
             centerToRoute: function () {}
-        }
+        };
+
+        maneuversService = {
+            getRouteManeuvers: function () { return []; }
+        };
 
     }));
+
+    describe('isNextManeuver', function () {
+
+        describe('when it is first maneuver', function () {
+
+            describe('and maneuver is not visited', function () {
+
+                it('should return true', function (){
+
+                    var maneuvers = [
+                        { visited: false }
+                    ];
+
+                    $controller("NavigationController", {
+                        $scope: $scope,
+                        $sce: $sce,
+                        $routeParams: $routeParams,
+                        routingService: routingService,
+                        stateService: stateService,
+                        mapApiService: mapApiService,
+                        maneuversService: maneuversService,
+                        config: config,
+                        events: events,
+                        $window: $window
+                    });
+
+                    $scope.$apply();
+
+                    $scope.maneuvers = maneuvers;
+
+                    expect($scope.isNextManeuver(0)).toEqual(true);
+
+                });
+
+            });
+
+            describe('and maneuver is visited', function () {
+
+                it('should return false', function (){
+
+                    var maneuvers = [
+                        { visited: true }
+                    ];
+
+                    $controller("NavigationController", {
+                        $scope: $scope,
+                        $sce: $sce,
+                        $routeParams: $routeParams,
+                        routingService: routingService,
+                        stateService: stateService,
+                        mapApiService: mapApiService,
+                        maneuversService: maneuversService,
+                        config: config,
+                        events: events,
+                        $window: $window
+                    });
+
+                    $scope.$apply();
+
+                    $scope.maneuvers = maneuvers;
+
+                    expect($scope.isNextManeuver(0)).toEqual(false);
+
+                });
+
+            });
+
+        });
+
+        describe('when it is not first maneuver', function () {
+
+            describe('and maneuver is not visited', function () {
+
+                it('should return true', function (){
+
+                    var maneuvers = [
+                        { visited: true },
+                        { visited: false }
+                    ];
+
+                    $controller("NavigationController", {
+                        $scope: $scope,
+                        $sce: $sce,
+                        $routeParams: $routeParams,
+                        routingService: routingService,
+                        stateService: stateService,
+                        mapApiService: mapApiService,
+                        maneuversService: maneuversService,
+                        config: config,
+                        events: events,
+                        $window: $window
+                    });
+
+                    $scope.$apply();
+
+                    $scope.maneuvers = maneuvers;
+
+                    expect($scope.isNextManeuver(1)).toEqual(true);
+
+                });
+
+                describe('but previous maneuver is not visited', function () {
+
+                    it('should return false', function () {
+
+                        var maneuvers = [
+                            { visited: false },
+                            { visited: false }
+                        ];
+
+                        $controller("NavigationController", {
+                            $scope: $scope,
+                            $sce: $sce,
+                            $routeParams: $routeParams,
+                            routingService: routingService,
+                            stateService: stateService,
+                            mapApiService: mapApiService,
+                            maneuversService: maneuversService,
+                            config: config,
+                            events: events,
+                            $window: $window
+                        });
+
+                        $scope.$apply();
+
+                        $scope.maneuvers = maneuvers;
+
+                        expect($scope.isNextManeuver(1)).toEqual(false);
+
+                    });
+
+                });
+
+            });
+
+            describe('and maneuver is visited', function () {
+
+                it('should return true', function (){
+
+                    var maneuvers = [
+                        { visited: true },
+                        { visited: true }
+                    ];
+
+                    $controller("NavigationController", {
+                        $scope: $scope,
+                        $sce: $sce,
+                        $routeParams: $routeParams,
+                        routingService: routingService,
+                        stateService: stateService,
+                        mapApiService: mapApiService,
+                        maneuversService: maneuversService,
+                        config: config,
+                        events: events,
+                        $window: $window
+                    });
+
+                    $scope.$apply();
+
+                    $scope.maneuvers = maneuvers;
+
+                    expect($scope.isNextManeuver(1)).toEqual(false);
+
+                });
+
+            });
+
+        });
+
+    });
 
     describe('when index of existing routes provided', function () {
 
@@ -97,6 +272,7 @@ describe('NavigationController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events,
                     $window: $window
@@ -135,6 +311,7 @@ describe('NavigationController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events,
                     $window: $window
@@ -167,6 +344,7 @@ describe('NavigationController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                maneuversService: maneuversService,
                 config: config,
                 events: events,
                 $window: $window
@@ -196,6 +374,7 @@ describe('NavigationController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                maneuversService: maneuversService,
                 config: config,
                 events: events,
                 $window: $window
@@ -212,98 +391,101 @@ describe('NavigationController', function () {
     });
 
 
-    describe('getManeuver', function () {
-
-        describe('and no route set in scope', function () {
-
-            it('should return empty array', function () {
-
-                $controller("NavigationController", {
-                    $scope: $scope,
-                    $sce: $sce,
-                    $routeParams: $routeParams,
-                    routingService: routingService,
-                    stateService: stateService,
-                    mapApiService: mapApiService,
-                    config: config,
-                    events: events,
-                    $window: $window
-                });
-
-                $scope.$apply();
-
-                $scope.route = null;
-
-                expect($scope.getManeuver()).toEqual([]);
-
-            });
-
-        });
-
-        describe('and route set in scope has no leg', function () {
-
-            it('should return empty array', function () {
-
-                $controller("NavigationController", {
-                    $scope: $scope,
-                    $sce: $sce,
-                    $routeParams: $routeParams,
-                    routingService: routingService,
-                    stateService: stateService,
-                    mapApiService: mapApiService,
-                    config: config,
-                    events: events,
-                    $window: $window
-                });
-
-                $scope.$apply();
-
-                $scope.route = {};
-                $scope.route.leg = null;
-
-                expect($scope.getManeuver()).toEqual([]);
-
-                $scope.route = {};
-                $scope.route.leg = [];
-
-                expect($scope.getManeuver()).toEqual([]);
-
-            });
-
-        });
-
-        describe('and route set in scope has leg(s)', function () {
-
-            it('should return maneuver from first leg', function () {
-
-                var fakeManeuver = {};
-
-                $controller("NavigationController", {
-                    $scope: $scope,
-                    $sce: $sce,
-                    $routeParams: $routeParams,
-                    routingService: routingService,
-                    stateService: stateService,
-                    mapApiService: mapApiService,
-                    config: config,
-                    events: events,
-                    $window: $window
-                });
-
-                $scope.$apply();
-
-                $scope.route = {};
-                $scope.route.leg = [{
-                    maneuver: fakeManeuver
-                }];
-
-                expect($scope.getManeuver()).toEqual(fakeManeuver);
-
-            });
-
-        });
-
-    });
+    //describe('getManeuver', function () {
+    //
+    //    describe('and no route set in scope', function () {
+    //
+    //        it('should return empty array', function () {
+    //
+    //            $controller("NavigationController", {
+    //                $scope: $scope,
+    //                $sce: $sce,
+    //                $routeParams: $routeParams,
+    //                routingService: routingService,
+    //                stateService: stateService,
+    //                mapApiService: mapApiService,
+    //                maneuversService: maneuversService,
+    //                config: config,
+    //                events: events,
+    //                $window: $window
+    //            });
+    //
+    //            $scope.$apply();
+    //
+    //            $scope.route = null;
+    //
+    //            expect($scope.getManeuver()).toEqual([]);
+    //
+    //        });
+    //
+    //    });
+    //
+    //    describe('and route set in scope has no leg', function () {
+    //
+    //        it('should return empty array', function () {
+    //
+    //            $controller("NavigationController", {
+    //                $scope: $scope,
+    //                $sce: $sce,
+    //                $routeParams: $routeParams,
+    //                routingService: routingService,
+    //                stateService: stateService,
+    //                mapApiService: mapApiService,
+    //                maneuversService: maneuversService,
+    //                config: config,
+    //                events: events,
+    //                $window: $window
+    //            });
+    //
+    //            $scope.$apply();
+    //
+    //            $scope.route = {};
+    //            $scope.route.leg = null;
+    //
+    //            expect($scope.getManeuver()).toEqual([]);
+    //
+    //            $scope.route = {};
+    //            $scope.route.leg = [];
+    //
+    //            expect($scope.getManeuver()).toEqual([]);
+    //
+    //        });
+    //
+    //    });
+    //
+    //    describe('and route set in scope has leg(s)', function () {
+    //
+    //        it('should return maneuver from first leg', function () {
+    //
+    //            var fakeManeuver = {};
+    //
+    //            $controller("NavigationController", {
+    //                $scope: $scope,
+    //                $sce: $sce,
+    //                $routeParams: $routeParams,
+    //                routingService: routingService,
+    //                stateService: stateService,
+    //                mapApiService: mapApiService,
+    //                maneuversService: maneuversService,
+    //                config: config,
+    //                events: events,
+    //                $window: $window
+    //            });
+    //
+    //            $scope.$apply();
+    //
+    //            $scope.route = {};
+    //            $scope.route.leg = [{
+    //                maneuver: fakeManeuver
+    //            }];
+    //
+    //            expect($scope.getManeuver()).toEqual(fakeManeuver);
+    //
+    //        });
+    //
+    //    });
+    //
+    //});
 
     describe('when $locationChangeStart even fired', function () {
 
@@ -328,6 +510,7 @@ describe('NavigationController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                maneuversService: maneuversService,
                 config: config,
                 events: events,
                 $window: $window
@@ -410,6 +593,7 @@ describe('NavigationController', function () {
                     routingService: routingService,
                     stateService: stateService,
                     mapApiService: mapApiService,
+                    maneuversService: maneuversService,
                     config: config,
                     events: events,
                     $window: $window
@@ -452,6 +636,7 @@ describe('NavigationController', function () {
                         routingService: routingService,
                         stateService: stateService,
                         mapApiService: mapApiService,
+                        maneuversService: maneuversService,
                         config: config,
                         events: events,
                         $window: $window
@@ -523,6 +708,7 @@ describe('NavigationController', function () {
                                     routingService: routingService,
                                     stateService: stateService,
                                     mapApiService: mapApiService,
+                                    maneuversService: maneuversService,
                                     config: config,
                                     events: events,
                                     $window: $window
@@ -573,6 +759,7 @@ describe('NavigationController', function () {
                                     routingService: routingService,
                                     stateService: stateService,
                                     mapApiService: mapApiService,
+                                    maneuversService: maneuversService,
                                     config: config,
                                     events: events,
                                     $window: $window
@@ -617,6 +804,7 @@ describe('NavigationController', function () {
                                         routingService: routingService,
                                         stateService: stateService,
                                         mapApiService: mapApiService,
+                                        maneuversService: maneuversService,
                                         config: config,
                                         events: events,
                                         $window: $window
@@ -717,6 +905,7 @@ describe('NavigationController', function () {
                                         routingService: routingService,
                                         stateService: stateService,
                                         mapApiService: mapApiService,
+                                        maneuversService: maneuversService,
                                         config: config,
                                         events: events,
                                         $window: $window
@@ -775,6 +964,7 @@ describe('NavigationController', function () {
                                 routingService: routingService,
                                 stateService: stateService,
                                 mapApiService: mapApiService,
+                                maneuversService: maneuversService,
                                 config: config,
                                 events: events,
                                 $window: $window
@@ -826,6 +1016,7 @@ describe('NavigationController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                maneuversService: maneuversService,
                 config: config,
                 events: events,
                 $window: $window
@@ -859,6 +1050,7 @@ describe('NavigationController', function () {
                 routingService: routingService,
                 stateService: stateService,
                 mapApiService: mapApiService,
+                maneuversService: maneuversService,
                 config: config,
                 events: events,
                 $window: $window

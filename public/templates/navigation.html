@@ -18,16 +18,7 @@
             <p data-ng-bind-html="trustedText(maneuvers.instruction);"></p>
         </li>
     </ul>
-    <!--<ul>      -->
-        <!--<li data-ng-repeat="maneuver in maneuvers; track by $index">-->
-            <!--<p-->
-                    <!--data-ng-class="{ 'next-maneuver' : isNextManeuver($index) }"-->
-                    <!--data-ng-bind-html="trustedText(maneuver.instruction);"-->
-                    <!-->
 
-            <!--</p>-->
-        <!--</li>-->
-    <!--</ul>-->
 </form>
 <p data-ng-show="undefinedRoute" class="alert alert-danger" role="alert">
     No route found. <a href="/" class="pull-right" data-ng-href="/">search</a>

@@ -92,6 +92,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
             if (routes) {
                 //console.log(JSON.stringify(routes[0].shape));
+                //console.log(routes[0]);
                 deferred.resolve(routes);
             } else {
                 deferred.resolve([]);

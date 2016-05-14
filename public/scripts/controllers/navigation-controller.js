@@ -49,15 +49,15 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 $window.history.back();
             };
 
-            $scope.isManeuverVisited = function (index) {
-                return ($scope.maneuvers[index].visited);
-            };
-
             $scope.isNextManeuver = function (index) {
                 if (index === 0) {
-                    return !$scope.isManeuverVisited(index);
+                    return !isManeuverVisited(index);
                 }
-                return !$scope.isManeuverVisited(index) && $scope.isManeuverVisited(index - 1);
+                return !isManeuverVisited(index) && isManeuverVisited(index - 1);
+            };
+
+            var isManeuverVisited = function (index) {
+                return ($scope.maneuvers[index].visited);
             };
 
             var onLeave = function (event) {
