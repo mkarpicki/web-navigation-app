@@ -24,6 +24,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             $scope.recalculating = false;
             $scope.onLeaveConfirmation = false;
             $scope.maneuvers = null;
+            $scope.currentSpeed = 0;
             
             $scope.trustedText = function (text) {
                 return $sce.trustAsHtml(text);
@@ -82,6 +83,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                         latitude : geoPosition.coords.latitude,
                         longitude : geoPosition.coords.longitude
                     };
+
+                    $scope.currentSpeed = geoPosition.coords.speed;
 
                     ///**
                     // * @todo check real position and if float remove that conversion

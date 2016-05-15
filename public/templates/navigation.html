@@ -9,6 +9,9 @@
     </button>
 
     <!--<p data-ng-bind-html="getInstruction()"></p>-->
+    <p>
+        <span>{{currentSpeed | metersPerSecondToKilometersPerHour}} km/h</span>
+    </p>
     <ul class="list-group maneuvers-list">
         <li
                 data-ng-repeat="maneuvers in maneuvers; track by $index"
