@@ -24,17 +24,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             $scope.recalculating = false;
             $scope.onLeaveConfirmation = false;
             $scope.maneuvers = null;
-
-            //$scope.getManeuver = function () {
-            //    var maneuver = [];
-            //
-            //    if ($scope.route && $scope.route.leg && $scope.route.leg[0]) {
-            //        maneuver =  $scope.route.leg[0].maneuver;
-            //    }
-            //
-            //    return maneuver;
-            //};
-
+            
             $scope.trustedText = function (text) {
                 return $sce.trustAsHtml(text);
             };
@@ -65,7 +55,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 /**
                  * @todo
                  * clear routes
-                 * and add only those that were in atate service during init (to not have too many routes)
+                 * and add only those that were in state service during init (to not have too many routes)
                  */
 
                 if (!forceLeave) {
@@ -78,15 +68,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 disableDriveMode();
             };
 
-            /**
-             * @todo expose as mini servie to be used in two controllers
-             * @param route
-             * @returns {Array}
-             */
             var getManeuvers = function (route) {
-
                 return maneuversService.getRouteManeuvers(route);
-
             };
 
             var onPositionChange = function (event, params) {
