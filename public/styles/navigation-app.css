@@ -26,6 +26,25 @@
     margin-bottom: 15px;
 }
 
+/* form page ***********************/
+
+li.way-point, li.area-to-avoid {
+    padding: 5px 0;
+}
+
+/* route page ***********************/
+
+ul.maneuvers-list {
+    margin-top: 20px;
+}
+
+/* navigation page ***********************/
+
+
+#stop-navigation, #stop-navigation-confirm {
+    margin-bottom: 15px;
+}
+
 @media (min-width: 992px) {
     .toggle-panels-btn-container {
         display: none;
@@ -67,23 +86,23 @@
     #navigation-view .list-group-item.active {
         display:block;
     }
+
+    #stop-navigation {
+        float: left;
+    }
+
+    #stop-navigation, #stop-navigation-confirm {
+        margin-bottom: 5px;
+    }
+
+    #navigation-view .panel {
+        margin-bottom: 5px;
+        margin-left: 130px;
+    }
+
+    ul.maneuvers-list {
+        margin: 10px 0;
+    }
+
 }
 
-/* form page ***********************/
-
-li.way-point, li.area-to-avoid {
-    padding: 5px 0;
-}
-
-/* route page ***********************/
-
-ul.maneuvers-list {
-    margin-top: 20px;
-}
-
-/* navigation page ***********************/
-
-
-#stop-navigation, #stop-navigation-confirm {
-    margin-bottom: 15px;
-}
