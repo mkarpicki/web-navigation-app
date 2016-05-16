@@ -45,6 +45,18 @@ ul.maneuvers-list {
     margin-bottom: 15px;
 }
 
+#current-route-state div {
+    text-align: center;
+}
+
+#current-route-state p {
+    margin-top: 15px;
+}
+
+#speed-limit {
+    margin-top: 5px;
+}
+
 @media (min-width: 992px) {
     .toggle-panels-btn-container {
         display: none;
@@ -102,6 +114,10 @@ ul.maneuvers-list {
 
     ul.maneuvers-list {
         margin: 15px 0;
+    }
+
+    #current-route-state.row {
+        padding-top: 0;
     }
 
 }
