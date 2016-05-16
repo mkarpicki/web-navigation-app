@@ -61,6 +61,11 @@ ul.maneuvers-list {
     .toggle-panels-btn-container {
         display: none;
     }
+
+    #map {
+        position: fixed;
+        right: 0;
+    }
 }
 
 /* making panels displayed to take full space in mobile view ************/
