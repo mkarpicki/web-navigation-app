@@ -7,7 +7,7 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
     var ROUTE_INFO_URL = "https://route.api.here.com/routing/7.2/getlinkinfo.json" +
         "?waypoint={{wayPoint}}" +
-        "&app_id={{appId}}" + "" +
+        "&app_id={{appId}}" +
         "&app_code={{appCode}}";
 
     var URL = "https://route.api.here.com/routing/7.2/calculateroute.json?" +

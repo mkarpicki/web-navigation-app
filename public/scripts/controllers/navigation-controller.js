@@ -75,7 +75,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 routingService.getRouteInfo(wayPoint).then(function (link) {
 
                     if (link && link[0]) {
-                        $scope.speedLimit = parseInt(link[0].speedLimit, 10);
+                        $scope.speedLimit = link[0].speedLimit;
                     }
                 });
 

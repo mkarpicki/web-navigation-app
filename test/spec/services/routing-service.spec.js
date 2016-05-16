@@ -650,5 +650,159 @@ describe('routingService', function () {
 
     });
 
+    describe('getRouteInfo', function () {
+
+        var ROUTE_INFO_URL;
+
+        beforeEach(function () {
+
+            ROUTE_INFO_URL = "https://route.api.here.com/routing/7.2/getlinkinfo.json" +
+            "?waypoint={{wayPoint}}" +
+            "&app_id=" + config.APP_ID +
+            "&app_code=" + config.APP_CODE;
+
+        });
+
+        describe('when http request failed', function () {
+
+            it('should resolve promise with empty array', inject(function (routingService, $httpBackend) {
+
+                var returnedLinks = [];
+
+                var url = ROUTE_INFO_URL;
+
+                var wayPoint = {
+                    latitude: 1,
+                    longitude: 2
+                };
+
+                var wayPointQuery = wayPoint.latitude + "," + wayPoint.longitude;
+
+                url = url.replace("{{wayPoint}}", wayPointQuery);
+
+                $httpBackend.expectGET(url).respond(500, {
+
+                });
+
+                var failed = false;
+
+                routingService.getRouteInfo(wayPoint).then(function (link) {
+
+                }, function () {
+                    failed = true
+                });
+
+                $httpBackend.flush();
+
+                expect(failed).toEqual(true);
+
+            }));
+
+        });
+
+        describe('when http request succeed', function () {
+
+            describe('but did not return response', function () {
+
+                it('should resolve promise with empty array', inject(function (routingService, $httpBackend) {
+
+                    var url = ROUTE_INFO_URL;
+
+                    var wayPoint = {
+                        latitude: 1,
+                        longitude: 2
+                    };
+
+                    var wayPointQuery = wayPoint.latitude + "," + wayPoint.longitude;
+
+                    url = url.replace("{{wayPoint}}", wayPointQuery);
+
+                    $httpBackend.expectGET(url).respond(200, {
+                        
+                    });
+
+
+                    routingService.getRouteInfo(wayPoint).then(function (link) {
+                        expect(link).toEqual([]);
+                    });
+
+                    $httpBackend.flush();
+
+                }));
+
+            });
+
+            describe('but did not return link info', function () {
+
+                it('should resolve promise with empty array', inject(function (routingService, $httpBackend) {
+
+                    var url = ROUTE_INFO_URL;
+
+                    var wayPoint = {
+                        latitude: 1,
+                        longitude: 2
+                    };
+
+                    var wayPointQuery = wayPoint.latitude + "," + wayPoint.longitude;
+
+                    url = url.replace("{{wayPoint}}", wayPointQuery);
+
+                    $httpBackend.expectGET(url).respond(200, {
+
+                        response: {}
+
+                    });
+
+
+                    routingService.getRouteInfo(wayPoint).then(function (link) {
+                        expect(link).toEqual([]);
+                    });
+
+                    $httpBackend.flush();
+
+                }));
+
+            });
+
+            describe('and returned link info', function () {
+
+                it('should resolve promise with link info', inject(function (routingService, $httpBackend) {
+
+                    var returnedLinks = [{}, {}];
+
+                    var url = ROUTE_INFO_URL;
+
+                    var wayPoint = {
+                        latitude: 1,
+                        longitude: 2
+                    };
+
+                    var wayPointQuery = wayPoint.latitude + "," + wayPoint.longitude;
+
+                    url = url.replace("{{wayPoint}}", wayPointQuery);
+
+                    $httpBackend.expectGET(url).respond(200, {
+
+                        response: {
+                            link: returnedLinks
+                        }
+
+                    });
+
+
+                    routingService.getRouteInfo(wayPoint).then(function (link) {
+                        expect(link).toEqual(returnedLinks);
+                    });
+
+                    $httpBackend.flush();
+
+                }));
+
+            });
+
+        });
+
+    });
+
 
 });

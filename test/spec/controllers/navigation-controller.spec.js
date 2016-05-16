@@ -563,10 +563,11 @@ describe('NavigationController', function () {
                     };
 
                     routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
-
+                    routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromise);
 
                     $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
+                    expect(routingService.getRouteInfo).not.toHaveBeenCalled();
                     expect(routingService.calculateWithTrafficEnabled).not.toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
 
                 });
@@ -596,7 +597,7 @@ describe('NavigationController', function () {
                             return 100;
                         };
 
-
+                        routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromise);
                         routingService.calculateWithTrafficEnabled = function() {
                             return fakePromise;
                         };
@@ -624,7 +625,232 @@ describe('NavigationController', function () {
 
                         $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
+                        expect(routingService.getRouteInfo).toHaveBeenCalled();
                         expect($scope.maneuvers[1].visited).toEqual(true);
+
+                    });
+
+                    describe('and routeService.getRouteInfo failed', function () {
+
+                        it('should not update speedLimit', function () {
+
+                            var fakePromiseForRouteInfo = {
+                                then: function () {
+                                   //no success callback executed
+                                }
+                            };
+                            mapApiService.distance = function (a, b) {
+
+                                if (a.isFakeManeuver || b.isFakeManeuver) {
+                                    return 0;
+                                }
+
+                                return 100;
+                            };
+
+                            routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromiseForRouteInfo);
+                            routingService.calculateWithTrafficEnabled = function() {
+                                return fakePromise;
+                            };
+
+                            $controller("NavigationController", {
+                                $scope: $scope,
+                                $sce: $sce,
+                                $routeParams: $routeParams,
+                                routingService: routingService,
+                                stateService: stateService,
+                                mapApiService: mapApiService,
+                                maneuversService: maneuversService,
+                                config: config,
+                                events: events,
+                                $window: $window
+                            });
+
+                            $scope.$apply();
+
+                            $scope.maneuvers = [
+
+                                { position: {}, visited: false },
+                                { position: { isFakeManeuver: true }, visited: false }
+                            ];
+
+                            $scope.speedLimit = null;
+
+                            $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                            expect(routingService.getRouteInfo).toHaveBeenCalled();
+                            expect($scope.speedLimit).toEqual(null);
+
+                        });
+                    });
+
+                    describe('and routeService.getRouteInfo succeed', function () {
+
+                        describe('but did not return any link info', function () {
+
+                            it('should not update speedLimit', function () {
+
+                                var fakePromiseForRouteInfo = {
+                                    then: function (success) {
+                                        success(null);
+                                    }
+                                };
+                                mapApiService.distance = function (a, b) {
+
+                                    if (a.isFakeManeuver || b.isFakeManeuver) {
+                                        return 0;
+                                    }
+
+                                    return 100;
+                                };
+
+                                routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromiseForRouteInfo);
+                                routingService.calculateWithTrafficEnabled = function() {
+                                    return fakePromise;
+                                };
+
+                                $controller("NavigationController", {
+                                    $scope: $scope,
+                                    $sce: $sce,
+                                    $routeParams: $routeParams,
+                                    routingService: routingService,
+                                    stateService: stateService,
+                                    mapApiService: mapApiService,
+                                    maneuversService: maneuversService,
+                                    config: config,
+                                    events: events,
+                                    $window: $window
+                                });
+
+                                $scope.$apply();
+
+                                $scope.maneuvers = [
+
+                                    { position: {}, visited: false },
+                                    { position: { isFakeManeuver: true }, visited: false }
+                                ];
+
+                                $scope.speedLimit = null;
+
+                                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                expect(routingService.getRouteInfo).toHaveBeenCalled();
+                                expect($scope.speedLimit).toEqual(null);
+
+                            });
+
+                        });
+
+                        describe('but did return empty link info', function () {
+
+                            it('should not update speedLimit', function () {
+
+                                var fakePromiseForRouteInfo = {
+                                    then: function (success) {
+                                        success([]);
+                                    }
+                                };
+                                mapApiService.distance = function (a, b) {
+
+                                    if (a.isFakeManeuver || b.isFakeManeuver) {
+                                        return 0;
+                                    }
+
+                                    return 100;
+                                };
+
+                                routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromiseForRouteInfo);
+                                routingService.calculateWithTrafficEnabled = function() {
+                                    return fakePromise;
+                                };
+
+                                $controller("NavigationController", {
+                                    $scope: $scope,
+                                    $sce: $sce,
+                                    $routeParams: $routeParams,
+                                    routingService: routingService,
+                                    stateService: stateService,
+                                    mapApiService: mapApiService,
+                                    maneuversService: maneuversService,
+                                    config: config,
+                                    events: events,
+                                    $window: $window
+                                });
+
+                                $scope.$apply();
+
+                                $scope.maneuvers = [
+
+                                    { position: {}, visited: false },
+                                    { position: { isFakeManeuver: true }, visited: false }
+                                ];
+
+                                $scope.speedLimit = null;
+
+                                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                expect(routingService.getRouteInfo).toHaveBeenCalled();
+                                expect($scope.speedLimit).toEqual(null);
+
+                            });
+
+                        });
+
+                        describe('and returned link info with speed limit', function () {
+
+                            it('should update speedLimit', function () {
+
+                                var fakePromiseForRouteInfo = {
+                                    then: function (success) {
+                                        success([
+                                            { speedLimit: 50}
+                                        ]);
+                                    }
+                                };
+                                mapApiService.distance = function (a, b) {
+
+                                    if (a.isFakeManeuver || b.isFakeManeuver) {
+                                        return 0;
+                                    }
+
+                                    return 100;
+                                };
+
+                                routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromiseForRouteInfo);
+                                routingService.calculateWithTrafficEnabled = function() {
+                                    return fakePromise;
+                                };
+
+                                $controller("NavigationController", {
+                                    $scope: $scope,
+                                    $sce: $sce,
+                                    $routeParams: $routeParams,
+                                    routingService: routingService,
+                                    stateService: stateService,
+                                    mapApiService: mapApiService,
+                                    maneuversService: maneuversService,
+                                    config: config,
+                                    events: events,
+                                    $window: $window
+                                });
+
+                                $scope.$apply();
+
+                                $scope.maneuvers = [
+
+                                    { position: {}, visited: false },
+                                    { position: { isFakeManeuver: true }, visited: false }
+                                ];
+
+                                $scope.speedLimit = null;
+
+                                $scope.$emit(events.POSITION_EVENT, fakeEventParams);
+
+                                expect(routingService.getRouteInfo).toHaveBeenCalled();
+                                expect($scope.speedLimit).toEqual(50);
+
+                            });
+                        });
 
                     });
 
@@ -671,6 +897,7 @@ describe('NavigationController', function () {
 
                                 $scope.$apply();
 
+                                routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromise);
                                 routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
                                 stateService.saveRoute = jasmine.createSpy('stateService.saveRoute');
 
@@ -684,6 +911,7 @@ describe('NavigationController', function () {
 
                                 $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
+                                expect(routingService.getRouteInfo).toHaveBeenCalled();
                                 expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                 expect(stateService.saveRoute).not.toHaveBeenCalled();
                                 //expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalled();
@@ -722,6 +950,7 @@ describe('NavigationController', function () {
 
                                 $scope.$apply();
 
+                                routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromise);
                                 routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
                                 stateService.saveRoute = jasmine.createSpy('stateService.saveRoute');
 
@@ -735,6 +964,7 @@ describe('NavigationController', function () {
 
                                 $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
+                                expect(routingService.getRouteInfo).toHaveBeenCalled();
                                 expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                 expect(stateService.saveRoute).not.toHaveBeenCalled();
                                 expect($scope.route).toEqual(defaultRoute);
@@ -767,6 +997,7 @@ describe('NavigationController', function () {
 
                                     $scope.$apply();
 
+                                    routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromise);
                                     routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
                                     stateService.addRoute = jasmine.createSpy('stateService.saveRoute');
 
@@ -780,6 +1011,7 @@ describe('NavigationController', function () {
 
                                     $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
+                                    expect(routingService.getRouteInfo).toHaveBeenCalled();
                                     expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                     expect($scope.route).toEqual(newRoute);
                                     expect(stateService.addRoute).toHaveBeenCalledWith(newRoute);
@@ -868,6 +1100,7 @@ describe('NavigationController', function () {
 
                                     $scope.$apply();
 
+                                    routingService.getRouteInfo = jasmine.createSpy('routingService.getRouteInfo').and.returnValue(fakePromise);
                                     routingService.calculateWithTrafficEnabled = jasmine.createSpy('routingService.calculateWithTrafficEnabled').and.returnValue(fakePromise);
                                     stateService.addRoute = jasmine.createSpy('stateService.addRoute');
 
@@ -886,6 +1119,7 @@ describe('NavigationController', function () {
 
                                     $scope.$emit(events.POSITION_EVENT, fakeEventParams);
 
+                                    expect(routingService.getRouteInfo).toHaveBeenCalled();
                                     expect(routingService.calculateWithTrafficEnabled).toHaveBeenCalledWith(wayPointsUsedForSearch, areasToAvoidUsedForSearch);
                                     expect($scope.route).toEqual(newRoute);
                                     expect(stateService.addRoute).toHaveBeenCalledWith(newRoute);
