@@ -4,6 +4,6 @@
 
 angular.module('navigationApp.filters').filter('metersPerSecondToKilometersPerHour', function() {
     return function(metersPerSecondValue) {
-        return metersPerSecondValue * 3.6;
+        return Math.round(metersPerSecondValue * 3.6);
     };
 });

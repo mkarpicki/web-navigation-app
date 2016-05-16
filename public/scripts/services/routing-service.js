@@ -5,6 +5,11 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
     var appId = config.APP_ID,
         appCode = config.APP_CODE;
 
+    var ROUTE_INFO_URL = "https://route.api.here.com/routing/7.2/getlinkinfo.json" +
+        "?waypoint={{wayPoint}}" +
+        "&app_id={{appId}}" + "" +
+        "&app_code={{appCode}}";
+
     var URL = "https://route.api.here.com/routing/7.2/calculateroute.json?" +
         "app_id={{appId}}" +
         "&app_code={{appCode}}" +
@@ -103,6 +108,36 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
         return deferred.promise;
     };
 
+    var getRouteInfo = function (wayPoint) {
+
+        var deferred = $q.defer(),
+            exp = $interpolate(ROUTE_INFO_URL);
+
+        var url = exp({
+            appId: appId,
+            appCode: appCode,
+            wayPoint: wayPoint.latitude + ',' + wayPoint.longitude
+        });
+
+        $http.get(url).then(function (httpResponse) {
+
+            var info;
+
+            if (httpResponse && httpResponse.data && httpResponse.data.response) {
+                info = httpResponse.data.response.link;
+            }
+
+            if (info) {
+                deferred.resolve(info);
+            } else {
+                deferred.resolve([]);
+            }
+
+        }, deferred.reject);
+
+        return deferred.promise;
+    };
+
     var calculateWithTrafficEnabled = function (wayPoints, areasToAvoid) {
         return calculate(wayPoints, areasToAvoid, 'enabled');
     };
@@ -113,7 +148,8 @@ angular.module('navigationApp.services').factory('routingService', ['$http', '$q
 
     return {
         calculateWithTrafficEnabled: calculateWithTrafficEnabled,
-        calculateWithTrafficDisabled: calculateWithTrafficDisabled
+        calculateWithTrafficDisabled: calculateWithTrafficDisabled,
+        getRouteInfo: getRouteInfo
     };
 
 }]);

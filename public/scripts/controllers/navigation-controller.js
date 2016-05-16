@@ -25,6 +25,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             $scope.onLeaveConfirmation = false;
             $scope.maneuvers = null;
             $scope.currentSpeed = 0;
+            $scope.speedLimit = 0;
             
             $scope.trustedText = function (text) {
                 return $sce.trustAsHtml(text);
@@ -67,6 +68,17 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 stateService.clearRoutes();
                 stateService.saveRoutes(originalRoutes);
                 disableDriveMode();
+            };
+
+            var updateSpeedLimit = function (wayPoint) {
+
+                routingService.getRouteInfo(wayPoint).then(function (link) {
+
+                    if (link && link[0]) {
+                        $scope.speedLimit = parseInt(link[0].speedLimit, 10);
+                    }
+                });
+
             };
 
             var getManeuvers = function (route) {
@@ -118,6 +130,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 var justVisitedWayPoints = findJustVisitedWayPoints(currentPosition, wayPointsUsedForSearch);
 
                 if (justVisitedWayPoints.length > 0) {
+                    updateSpeedLimit(currentPosition);
                     visitedWayPoints = collectVisitedWayPoints(visitedWayPoints, justVisitedWayPoints);
                     /**
                      * @todo
@@ -130,6 +143,8 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 $scope.maneuvers = findCurrentManeuver(currentPosition, $scope.maneuvers);
 
                 if (notOnRouteAnymore(currentPosition, $scope.route)) {
+
+                    updateSpeedLimit(currentPosition);
 
                     var wayPointsToSearch = getOnlyNotVisitedWayPoints(wayPointsUsedForSearch, visitedWayPoints);
 
@@ -223,6 +238,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                     var distance = mapApiService.distance(currentPosition, maneuvers[i].position);
 
                     if (distance <= numberOfMetersFromWayPointToAssumeVisited) {
+                        updateSpeedLimit(currentPosition);
                         setManeuverAsVisited(maneuvers[i]);
                         position = i;
                         break;

@@ -19,9 +19,9 @@ describe('filter', function() {
 
         it('should transform value in meters/second to km/hour', function() {
 
-            expect($filter('metersPerSecondToKilometersPerHour')(1)).toEqual(3.6);
-//            expect(metersPerSecondToKilometersPerHour(10)).toEqual(36);
-//            expect(metersPerSecondToKilometersPerHour(50)).toEqual(180);
+            expect($filter('metersPerSecondToKilometersPerHour')(1)).toEqual(4);
+            expect($filter('metersPerSecondToKilometersPerHour')(10)).toEqual(36);
+            expect($filter('metersPerSecondToKilometersPerHour')(50)).toEqual(180);
 
         });
     });

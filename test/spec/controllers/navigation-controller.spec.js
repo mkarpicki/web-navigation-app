@@ -34,8 +34,13 @@ describe('NavigationController', function () {
             }
         };
 
+        var fakePromise = {
+            then: function () {}
+        };
+
         routingService = {
-            calculateWithTrafficEnabled: function () {}
+            calculateWithTrafficEnabled: function () {},
+            getRouteInfo: function () { return fakePromise; }
         };
 
         stateService = {
@@ -389,102 +394,6 @@ describe('NavigationController', function () {
 
     });
 
-
-    //describe('getManeuver', function () {
-    //
-    //    describe('and no route set in scope', function () {
-    //
-    //        it('should return empty array', function () {
-    //
-    //            $controller("NavigationController", {
-    //                $scope: $scope,
-    //                $sce: $sce,
-    //                $routeParams: $routeParams,
-    //                routingService: routingService,
-    //                stateService: stateService,
-    //                mapApiService: mapApiService,
-    //                maneuversService: maneuversService,
-    //                config: config,
-    //                events: events,
-    //                $window: $window
-    //            });
-    //
-    //            $scope.$apply();
-    //
-    //            $scope.route = null;
-    //
-    //            expect($scope.getManeuver()).toEqual([]);
-    //
-    //        });
-    //
-    //    });
-    //
-    //    describe('and route set in scope has no leg', function () {
-    //
-    //        it('should return empty array', function () {
-    //
-    //            $controller("NavigationController", {
-    //                $scope: $scope,
-    //                $sce: $sce,
-    //                $routeParams: $routeParams,
-    //                routingService: routingService,
-    //                stateService: stateService,
-    //                mapApiService: mapApiService,
-    //                maneuversService: maneuversService,
-    //                config: config,
-    //                events: events,
-    //                $window: $window
-    //            });
-    //
-    //            $scope.$apply();
-    //
-    //            $scope.route = {};
-    //            $scope.route.leg = null;
-    //
-    //            expect($scope.getManeuver()).toEqual([]);
-    //
-    //            $scope.route = {};
-    //            $scope.route.leg = [];
-    //
-    //            expect($scope.getManeuver()).toEqual([]);
-    //
-    //        });
-    //
-    //    });
-    //
-    //    describe('and route set in scope has leg(s)', function () {
-    //
-    //        it('should return maneuver from first leg', function () {
-    //
-    //            var fakeManeuver = {};
-    //
-    //            $controller("NavigationController", {
-    //                $scope: $scope,
-    //                $sce: $sce,
-    //                $routeParams: $routeParams,
-    //                routingService: routingService,
-    //                stateService: stateService,
-    //                mapApiService: mapApiService,
-    //                maneuversService: maneuversService,
-    //                config: config,
-    //                events: events,
-    //                $window: $window
-    //            });
-    //
-    //            $scope.$apply();
-    //
-    //            $scope.route = {};
-    //            $scope.route.leg = [{
-    //                maneuver: fakeManeuver
-    //            }];
-    //
-    //            expect($scope.getManeuver()).toEqual(fakeManeuver);
-    //
-    //        });
-    //
-    //    });
-    //
-    //});
 
     describe('when $locationChangeStart even fired', function () {
 
