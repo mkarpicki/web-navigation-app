@@ -11,7 +11,18 @@
     <!--<p data-ng-bind-html="getInstruction()"></p>-->
     <div class="panel panel-default">
         <div class="panel-body">
-            {{currentSpeed | metersPerSecondToKilometersPerHour}} km/h | {{speedLimit | metersPerSecondToKilometersPerHour}} km/h
+            <h3>{{currentSpeed | metersPerSecondToKilometersPerHour}} km/h</h3>
+            <svg data-ng-show="speedLimit > 0" height="50" width="50">
+                <circle cx="25" cy="25" r="20" stroke="red" stroke-width="5" fill="#FFF" ></circle>
+                <text x="20" y="30"
+                      dx="4"
+                      dy="2"
+                      font-family="sans-serif"
+                      font-size="20px"
+                      text-anchor="middle"
+                      fill="#000">{{speedLimit | metersPerSecondToKilometersPerHour}}</text>
+                {{speedLimit | metersPerSecondToKilometersPerHour}}
+            </svg>
         </div>
     </div>
     <ul class="list-group maneuvers-list">
