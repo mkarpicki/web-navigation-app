@@ -49,7 +49,7 @@ angular.module('navigationApp.directives').directive('map', ['mapApiService', 'e
          * and introduce new items (both: here and on template)
          */
         var overwrittenStartItem = node.getElementsByClassName('from')[0],
-            newWayPointItem = node.getElementsByClassName('waypoint')[0],
+            newWayPointItem = node.getElementsByClassName('way-point')[0],
             overwrittenDestinationItem = node.getElementsByClassName('to')[0],
             newDestinationItem,// = node.getElementsByClassName('to')[0],
             avoidItem = node.getElementsByClassName('avoid')[0];
