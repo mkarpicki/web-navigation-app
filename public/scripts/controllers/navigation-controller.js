@@ -292,6 +292,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                     }
 
                     if (nearestPoint <= metersFromRouteToRecalculate) {
+                        route.shape.splice(0, i);
                         break;
                     }
                 }
