@@ -185,11 +185,9 @@ angular.module('navigationApp.services').factory('mapApiService', ['$window', 'c
         });
 
         // Create a polyline to display the route:
-        var routeLine = new H.map.Polyline(strip, {
+        return new H.map.Polyline(strip, {
             style: { strokeColor: color, lineWidth: 5 }
         });
-
-        return routeLine;
 
     };
 

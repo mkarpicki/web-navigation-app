@@ -5,7 +5,6 @@ angular.module('navigationApp.controllers').controller('NavigationController',
             'use strict';
 
             var visitedWayPoints = [],
-                searchCriteria = null,
 
                 metersFromRouteToRecalculate = config.NUMBER_OF_METERS_FROM_ROUTE_TO_RECALCULATE,
                 minimumNumberOfMetersToCheckRouteState = config.NUMBER_OF_METERS_OF_POSITION_CHANGED_TO_REACT,
@@ -68,6 +67,14 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 stateService.clearRoutes();
                 stateService.saveRoutes(originalRoutes);
                 disableDriveMode();
+                resetWayPoints();
+            };
+
+            var resetWayPoints = function () {
+                var wayPoints = stateService.getSearchCriteria().wayPoints;
+                for (var i = 0, len = wayPoints.length; i < len; i++) {
+                    wayPoints[i].hidden = false;
+                }
             };
 
             var updateSpeedLimit = function (wayPoint) {
@@ -115,7 +122,31 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                 }
 
+            };
 
+            var hideStartWayPoint = function (wayPoints) {
+                hideVisitedWayPoints([wayPoints[0]]);
+            };
+
+            var hideVisitedWayPoints = function (visitedWayPoints) {
+
+                var wayPoints = stateService.getSearchCriteria().wayPoints;
+
+                visitedWayPoints.forEach(function(visitedWayPoint) {
+
+                    var visitedCoordinates = visitedWayPoint.coordinates;
+
+                    wayPoints.forEach(function(wayPoint) {
+
+                        var wayPointCoordinates = wayPoint.coordinates;
+
+                        if (visitedCoordinates.latitude === wayPointCoordinates.latitude &&
+                            visitedCoordinates.longitude === wayPointCoordinates.longitude) {
+
+                            wayPoint.hidden = true;
+                        }
+                    });
+                });
             };
 
             var checkRouteProgress = function (currentPosition) {
@@ -132,12 +163,9 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                 if (justVisitedWayPoints.length > 0) {
                     updateSpeedLimit(currentPosition);
                     visitedWayPoints = collectVisitedWayPoints(visitedWayPoints, justVisitedWayPoints);
-                    /**
-                     * @todo
-                     * - hide visited way points on map
-                     * - when loading each page - reset visibility of objects (to show all)
-                     *
-                     */
+
+                    hideVisitedWayPoints(visitedWayPoints);
+
                 }
 
                 $scope.maneuvers = findCurrentManeuver(currentPosition, $scope.maneuvers);
@@ -238,7 +266,7 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                     var distance = mapApiService.distance(currentPosition, maneuvers[i].position);
 
                     if (distance <= numberOfMetersFromWayPointToAssumeVisited) {
-                        updateSpeedLimit(currentPosition);
+                        //updateSpeedLimit(currentPosition);
                         setManeuverAsVisited(maneuvers[i]);
                         position = i;
                         break;
@@ -333,9 +361,12 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                     $scope.route = route;
                     $scope.maneuvers = getManeuvers($scope.route);
 
-                    searchCriteria = angular.copy(stateService.getSearchCriteria());
-                    wayPointsUsedForSearch = getWayPointsWithoutStartPoint(searchCriteria.wayPoints);
-                    areasToAvoidUsedForSearch = searchCriteria.areasToAvoid;
+                    var localSearchCriteria = angular.copy(stateService.getSearchCriteria());
+                    //localSearchCriteria = stateService.getSearchCriteria();
+                    hideStartWayPoint(localSearchCriteria.wayPoints);
+                    wayPointsUsedForSearch = getWayPointsWithoutStartPoint(localSearchCriteria.wayPoints);
+                    areasToAvoidUsedForSearch = localSearchCriteria.areasToAvoid;
+
 
                     $scope.$on(events.POSITION_EVENT, onPositionChange);
                     $scope.$on('$locationChangeStart', onLeave);

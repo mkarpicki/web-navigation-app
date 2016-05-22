@@ -46,8 +46,11 @@ describe('NavigationController', function () {
         stateService = {
             getSearchCriteria: function () {
                 return {
-                    wayPoints: [],
-                    areasToAvoid: []
+                    wayPoints: [
+                        { coordinates: {}},
+                        { coordinates: {}}
+                    ],
+                    areasToAvoid: [{}, {}]
                 };
             },
             setWayPoints: function () {},
