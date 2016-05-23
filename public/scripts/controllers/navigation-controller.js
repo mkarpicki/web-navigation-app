@@ -138,12 +138,15 @@ angular.module('navigationApp.controllers').controller('NavigationController',
 
                     wayPoints.forEach(function(wayPoint) {
 
-                        var wayPointCoordinates = wayPoint.coordinates;
+                        if (!wayPoint.hidden) {
 
-                        if (visitedCoordinates.latitude === wayPointCoordinates.latitude &&
-                            visitedCoordinates.longitude === wayPointCoordinates.longitude) {
+                            var wayPointCoordinates = wayPoint.coordinates;
 
-                            wayPoint.hidden = true;
+                            if (visitedCoordinates.latitude === wayPointCoordinates.latitude &&
+                                visitedCoordinates.longitude === wayPointCoordinates.longitude) {
+
+                                wayPoint.hidden = true;
+                            }
                         }
                     });
                 });
@@ -365,6 +368,10 @@ angular.module('navigationApp.controllers').controller('NavigationController',
                     //localSearchCriteria = stateService.getSearchCriteria();
                     hideStartWayPoint(localSearchCriteria.wayPoints);
                     wayPointsUsedForSearch = getWayPointsWithoutStartPoint(localSearchCriteria.wayPoints);
+
+                    //console.log('localSearchCriteria.wayPoints');
+                    //console.log(JSON.stringify(localSearchCriteria.wayPoints));
+
                     areasToAvoidUsedForSearch = localSearchCriteria.areasToAvoid;
 
 
