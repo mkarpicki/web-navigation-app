@@ -7,8 +7,10 @@ angular.module('navigationApp.services').factory('searchService', ['$http', '$q'
 
     var numberOfSuggestions = config.NUMBER_OF_SEARCH_SUGGESTIONS;
 
-    var SEARCH_SUGGESTIONS_URL = "https://places.api.here.com/places/v1/suggest",
-        SEARCH_URL = "https://places.api.here.com/places/v1/discover/search";
+    var placesApiHost = config.PLACES_API_HOST;
+
+    var SEARCH_SUGGESTIONS_URL =  placesApiHost + "/places/v1/suggest",
+        SEARCH_URL = placesApiHost + "/places/v1/discover/search";
 
     var URL = "{{url}}?" +
         "app_id={{appId}}" +
