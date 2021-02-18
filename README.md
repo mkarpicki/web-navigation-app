@@ -1,5 +1,5 @@
 # web-navigation-app
-Example of web based navigation tool based on HERE API
+Legacy AngularJS based navigation tool based on older versions of HERE APIs
 
 Mac:
 brew install nvm
