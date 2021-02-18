@@ -1,10 +1,11 @@
 /**
  * @todo - probably I should be rendered from some backend to be different depending on environment (r&d, qa, prod etc.)
+ * @todo - if will use it, change to api-key and updated HERE services
  */
 angular.module('navigationApp').value('config', {
 
     APP_ID : 'liPUlG1X9d2MjU26rjk4',
-    APP_CODE : 'IQfsRlsDejLmk4G6DtoaJA',
+    APP_CODE : '',
 
     AVOID_AREA_IN_METERS: 120,
 
