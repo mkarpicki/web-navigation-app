@@ -29,7 +29,7 @@
       "grunt-bower": "0.20.0",
       "protractor": "2.5.1",
       "grunt-protractor-runner": "2.1.2",
-      "lodash": "3.10.1"
+      "lodash": "4.17.21"
   },
   "jshintConfig": {
       "bitwise": false,
